@@ -1,4 +1,4 @@
-function [forecastErr, varargout] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,varargin)
+function [forecastErrLSEV, varargout] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,varargin)
 % Run succesives forecasting and SST on short subsignals of a large signal
 
 Ntot = length(xtot); % signal length
@@ -28,15 +28,15 @@ while nend <= Ntot
 %     xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,'lse') ; % Forecasted signal via LSE
     xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV') ; % Forecasted signal via LSE
 %     xxDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd') ; % Forecasted signal via LSE
-    xxZP = [zeros(L,1); x; zeros(L,1)];
+    xxZP = [zeros(L,1); x; xx(L,1)];
 
     xxTRUE = ( xtot((k*N+1-L):nend) - mu ) / sigma ;
     
     
-%     forecastErr.LSE(ind) =  sqrt( (1/(2*L)) * sum( abs(xxLSE - xxTRUE).^2 ) ) ;
-    forecastErr.LSEV(ind) = sqrt( (1/(2*L)) * sum( abs(xxLSEV - xxTRUE).^2 ) ) ;
-    forecastErr.ZP(ind) = sqrt( (1/(2*L)) * sum( abs(xxZP - xxTRUE).^2 ) ) ;
-%     forecastErr.DMD(ind) = (1/(2*extSEC*fs)) * sqrt(sum(abs(xxDMD - xxTRUE).^2)) ;
+%     forecastErrLSE(ind) =  sqrt( (1/(2*L)) * sum( abs(xxLSE - xxTRUE).^2 ) ) ;
+    forecastErrLSEV(ind) = sqrt( (1/(2*L)) * sum( abs(xxLSEV - xxTRUE).^2 ) ) ;
+    forecastErrZP(ind) = sqrt( (1/(2*L)) * sum( abs(xxZP - xxTRUE).^2 ) ) ;
+%     forecastErrDMD(ind) = (1/(2*extSEC*fs)) * sqrt(sum(abs(xxDMD - xxTRUE).^2)) ;
 
 %     figure;
 %     plot(tt,xxLSEV,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
@@ -57,22 +57,27 @@ while nend <= Ntot
         [~, ~, tfrsq3, ~, ~] = ConceFT_sqSTFT_C(double(x-mean(x)), 0, 0.01,...
                     1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
         % On the original long signal
-        [~, ~, tfrsq3TRUE, ~, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), 0, 0.01,...
+        [~, ~, tfrsq3EXT, ~, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), 0, 0.01,...
                     1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
-        tfrsq3TRUE = tfrsq3TRUE(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) ); 
+        tfrsq3EXT = tfrsq3EXT(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) ); 
+        % On the LS estimated extended signal 
+%         [~, ~, tfrsq3LSE, ~, ~] = ConceFT_sqSTFT_C(double(xxLSE-mean(xxLSE)), 0, 0.01,...
+%                     1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+%         tfrsq3LSE = tfrsq3LSE(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
          % On the LS Vector estimated extended signal 
         [~, ~, tfrsq3LSEV, ~, ~] = ConceFT_sqSTFT_C(double(xxLSEV-mean(xxLSEV)), 0, 0.01,...
                     1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
         tfrsq3LSEV = tfrsq3LSEV(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
-        % On the zero-padded extended signal 
-        [~, ~, tfrsq3ZP, ~, ~] = ConceFT_sqSTFT_C(double(xxZP-mean(xxZP)), 0, 0.01,...
-                1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
-
+        % On the DMD estimated extended signal 
+%         [~, ~, tfrsq3DMD, ~, ~] = ConceFT_sqSTFT_C(double(xxDMD-mean(xxDMD)), 0, 0.01,...
+%                     1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+%         tfrsq3DMD = tfrsq3DMD(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) ); 
 
         sstS{ind} = tfrsq3 ;
-        sstTRUE{ind} = tfrsq3TRUE ;
-        sstLSE{ind} = tfrsq3LSEV ;
-        sstZP{ind} = tfrsq3ZP ;
+        sstEXT{ind} = tfrsq3EXT ;
+%         sstLSE{ind} = tfrsq3LSE ;
+        sstLSEV{ind} = tfrsq3LSEV ;
+%         sstDMD{ind} = tfrsq3DMD ;
     end
     
     k = k+1 ;
@@ -82,9 +87,8 @@ end
 
 if isSST
     varargout{1} = sstS ;
-    varargout{2} = sstTRUE ;
-    varargout{3} = sstLSE ;
-    varargout{4} = sstZP ;
+    varargout{2} = sstEXT ;
+    varargout{3} = sstLSEV ;
 else
     varargout{1} = {};
 end

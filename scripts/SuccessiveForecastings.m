@@ -19,12 +19,14 @@ L = round(extSEC*fs) ;
 extM = round(1.5*L) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-[forecastErrLSE, sstS, sstEXT, sstLSE] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC);
+[forecastErr, sstS, sstTRUE, sstLSE, sstZP] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,'sst');
+% [forecastErrLSE, ~] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC);
+
+save('../Results/resultSucForTHO','forecastErrLSE','sstS','sstTRUE','sstLSE','sstZP');
+% save('../Results/resultSucForTHO','forecastErrLSE');
 
 % figure;
 % plot(forecastErrLSEV);
-
-save('../Results/resultSucForTHO','forecastErrLSE','sstS','sstEXT','sstLSE');
 %% Plot
 % 
 % %% SST
