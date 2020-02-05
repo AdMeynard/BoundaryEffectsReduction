@@ -3,7 +3,7 @@ addpath(genpath('../SST'));
 addpath('../algorithm/');
 
 %% load THO signal
-addpath ../NonStationaritySleepDataSet/1
+addpath ../Signals
 data = load('THO.mat');
 xtot = data.THO;
 
