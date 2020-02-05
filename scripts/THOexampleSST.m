@@ -1,4 +1,4 @@
-clear all; close all; clc;
+% clear all; close all; clc;
 addpath(genpath('SST'));
 
 %% load THO signal
@@ -8,26 +8,31 @@ xtot = data.THO;
 fs = 100 ; % sampling frequency
 
 x = xtot(204e3:208e3);
+mu = mean(x) ;
+s = std(x) ;
+x = (x - mu)/s ;
+
 N = length(x);
 
 %% Forecasting
 
 HOP = 1 ;
 extSEC = 2 ; % the extension is of extSEC second
-extP = 5*extSEC*fs ; % dimension of embedding / signals length
-extN = 2*extP ;  % number of points to estimate A / size of datasets
-if extN + extP >length(x) - 10 
-    extN = extN/2 ; extP = extP/2 ;
+L = round(extSEC*fs) ;
+extM = round(1.5*L) ; % dimension of embedding / signals length
+extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
+if extK + extM >length(x) - 10 
+    extK = extK/2 ; extM = extM/2 ;
 end
 
 
-xx = SigExtension(x,fs,HOP,extN,extP,extSEC);
+xx = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV');
 
 %% Plot
 t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
 
-xxTRUE = xtot((204e3-extSEC*fs):(208e3+extSEC*fs));
+xxTRUE = ( xtot((204e3-L):(208e3+L)) - mu ) / s ;
 
 figure;
 plot(tt,xx,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
@@ -52,4 +57,6 @@ xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original signal');
 subplot(1,2,2);
 imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(tfrsq3EXT)/8e5)); xlim([0 t(end)]);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on extended signal');
+
+%save('results','tfrsq3','tfrsq3EXT');
 
