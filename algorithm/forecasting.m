@@ -12,7 +12,7 @@ end
 
 
 % A is extP * extP
-switch method
+switch method.name
     
     case 'lse'
         A = Y*X'*inv(X*X') ; % least square estimation
@@ -28,17 +28,36 @@ switch method
         iS = inv(S);
         A = Y*V*iS*U';
         
+    case 'edmd'
+        sigma2 = method.param ;
+        [Xi,mu,phix] = approxKoopmanKB(X,Y,sigma2) ;
+        
 end
 
 % extension
-Z = [] ;
-Z(:,1) = Y(:,end) ;
-
 K = round(fs*extSEC);
-for kk = 1:K
-    Z(:,kk+1) = A*Z(:,kk) ; 
+Z = zeros(extM,K) ;
+
+switch method.name
+    
+    case 'edmd'
+        tmp = phix.';
+        for kk = 1:K
+            tmp = mu.*tmp;
+            Z(:,kk) =  tmp ; 
+        end
+        Z = real(Xi.' * Z);
+        
+    otherwise
+        Z = zeros(extM,K) ;
+        Z(:,1) = A*Y(:,end) ;
+        for kk = 2:K
+            Z(:,kk) = A*Z(:,kk-1) ; 
+        end
+        
 end
-xext = Z(end, 2:end)' ;
+
+xext = Z(end,:)' ;
 
 if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     xext = flipud(xext);

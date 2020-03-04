@@ -25,24 +25,4 @@ Phixy = Uga * Mtmp * Vhat ;
 
 Xi = pinv(Phixy) * Uxy ;
 
-phi_end = Phixy(end,:); 
-
-% for m = 1:M
-%     psixm = HermitN(X(:,m),ordHerm) ;
-%     psiym = HermitN(Y(:,m),ordHerm) ;
-%     Psix(m,:) = psix ;
-%     Psiy(m,:) = psiy ;
-% end
-% [Q, Sigma, Z] = svd(Psix) ;
-% Ahat = Psiy * Psix.' ;
-% Ghat = Psix * Psix.' ;
-% 
-% [Xi,Mu] = eig(KoopMat) ;
-% 
-% B = zeros(K,N) ;
-% for n = 1:N
-%     tmp  = ordHerm^(n-1) + 1 ;
-%     B(tmp,n) = .5 ;
-% end
-% 
-% V = ( Xi \ B ).' ;
+phi_end = Phixy(end,:);

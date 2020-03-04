@@ -34,8 +34,6 @@ X = X.' ;
 Y = Y.' ;
 
 %% Koopman
-% ordHerm = 5 ; % 4 or 5 seems to be great
-% [Xi,Mu,V] = approxKoopman(X,Y,ordHerm) ;
 
 sigma2 = 100 ;
 
@@ -67,29 +65,3 @@ plot(tt,xxTRUE,tt,xx,t,x,'linewidth',2) ;
 axis tight; grid on;
 xlabel('Time (s)'); ylabel('Signal');
 legend('Ground truth','Forecasting','Measured part')
-
-% psix = HermitN(Y(:,end),ordHerm) ;
-% phix = psix * Xi ;
-% 
-% K = round(fs*extSEC);
-% for kk = 1:K
-%     Z(:,kk) = real( V * Mu.^kk * phix.' ) ; 
-% end
-% xext = Z(end,:)' ;
-% 
-% xx = [x; xext];
-% % 
-% % L = 3 ;
-% % xpredRed = V(:,1:L) * Mu(1:L,1:L) * phix(1:L).' ;
-% % xpredRed = real(xpredRed) ;
-% 
-% %% Plot
-% t = linspace(0, (N-1)/fs, N) ;
-% tt = linspace(0, (N-1)/fs+extSEC, N + round(extSEC*fs)) ;
-% 
-% xxTRUE = (xtot((204e3):(208e3+extSEC*fs)) - m)/s;
-% 
-% figure;
-% plot(tt,xx,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-% legend('Estimated Extended signal','Ground truth Extended signal','Original signal'); 
-% xlabel('Time (s)'); ylabel('Signals'); title('Time series');
