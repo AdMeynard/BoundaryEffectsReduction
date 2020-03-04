@@ -1,14 +1,14 @@
 clear all;
 close all; clc;
-addpath('../algorithm/');
-addpath(genpath('../SST'));
+addpath('../../algorithm/');
+addpath(genpath('../../SST'));
+addpath('../../Signals');
 
 %% load signal
-SigTyp = 'PPG' ;
+SigTyp = 'THO' ;
 
 switch SigTyp
     case 'THO'
-        addpath ../NonStationaritySleepDataSet/1
         data = load('THO.mat');
         xtot = data.THO;
         fs = 100 ; % sampling frequency
@@ -23,7 +23,6 @@ switch SigTyp
         xxTRUE = ( xtot((204e3-L):(208e3+L)) - mu ) / s ;
 
     case 'PPG'
-        addpath ../Signals/
         data = load('PPGsig');
 
         xtot = data.PPG;
@@ -52,13 +51,14 @@ HOP = 1 ;
 Mh = round( linspace(2,5*L,100) );
 extK = 10*L ;
 
+method.name = 'lse' ;
 m = 1;
 for extM = Mh
-    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,'lse');
-    xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV');
+    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method);
+%     xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV');
 %     xxDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd');
     forecastErrLSE_m(m) = sqrt( (1/(2*L)) * sum(abs(xxLSE - xxTRUE).^2) ) ;
-    forecastErrLSEV_m(m) = sqrt( (1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
+%     forecastErrLSEV_m(m) = sqrt( (1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
 %     forecastErrDMD_m(m) = sqrt((1/(2*L)) * sum(abs(xxDMD - xxTRUE).^2) ) ;
     m = m+1 ;
 end
@@ -76,11 +76,11 @@ Kh = round( linspace(1.05,5,100)*extM );
 
 k = 1;
 for extK = Kh
-    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,'lse');
-    xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV');
+    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method);
+%     xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV');
     %xxDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd');
     forecastErrLSE_k(k) = sqrt((1/(2*L)) * sum(abs(xxLSE - xxTRUE).^2) ) ;
-    forecastErrLSEV_k(k) = sqrt( (1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
+%     forecastErrLSEV_k(k) = sqrt( (1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
     %forecastErrDMD_k(k) = sqrt((1/(2*L)) * sum(abs(xxDMD - xxTRUE).^2) ) ;
     k = k+1 ;
 end
@@ -92,6 +92,7 @@ set(gca,'fontsize',16);
 %legend( 'LSE', 'LSE Vector');
 xlabel('$K/L$', 'interpreter','latex'); ylabel('MSE'); grid on;
 xlim([0 Kh(end)/L]); ylim([0 max(forecastErrLSE_k)]);
+title('Influence of the number of signals K')
 %% Influence of additive GWN
 
 extM = round( 1.5*L );
@@ -104,11 +105,11 @@ for sigma = sigmah
     noise = sigma*randn(N,1) ;
     xn = x + noise;
     
-    xxLSE = SigExtension(xn,fs,HOP,extK,extM,extSEC,'lse');
-    xxLSEV = SigExtension(xn,fs,HOP,extK,extM,extSEC,'lseV');
+    xxLSE = SigExtension(xn,fs,HOP,extK,extM,extSEC,method);
+%     xxLSEV = SigExtension(xn,fs,HOP,extK,extM,extSEC,'lseV');
 %     xxDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd');
     forecastErrLSE_n(n) = sqrt( (1/(2*L)) * sum(abs(xxLSE - xxTRUE).^2) ) ;
-    forecastErrLSEV_n(n) = sqrt((1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
+%     forecastErrLSEV_n(n) = sqrt((1/(2*L)) * sum(abs(xxLSEV - xxTRUE).^2) ) ;
 %     forecastErrDMD_n) = sqrt((1/(2*L)) * sum(abs(xxDMD - xxTRUE).^2) ) ;
     n = n+1 ;
 end

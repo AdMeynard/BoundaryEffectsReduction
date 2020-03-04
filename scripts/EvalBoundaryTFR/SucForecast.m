@@ -4,10 +4,10 @@ function [forecastErr, varargout] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,v
 Ntot = length(xtot); % signal length
 L = round(extSEC*fs) ;
 
-if ~isempty(varargin)
-    isSST = strcmpi( varargin{1}, 'SST') ; % check is SST computions are required
+if isempty(varargin)
+    basicTF.meth = 'none' ;
 else
-    isSST = 0 ;
+    basicTF = varargin{1} ;
 end
 
 %% Forecastings
@@ -25,8 +25,8 @@ while nend <= Ntot
     x = (x - mu) / sigma ;
     
     % Extensions
-%     xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,'lse') ; % Forecasted signal via LSE
-    xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,'lseV') ; % Forecasted signal via LSE
+    method.name = 'lse' ;
+    xxLSEV = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ; % Forecasted signal via LSE
 %     xxDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd') ; % Forecasted signal via LSE
     xxZP = [zeros(L,1); x; zeros(L,1)];
 
@@ -38,41 +38,78 @@ while nend <= Ntot
     forecastErr.ZP(ind) = sqrt( (1/(2*L)) * sum( abs(xxZP - xxTRUE).^2 ) ) ;
 %     forecastErr.DMD(ind) = (1/(2*extSEC*fs)) * sqrt(sum(abs(xxDMD - xxTRUE).^2)) ;
 
-%     figure;
-%     plot(tt,xxLSEV,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-%     legend('Estimated Extended signal','Ground truth Extended signal','Original signal'); 
-%     xlabel('Time (s)'); ylabel('Signals'); title('Time series'); drawnow;
 
     %% SST
-    if isSST
-        % SST parameters
-        basicTF.hop = 10;
-        basicTF.win = 1501;
-        t = linspace(0, (N-1)/fs, N) ;
-        tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
-        tsst = t(1:basicTF.hop:end);
-        tsstEXT = tt(1:basicTF.hop:end);
-        
-        % On the original short signal
-        [~, ~, tfrsq3, ~, ~] = ConceFT_sqSTFT_C(double(x-mean(x)), 0, 0.01,...
-                    1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
-        % On the original long signal
-        [~, ~, tfrsq3TRUE, ~, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), 0, 0.01,...
-                    1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
-        tfrsq3TRUE = tfrsq3TRUE(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) ); 
-         % On the LS Vector estimated extended signal 
-        [~, ~, tfrsq3LSEV, ~, ~] = ConceFT_sqSTFT_C(double(xxLSEV-mean(xxLSEV)), 0, 0.01,...
-                    1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
-        tfrsq3LSEV = tfrsq3LSEV(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
-        % On the zero-padded extended signal 
-        [~, ~, tfrsq3ZP, ~, ~] = ConceFT_sqSTFT_C(double(xxZP-mean(xxZP)), 0, 0.01,...
-                1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+    switch basicTF.meth
+        case 'sst'
+            % SST parameters
+            t = linspace(0, (N-1)/fs, N) ;
+            tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+            tsst = t(1:basicTF.hop:end);
+            tsstEXT = tt(1:basicTF.hop:end);
+
+            % On the original short signal
+            [~, ~, sstS, ~] = ConceFT_sqSTFT_C(double(x-mean(x)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            % On the original long signal
+            [~, ~, sstTRUE, ~, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            sstTRUE = sstTRUE(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) ); 
+             % On the LS Vector estimated extended signal 
+            [~, ~, sstLSEV, ~, ~] = ConceFT_sqSTFT_C(double(xxLSEV-mean(xxLSEV)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            sstLSEV = sstLSEV(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
+            
+            OTDS(ind) = slicedOT(sstS, sstTRUE) ;
+            OTDLSE(ind) = slicedOT(sstLSE, sstTRUE) ;
+            
+        case 'sstSTFT'
+            % SST parameters
+            t = linspace(0, (N-1)/fs, N) ;
+            tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+            tsst = t(1:basicTF.hop:end);
+            tsstEXT = tt(1:basicTF.hop:end);
+            
+            n0 = find(tsstEXT>=min(tsst),1);
+            nf = n0 + length(tsst)-1;
+
+            % On the original short signal
+            [Vx, ~, sstS, ~] = ConceFT_sqSTFT_C(double(x-mean(x)), basicTF.fmin, basicTF.fmax, 1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            % On the original long signal
+            [VxxTRUE, ~, sstTRUE, ~, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax, 1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            sstTRUE = sstTRUE(: , n0:nf ); 
+            VxxTRUE = VxxTRUE(: , n0:nf );
+             % On the LS Vector estimated extended signal 
+            [VxxLSEV, ~, sstLSEV, ~, ~] = ConceFT_sqSTFT_C(double(xxLSEV-mean(xxLSEV)), basicTF.fmin, basicTF.fmax, 1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            sstLSEV = sstLSEV(: , n0:nf );
+            VxxLSEV = VxxLSEV(: , n0:nf );
+
+            sstOTDS(ind) = slicedOT(sstS, sstTRUE) ;
+            sstOTDLSE(ind) = slicedOT(sstLSEV, sstTRUE) ;
+            
+            stftOTDS(ind) = slicedOT(Vx, VxxTRUE) ;
+            stftOTDLSE(ind) = slicedOT(VxxLSEV, VxxTRUE) ;
+            
+        case 'RS'
+            % SST parameters
+            t = linspace(0, (N-1)/fs, N) ;
+            tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+            trs = t;
+            trsEXT = tt ;
+            n0 = find(trsEXT>=min(trs),1);
+            nf = n0 + length(trs)-1;
+
+            % On the original short signal
+            [~, ~, rsS, ~] = ConceFT_rsSTFT(double(x-mean(x)), basicTF.fmin, basicTF.fmax, 1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            % On the original long signal
+            [~, ~, rsTRUE, ~, ~] = ConceFT_rsSTFT(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            rsTRUE = rsTRUE(: , n0:nf ); 
+             % On the LS Vector estimated extended signal 
+            [~, ~, rsLSE, ~, ~] = ConceFT_rsSTFT(double(xxLSEV-mean(xxLSEV)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            rsLSE = rsLSE(: , n0:nf );
 
 
-        sstS{ind} = tfrsq3 ;
-        sstTRUE{ind} = tfrsq3TRUE ;
-        sstLSE{ind} = tfrsq3LSEV ;
-        sstZP{ind} = tfrsq3ZP ;
+            OTDS(ind) = slicedOT(rsS, rsTRUE) ;
+            OTDLSE(ind) = slicedOT(rsLSE, rsTRUE) ;
+        otherwise
+            % nothing to do
     end
     
     k = k+1 ;
@@ -80,11 +117,15 @@ while nend <= Ntot
     ind = ind + 1 ;
 end
 
-if isSST
-    varargout{1} = sstS ;
-    varargout{2} = sstTRUE ;
-    varargout{3} = sstLSE ;
-    varargout{4} = sstZP ;
-else
-    varargout{1} = {};
+switch basicTF.meth
+    case {'sst','RS'}
+        varargout{1} = OTDS ;
+        varargout{2} = OTDLSE ;
+    case 'sstSTFT'
+        varargout{1} = sstOTDS ;
+        varargout{2} = sstOTDLSE ;
+        varargout{3} = stftOTDS ;
+        varargout{4} = stftOTDLSE ;  
+    case 'none'
+        varargout{1} = {};
 end

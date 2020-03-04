@@ -1,6 +1,6 @@
 clear all; close all;
 
-load('../Results/MSEnoise.mat')
+load('../../Results/MSEnoise.mat')
 
 nbXP = length(MSE100m);
 Sigma = linspace(5e-3,1e-1,nbXP) ;

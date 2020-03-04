@@ -26,6 +26,7 @@ tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
 xx0L = cos(2*pi*(0.5*a*tt.^2+f*tt));
 
 %% Forecasting
+method.name = 'lseV' ;
 nbXP = 100 ;
 nbXPP = 500;
 Sigma = linspace(5e-3,1e-1,nbXP) ;
@@ -40,7 +41,7 @@ for sigman = Sigma
         x = x0.' + noise((L+1):(N+L)) ;
         xxTRUE = xx0L.' + noise ;
         
-        xx = SigExtension(x,fs,HOP,extK,extM,extSEC,'dmd') ;
+        xx = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ;
         MSE10(nb2) = (xx(N+L+10) - xxTRUE(N+L+10))^2 ;
         MSE100(nb2) = (xx(N+L+100) - xxTRUE(N+L+100))^2 ;
         MSE200(nb2) = (xx(N+L+200) - xxTRUE(N+L+200))^2 ;
@@ -53,4 +54,4 @@ for sigman = Sigma
     k = k+1 ;
 end
 
-% save('MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m');
+save('MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m');
