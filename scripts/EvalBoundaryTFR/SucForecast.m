@@ -138,10 +138,18 @@ while nend <= Ntot
              % On the LS Vector estimated extended signal 
             [~, ~, rsLSE, ~, ~] = ConceFT_rsSTFT(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
             rsLSE = rsLSE(: , n0:nf );
+            % On the EDMD Vector estimated extended signal 
+            [~, ~, rsEDMD, ~, ~] = ConceFT_rsSTFT(double(xxEDMD-mean(xxEDMD)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            rsEDMD = rsEDMD(: , n0:nf );
+            % On the GPR Vector estimated extended signal 
+            [~, ~, rsGPR, ~, ~] = ConceFT_rsSTFT(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            rsGPR = rsGPR(: , n0:nf );
 
 
             OTD.rs.S(ind) = slicedOT(rsS, rsTRUE) ;
             OTD.rs.LSE(ind) = slicedOT(rsLSE, rsTRUE) ;
+            OTD.rs.EDMD(ind) = slicedOT(rsEDMD, rsTRUE) ;
+            OTD.rs.GPR(ind) = slicedOT(rsEDMD, rsTRUE) ;
         otherwise
             % nothing to do
     end
@@ -155,7 +163,7 @@ CompTime.LSE = mean(LSEtime) ;
 CompTime.EDMD = mean(EDMDtime) ;
 CompTime.GPR = mean(GPRtime) ;
 
-if ~strcompi(basicTF.meth,'none') 
+if ~strcmpi(basicTF.meth,'none') 
     varargout{1} = OTD ;
 else
     varargout{1} = {};
