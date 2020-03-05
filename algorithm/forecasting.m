@@ -32,6 +32,10 @@ switch method.name
         sigma2 = method.param ;
         [Xi,mu,phix] = approxKoopmanKB(X,Y,sigma2) ;
         
+    case 'gpr'
+        y = Y(end,:).' ;
+        gprMdl = fitrgp(X.',y,'Basis','linear','FitMethod','exact','PredictMethod','exact');
+        
 end
 
 % extension
@@ -47,6 +51,16 @@ switch method.name
             Z(:,kk) =  tmp ; 
         end
         Z = real(Xi.' * Z);
+        xext = Z(end,:)' ;
+        
+    case 'gpr'
+        xext = zeros(K,1) ;
+        z = x(end-extM+1: HOP: end).' ;
+        for kk = 1:K
+            zpred = predict(gprMdl,z);
+            z = [z(2:end) zpred] ;
+            xext(kk) = zpred ;
+        end
         
     otherwise
         Z = zeros(extM,K) ;
@@ -54,10 +68,9 @@ switch method.name
         for kk = 2:K
             Z(:,kk) = A*Z(:,kk-1) ; 
         end
+        xext = Z(end,:)' ;
         
 end
-
-xext = Z(end,:)' ;
 
 if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     xext = flipud(xext);

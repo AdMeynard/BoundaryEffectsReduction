@@ -23,9 +23,9 @@ basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;
 basicTF.fmax = 0.01 ;
-[forecastErr1, sstS, sstLSE, stftS, stftLSE] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
+[forecastErr1, CompTime1, OTD1] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
 basicTF.meth = 'RS' ;
-[forecastErr2, rsS, rsLSE] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
+[forecastErr2, CompTime2, OTD2] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
 
 
-save('../../Results/resultSucForTHOcompMeth','forecastErr1','sstS','sstLSE','stftS', 'stftLSE', 'forecastErr2', 'rsS', 'rsLSE');
+save('../../Results/resultSucForTHOcompMeth','forecastErr1','CompTime1','OTD1','forecastErr2','CompTime2','OTD2');

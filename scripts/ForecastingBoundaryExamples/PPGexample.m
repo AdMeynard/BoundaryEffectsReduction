@@ -39,11 +39,17 @@ tic;
 xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 EDMDtime = toc;
 
+method.name = 'gpr' ;
+tic; 
+xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
+GPRtime = toc;
+
 fprintf(' __________________________________________\n')
 fprintf('| Extension Method | Computing time (sec.) |\n')
 fprintf('|------------------------------------------|\n')
 fprintf('|  LSE extension   |         %.2f          |\n', LSEtime)
 fprintf('|  EDMD extension  |         %.2f          |\n', EDMDtime)
+fprintf('|  GPR extension   |       %.2f          |\n', GPRtime)
 fprintf('|__________________|_______________________|\n')
 
 %% Plot
@@ -55,9 +61,9 @@ xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
 
 
 figure;
-plot(tt,xxLSE,tt,xxEDMD,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+plot(tt,xxLSE,tt,xxEDMD,tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
 set(gca,'fontsize',14);
-legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','Ground truth Extended signal','Original signal'); 
+legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','GPR Estimated Extended signal','Ground truth Extended signal','Original signal'); 
 xlabel('Time (s)'); ylabel('Signals'); title('Time series'); axis tight;
 
 %% SST
@@ -70,7 +76,7 @@ fmax = 0.01;
 [Vx, tfrtic0, SSTx, ~, tfrsqtic] = ConceFT_sqSTFT_C(double(x-mean(x)), fmin, fmax,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the true extended signal 
-[VxxTRUE, SSTxxTRUE, tfrsq3TRUE, ~, tfrsqticTRUE] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), fmin, fmax,...
+[VxxTRUE, tfrticEXT, SSTxxTRUE, ~, tfrsqticTRUE] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), fmin, fmax,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the zero-padded extended signal 
 [VxxZP, ~, SSTxxZP, ~, tfrsqticZP] = ConceFT_sqSTFT_C(double(xxZP-mean(xxZP)), fmin, fmax,...
@@ -81,18 +87,21 @@ fmax = 0.01;
 % On the estimated extended signal 
 [VxxEDMD, ~, SSTxxEDMD, ~, ~] = ConceFT_sqSTFT_C(double(xxEDMD-mean(xxEDMD)), fmin, fmax,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+% On the estimated extended signal 
+[VxxGPR, ~, SSTxxGPR, ~, ~] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), fmin, fmax,...
+            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
 figure;
 subplot(2,2,1);
 imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(SSTx)/1e2));
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original short signal');
 subplot(2,2,2);
-imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(tfrsq3TRUE)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(SSTxxTRUE)/1e2)); xlim([0 t(end)]);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original long signal');
 subplot(2,2,3);
 imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxLSE)/1e2)); xlim([0 t(end)]);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on LSE estimated long signal (short signal extended)');
-subplot(2,2,3);
+subplot(2,2,4);
 imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxEDMD)/1e2)); xlim([0 t(end)]);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on EDMD estimated long signal (short signal extended)');
 
@@ -101,33 +110,41 @@ xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on EDMD estimated long 
 tmp = tt(1:basicTF.hop:end) ;
 tmp = (tmp>=0) & (tmp<=t(end)) ;
 
-tfrsqTRUEw = tfrsq3TRUE(:,tmp) ;
-tfrsqZPw = SSTxxZP(:,tmp) ;
-tfrsqLSEw = SSTxxLSE(:,tmp) ;
-tfrsqEDMDw = SSTxxEDMD(:,tmp) ;
+tSSTx = t(1:basicTF.hop:end);
+tSSText = tt(1:basicTF.hop:end);
+n0 = find(tSSText>=min(tSSTx),1);
+nf = n0 + length(tSSTx)-1;
 
-sstOTDshort = slicedOT(SSTx(:,1:(end-1)), tfrsqTRUEw) ;
+tfrsqTRUEw = SSTxxTRUE(:,n0:nf) ;
+tfrsqZPw = SSTxxZP(:,n0:nf) ;
+tfrsqLSEw = SSTxxLSE(:,n0:nf) ;
+tfrsqEDMDw = SSTxxEDMD(:,n0:nf) ;
+tfrsqGPRw = SSTxxGPR(:,n0:nf) ;
+
+sstOTDshort = slicedOT(SSTx, tfrsqTRUEw) ;
 sstOTDZP = slicedOT(tfrsqZPw, tfrsqTRUEw) ;
 sstOTDLSE = slicedOT(tfrsqLSEw, tfrsqTRUEw) ;
 sstOTDEDMD = slicedOT(tfrsqEDMDw, tfrsqTRUEw) ;
+sstOTDGPR = slicedOT(tfrsqGPRw, tfrsqTRUEw) ;
 
 
-fprintf('==============SST==============\n')
-fprintf(' ______________________________\n')
-fprintf('| Extension Method |    OTD    | \n')
-fprintf('|------------------|-----------|\n')
-fprintf('|  Short signal    | %.3e |\n', sstOTDshort)
-fprintf('|  Zero-padding    | %.3e |\n', sstOTDZP)
-fprintf('|  LSE extension   | %.3e |\n', sstOTDLSE)
-fprintf('|  EDMD extension  | %.3e |\n', sstOTDEDMD)
-fprintf('|__________________|___________|\n')
+fprintf('==============SST===============\n')
+fprintf(' _______________________________\n')
+fprintf('|  Extension Method |    OTD    | \n')
+fprintf('|-------------------|-----------|\n')
+%fprintf('|   Short signal    | %.3e |\n', sstOTDshort)
+fprintf('| Without extension | %.3e |\n', sstOTDZP)
+fprintf('|   LSE extension   | %.3e |\n', sstOTDLSE)
+fprintf('|   EDMD extension  | %.3e |\n', sstOTDEDMD)
+fprintf('|   GPR extension   | %.3e |\n', sstOTDGPR)
+fprintf('|___________________|___________|\n')
 
 %% CWT
 wav_typ = 'sharp';
 Ms = 300 ;
 wav_par = 9 ;
-fmax = 1.25 ;
-fmin = fmax/30 ; 
+fmax = 10 ;
+fmin = fmax/10 ; 
 
 figure;
 % On the original signal
@@ -145,6 +162,7 @@ subplot(2,2,3);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on estimated long signal (short signal extended)');
 % On the estimated extended signal
 subplot(2,2,4);
+[WxxGPR,~] = display_cwt_JEFAS(xxGPR,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
 [WxxEDMD,~] = display_cwt_JEFAS(xxEDMD,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on estimated long signal (short signal extended)');
 
@@ -159,22 +177,25 @@ scaloTRUEw = abs(WxxTRUE(:,tmp)).^2 ;
 scaloZPw = abs(WxxZP(:,tmp)).^2 ;
 scaloLSEw = abs(WxxLSE(:,tmp)).^2 ;
 scaloEDMDw = abs(WxxEDMD(:,tmp)).^2 ;
+scaloGPRw = abs(WxxGPR(:,tmp)).^2 ;
 
 cwtOTDshort = slicedOT(scalo, scaloTRUEw) ;
 cwtOTDZP = slicedOT(scaloZPw, scaloTRUEw) ;
 cwtOTDLSE = slicedOT(scaloLSEw, scaloTRUEw) ;
 cwtOTDEDMD = slicedOT(scaloEDMDw, scaloTRUEw) ;
+cwtOTDGPR = slicedOT(scaloGPRw, scaloTRUEw) ;
 
 
-fprintf('==============CWT==============\n')
-fprintf(' ______________________________\n')
-fprintf('| Extension Method |    OTD    | \n')
-fprintf('|------------------|-----------|\n')
-fprintf('|  Short signal    | %.3e |\n', cwtOTDshort)
-fprintf('|  Zero-padding    | %.3e |\n', cwtOTDZP)
-fprintf('|  LSE extension   | %.3e |\n', cwtOTDLSE)
-fprintf('|  EDMD extension  | %.3e |\n', cwtOTDEDMD)
-fprintf('|__________________|___________|\n')
+fprintf('================CWT==============\n')
+fprintf(' ________________________________\n')
+fprintf('|  Extension Method  |    OTD    | \n')
+fprintf('|--------------------|-----------|\n')
+fprintf('|  Without extension | %.3e |\n', cwtOTDshort)
+fprintf('|  Zero-padding      | %.3e |\n', cwtOTDZP)
+fprintf('|  LSE extension     | %.3e |\n', cwtOTDLSE)
+fprintf('|  EDMD extension    | %.3e |\n', cwtOTDEDMD)
+fprintf('|  GPR extension     | %.3e |\n', cwtOTDGPR)
+fprintf('|____________________|___________|\n')
 
 %% Reassignment
 basicTF.hop = 10;
@@ -196,6 +217,9 @@ fmax = 0.01;
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
 % On the estimated extended signal 
 [~, ~, RSxxEDMD] = ConceFT_rsSTFT(double(xxEDMD-mean(xxEDMD)), fmin, fmax,...
+            1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
+% On the estimated extended signal 
+[~, ~, RSxxGPR] = ConceFT_rsSTFT(double(xxGPR-mean(xxGPR)), fmin, fmax,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1) ;
 
 figure;
@@ -223,60 +247,64 @@ rssTRUEw = abs(RSxxTRUE(:,tmp)).^2 ;
 rssZPw = abs(RSxxZP(:,tmp)).^2 ;
 rssLSEw = abs(RSxxLSE(:,tmp)).^2 ;
 rssEDMDw = abs(RSxxEDMD(:,tmp)).^2 ;
+rssGPRw = abs(RSxxGPR(:,tmp)).^2 ;
 
 rssOTDshort = slicedOT(rss, rssTRUEw) ;
 rssOTDZP = slicedOT(rssZPw, rssTRUEw) ;
 rssOTDLSE = slicedOT(rssLSEw, rssTRUEw) ;
 rssOTDEDMD = slicedOT(rssEDMDw, rssTRUEw) ;
+rssOTDGPR = slicedOT(rssGPRw, rssTRUEw) ;
 
 
-fprintf('==============RS==============\n')
-fprintf(' ______________________________\n')
-fprintf('| Extension Method |    OTD    | \n')
-fprintf('|------------------|-----------|\n')
-fprintf('|  Short signal    | %.3e |\n', rssOTDshort)
-fprintf('|  LSE extension   | %.3e |\n', rssOTDLSE)
-fprintf('|  EDMD extension  | %.3e |\n', rssOTDEDMD)
-fprintf('|__________________|___________|\n')
+fprintf('=================RS==============\n')
+fprintf(' ________________________________\n')
+fprintf('|  Extension Method  |    OTD    | \n')
+fprintf('|--------------------|-----------|\n')
+fprintf('|  Without extension | %.3e |\n', rssOTDshort)
+fprintf('|  LSE extension     | %.3e |\n', rssOTDLSE)
+fprintf('|  EDMD extension    | %.3e |\n', rssOTDEDMD)
+fprintf('|  GPR extension     | %.3e |\n', rssOTDGPR)
+fprintf('|____________________|___________|\n')
 
 
 %% STFT
 figure;
 subplot(2,2,1);
-imagesc(t(1:basicTF.hop:end),tfrtic0*fs,log1p(abs(Vx)/1e2));
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on original short signal');
+imagesc(t(1:basicTF.hop:end),tfrtic0*fs,log1p(abs(Vx)/1e2)); ylim([0 10]) ;
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on original short signal');
 subplot(2,2,2);
-imagesc(tt(1:basicTF.hop:end),SSTxxTRUE*fs,log1p(abs(VxxTRUE)/1e2)); xlim([0 t(end)]);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on original long signal');
+imagesc(tt(1:basicTF.hop:end),tfrticEXT*fs,log1p(abs(VxxTRUE)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on original long signal');
 subplot(2,2,3);
-imagesc(tt(1:basicTF.hop:end),SSTxxTRUE*fs,log1p(abs(VxxLSE)/1e2)); xlim([0 t(end)]);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS LSE estimated long signal (short signal extended)');
+imagesc(tt(1:basicTF.hop:end),tfrticEXT*fs,log1p(abs(VxxLSE)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT LSE estimated long signal (short signal extended)');
 subplot(2,2,4);
-imagesc(tt(1:basicTF.hop:end),SSTxxTRUE*fs,log1p(abs(VxxEDMD)/1e2)); xlim([0 t(end)]);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on EDMD estimated long signal (short signal extended)');
+imagesc(tt(1:basicTF.hop:end),tfrticEXT*fs,log1p(abs(VxxEDMD)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on EDMD estimated long signal (short signal extended)');
 
 %% Optimal transport distance STFT
-tmp = tt(1:basicTF.hop:end) ;
-tmp = (tmp>=0) & (tmp<=t(end)) ;
 
 stft = abs(Vx).^2 ;
-stftTRUEw = abs(VxxTRUE(:,tmp)).^2 ;
-stftZPw = abs(VxxZP(:,tmp)).^2 ;
-stftLSEw = abs(VxxLSE(:,tmp)).^2 ;
-stftEDMDw = abs(VxxEDMD(:,tmp)).^2 ;
+stftTRUEw = abs(VxxTRUE(:,n0:nf)).^2 ;
+stftZPw = abs(VxxZP(:,n0:nf)).^2 ;
+stftLSEw = abs(VxxLSE(:,n0:nf)).^2 ;
+stftEDMDw = abs(VxxEDMD(:,n0:nf)).^2 ;
+stftGPRw = abs(VxxGPR(:,n0:nf)).^2 ;
 
-stftOTDshort = slicedOT(stft(:,1:(end-1)), stftTRUEw) ;
+stftOTDshort = slicedOT(stft, stftTRUEw) ;
 stftOTDZP = slicedOT(stftZPw, stftTRUEw) ;
 stftOTDLSE = slicedOT(stftLSEw, stftTRUEw) ;
 stftOTDEDMD = slicedOT(stftEDMDw, stftTRUEw) ;
+stftOTDGPR = slicedOT(stftGPRw, stftTRUEw) ;
 
 
-fprintf('==============STFT==============\n')
-fprintf(' ______________________________\n')
-fprintf('| Extension Method |    OTD    | \n')
-fprintf('|------------------|-----------|\n')
-fprintf('|  Short signal    | %.3e |\n', stftOTDshort)
-fprintf('|  Zero-padding    | %.3e |\n', stftOTDZP)
-fprintf('|  LSE extension   | %.3e |\n', stftOTDLSE)
-fprintf('|  EDMD extension  | %.3e |\n', stftOTDEDMD)
-fprintf('|__________________|___________|\n')
+fprintf('==============STFT===============\n')
+fprintf(' _______________________________\n')
+fprintf('|  Extension Method |    OTD    | \n')
+fprintf('|-------------------|-----------|\n')
+fprintf('| Without extension | %.3e |\n', stftOTDshort)
+fprintf('| Zero-padding      | %.3e |\n', stftOTDZP)
+fprintf('| LSE extension     | %.3e |\n', stftOTDLSE)
+fprintf('| EDMD extension    | %.3e |\n', stftOTDEDMD)
+fprintf('| GPR extension     | %.3e |\n', stftOTDGPR)
+fprintf('|___________________|___________|\n')

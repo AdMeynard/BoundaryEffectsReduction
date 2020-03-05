@@ -37,6 +37,11 @@ tic;
 xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 EDMDtime = toc;
 
+method.name = 'gpr' ;
+tic; 
+xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
+GPRtime = toc;
+
 %% Plot
 t = linspace(0, (N-1)/fs, N) ;
 tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
@@ -45,8 +50,8 @@ xxTRUE = ( xtot((204e3-L):(208e3+L)) - mu ) / s ;
 xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
 
 figure;
-plot(tt,xxLSE,tt,xxEDMD,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','Ground truth Extended signal','Original signal'); 
+plot(tt,xxLSE,tt,xxEDMD,tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','GPR Estimated Extended signal','Ground truth Extended signal','Original signal'); 
 xlabel('Time (s)'); ylabel('Signals'); title('Time series');
 
 %% SST
@@ -66,7 +71,10 @@ basicTF.win = 1501;
 [~, ~, SSTxxLSE, ~, ~] = ConceFT_sqSTFT_C(double(xxLSE-mean(xxLSE)), 0, 0.01,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the estimated extended signal 
-[~, ~, SSTxxEDMD, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(double(xxEDMD-mean(xxEDMD)), 0, 0.01,...
+[~, ~, SSTxxEDMD, ~,~] = ConceFT_sqSTFT_C(double(xxEDMD-mean(xxEDMD)), 0, 0.01,...
+            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+% On the estimated extended signal 
+[~, ~, SSTxxGPR, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), 0, 0.01,...
             1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
 figure;
@@ -92,10 +100,12 @@ tfrsqTRUEw = SSTxxTRUE(:,tmp) ;
 tfrsqZPw = SSTxxZP(:,tmp) ;
 tfrsqLSEw = SSTxxLSE(:,tmp) ;
 tfrsqEDMDw = SSTxxEDMD(:,tmp) ;
+tfrsqGPRw = SSTxxGPR(:,tmp) ;
 
 otdZP = slicedOT(tfrsqZPw, tfrsqTRUEw) ;
 otdLSE = slicedOT(tfrsqLSEw, tfrsqTRUEw) ;
 otdEDMD = slicedOT(tfrsqEDMDw, tfrsqTRUEw) ;
+otdGPR = slicedOT(tfrsqGPRw, tfrsqTRUEw) ;
 
 fprintf(' ______________________________________________________\n')
 fprintf('| Extension Method | Computing time (sec.) |    OTD    |\n')
@@ -103,5 +113,6 @@ fprintf('|======================================================|\n')
 fprintf('|  Zero-padding    |         %.2f          | %.3e |\n', 0, otdZP)
 fprintf('|  LSE extension   |         %.2f          | %.3e |\n', LSEtime, otdLSE)
 fprintf('|  EDMD extension  |         %.2f          | %.3e |\n', EDMDtime, otdEDMD)
+fprintf('|  GPR extension   |        %.2f          | %.3e |\n', GPRtime, otdGPR)
 fprintf('|__________________|_______________________|___________|\n')
 

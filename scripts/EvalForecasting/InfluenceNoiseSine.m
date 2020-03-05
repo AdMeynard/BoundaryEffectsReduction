@@ -54,4 +54,4 @@ for sigman = Sigma
     k = k+1 ;
 end
 
-save('MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m');
+save('../../Results/MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m');
