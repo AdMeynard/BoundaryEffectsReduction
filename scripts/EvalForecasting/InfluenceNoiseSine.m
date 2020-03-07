@@ -21,8 +21,7 @@ if extK + extM >length(x0) - 10
     extK = extK/2 ; extM = extM/2 ;
 end
 
-t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
+tt = linspace(-L/fs, 1+L/fs, N+2*L) ;
 xx0L = cos(2*pi*(0.5*a*tt.^2+f*tt));
 
 %% Forecasting

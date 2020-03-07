@@ -1,6 +1,6 @@
-function xx = SigExtension(x,fs,HOP,extN,extP,extSEC,method)
+function xx = SigExtension(x,fs,HOP,extK,extM,extSEC,method)
 
-xext = forecasting(x,fs,HOP,extN,extP,extSEC,method);
-xexti = forecasting(x,fs,HOP,extN,extP,extSEC,method,'backward');
+xext = forecasting(x,fs,HOP,extK,extM,extSEC,method);
+xexti = forecasting(x,fs,HOP,extK,extM,extSEC,method,'backward');
 
 xx = [xexti; x; xext];

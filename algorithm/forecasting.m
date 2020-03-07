@@ -39,14 +39,14 @@ switch method.name
 end
 
 % extension
-K = round(fs*extSEC);
-Z = zeros(extM,K) ;
+L = round(fs*extSEC);
+Z = zeros(extM,L) ;
 
 switch method.name
     
     case 'edmd'
         tmp = phix.';
-        for kk = 1:K
+        for kk = 1:L
             tmp = mu.*tmp;
             Z(:,kk) =  tmp ; 
         end
@@ -54,18 +54,18 @@ switch method.name
         xext = Z(end,:)' ;
         
     case 'gpr'
-        xext = zeros(K,1) ;
+        xext = zeros(L,1) ;
         z = x(end-extM+1: HOP: end).' ;
-        for kk = 1:K
+        for kk = 1:L
             zpred = predict(gprMdl,z);
             z = [z(2:end) zpred] ;
             xext(kk) = zpred ;
         end
         
     otherwise
-        Z = zeros(extM,K) ;
+        Z = zeros(extM,L) ;
         Z(:,1) = A*Y(:,end) ;
-        for kk = 2:K
+        for kk = 2:L
             Z(:,kk) = A*Z(:,kk-1) ; 
         end
         xext = Z(end,:)' ;
