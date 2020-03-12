@@ -1,0 +1,55 @@
+\documentclass[twoside,letterpaper]{article}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{euscript}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ifpdf}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{subfig} % or can use subcaption package
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{dsfont}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{hyperref}
+\usepackage{mathpazo}
+\usepackage[left=80pt,right=80pt,top=70pt,bottom=70pt]{geometry}
+
+
+\title{Tackling boundary effects on kernel-based representations (draft)}
+%\author{}
+\date{}
+
+\input{mydefs}
+
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In any digital acquisition system, the measured signals are sampled and of finite length. Then, when performing any kernel-based transform, such as synchrosqueezing transform, boundaries effect is going to affect the quality of the representation in the vicinity of the borders. Consequently, signal characteristics, like instantaneous frequencies, appear to be imprecisely determined near borders.
+
+We propose here a method to limit the disruptions caused by the boundary effect. To reduce the influence of boundaries on the kernel-based representations, we proceed in two steps:
+\begin{enumerate}
+\item Extend the signal by forecasting it.
+\item Run the kernel-based algorithm on the extended signal.
+\end{enumerate}
+
+\section{Algorithm}
+\input{algorithm}
+
+
+\section{Theoretical performance}
+\input{theory}
+
+%\section{Numerical results}
+%\input{results}
+
+\end{document}

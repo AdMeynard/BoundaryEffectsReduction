@@ -1,0 +1,345 @@
+\subsection{General signal model}
+We model the observed signal as a given waveform corrupted by an additive Gaussian white noise. Therefore, the measured discrete signal $\bx$ is written as:
+\[ 
+\bx = \bz + \sigma\bw\ ,
+\]
+where $\bz$ is a deterministic signal, $\bw$ is a Gaussian white noise: $\bw\sim\cN(\bzero,\bI)$, and $\sigma^2$ is the noise variance.
+
+\subsection{Forecasting error}
+Let us evaluate the behavior of the forward forecasting error $\bepsilon\in\RR^L$ defined as:
+\[
+\bepsilon[\ell] = \tilde \bx[N-1+\ell]-\bx[N-1+\ell]\ .
+\]
+To that aim, we determine two characteristics of the error term:
+\begin{enumerate}
+
+\item 
+The bias: 
+\begin{align}
+\nonumber
+\bb[\ell]&\defeq\EE\{\bepsilon[\ell]\} \\
+\nonumber
+&= \EE\{\be_M^T\tilde\bA^\ell\}\bz_{K} + \EE\{\be_M^T\tilde\bA^\ell\bw_{K}\} - \bz[N-1+\ell] \\
+&=  \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]
+\label{eq:bias.1}
+\end{align}
+where $\balpha^{(\ell)}\in\RR^{1\times M}$ denotes the last row of $\tilde\bA^\ell$.
+
+\item 
+The mean square error:
+\begin{align*}
+\bgamma[\ell] &\defeq \EE\{\bepsilon[\ell]^2\} \\
+&=\EE\{\bx[N-1+\ell]^2\} - 2 \EE\{\bx[N-1+\ell]\tilde\bx[N-1+\ell]\} + \EE\{\tilde\bx[N-1+\ell]^2\} \ .
+\end{align*}
+But:
+\begin{align*}
+\EE\{\bx[N-1+\ell]^2\} &= \bz[N-1+\ell]^2 +\sigma^2 \\
+\EE\{\bx[N-1+\ell]\tilde\bx[N-1+\ell]\} &= \bz[N-1+\ell]\EE\{\tilde\bx[N-1+\ell]\} + \sigma\underbrace{\EE\{\bw[N-1+\ell]\tilde\bx[N-1+\ell]\}}_{=\EE\{\bw[N-1+\ell]\}\EE\{\tilde\bx[N-1+\ell]\}=0} \\
+&= \bz[N-1+\ell]\left(\EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\}\right) \\
+&= \bz[N-1+\ell]^2 + \bz[N-1+\ell]\bb[\ell]\\
+\EE\{\tilde\bx[N-1+\ell]^2\} &= \EE\{(\balpha^{(\ell)}\bz_K)^2\} + 2\sigma\EE\{(\balpha^{(\ell)}\bz_K)(\balpha^{(\ell)}\bw_K)\} + \sigma^2\EE\{(\balpha^{(\ell)}\bw_K)^2\}
+\end{align*}
+The mean square error can therefore be written as follows:
+\begin{align}
+\nonumber
+\bgamma[\ell] =&-\bz[N-1+\ell]^2 +\sigma^2 +2\bz[N-1+\ell]\bb[\ell] +\EE\{(\balpha^{(\ell)}\bz_K)^2\}  \\
+&+ 2\sigma\EE\{(\balpha^{(\ell)}\bz_K)(\balpha^{(\ell)}\bw_K)\} + \sigma^2\EE\{(\balpha^{(\ell)}\bw_K)^2\}\ .
+\end{align}
+\end{enumerate}
+
+\paragraph{Decomposition of $\balpha^{(\ell)}$.}
+For all $m,m'\in\{0,\ldots,M-1\}$, we have:
+\begin{align}
+(\bX\bX^T)[m,m'] &= \sum_{k=0}^{K-1} \bx[\underbrace{N-K-M}_{\defeq N_0}+m+k]\bx[N-K-M+m'+k] = K(\bS^{(0)} + \bE^{(0)}) \\
+(\bY\bX^T)[m,m'] &= \sum_{k=0}^{K-1} \bx[N_0+m+1+k]\bx[N_0+m'+k] = K(\bS^{(1)} + \bE^{(1)})\ ,
+\end{align}
+where
+\[
+\bS^{(a)}[m,m'] = \sigma^2\delta_{(m+a)m'}+\dfrac1{K}\sum_{k=0}^{K-1} \bz[N_0+m+a+k]\bz[N_0+m'+k] \ ,
+\]
+and $\bE^{(a)} = \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$ with:
+\[
+\bE_1^{(a)}[m,m'] = \dfrac1K\sum_{k=0}^{K-1} \bz[N_0+m+a+k]\bw[N_0+m'+k] + \bw[N_0+m+a+k]\bz[N_0+m'+k]\ ,
+\]
+and
+\[
+\bE_2^{(a)}[m,m'] =  \dfrac1K\sum_{k=0}^{K-1} \bw[N_0+m+a+k]\bw[N_0+m'+k] - \delta_{(m+a)m'}\ ,
+\]
+with $a\in\{0,1\}$.
+\begin{remark}
+The matrices $\bE^{(0)}$ and $\bE^{(1)}$ are said to be error matrices because:
+\begin{align*}
+\EE\{\bE^{(0)}\} &= \EE\{\bE_1^{(0)}\} = \EE\{\bE_2^{(0)}\} = \bzero \\
+\EE\{\bE^{(1)}\} &= \EE\{\bE_1^{(1)}\} = \EE\{\bE_2^{(1)}\} = \bzero\ .
+\end{align*}
+\end{remark}
+Thus:
+\begin{align*}
+\tilde\bA &= (\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\ .
+\end{align*}
+Let $\tilde\bA_0=\bS^{(1)}{\bS^{(0)}}^\inv$. Then:
+\begin{align*}
+\balpha^{(\ell)} &= \be_M^T\tilde\bA^\ell \\
+&= \balpha^{(\ell)}_0 + \bh^{(\ell)}\ ,
+\end{align*}
+where
+\begin{align}
+\nonumber
+\balpha^{(\ell)}_0 &= \be_M^T\tilde\bA_0^\ell \\
+\bh^{(\ell)} &= \be_M^T\left(\left((\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\right)^\ell- \tilde\bA_0^\ell\right)
+\label{eq:error.vec}
+\end{align}
+Because $\sigma$ is small, we develop the error vector $\bh^{(\ell)}$ using a second-order Taylor expansion with respect to $\sigma$. Then, a development  of the expression~\eqref{eq:error.vec} gives:
+\begin{align*}
+\bh^{(\ell)} &= \be_M^T\left( \left( \left(\bS^{(1)}{\bS^{(0)}}^\inv+\bE^{(1)}{\bS^{(0)}}^\inv\right)\left(\bI+\sigma(\bE_1^{(0)}+\sigma\bE_2^{(0)}){\bS^{(0)}}^\inv\right)^\inv \right)^\ell- \tilde\bA_0^\ell\right) \\
+& = \be_M^T\left( \left( \left(\bS^{(1)}{\bS^{(0)}}^\inv+\bE^{(1)}{\bS^{(0)}}^\inv\right)\left(\bI-\sigma(\bE_1^{(0)}+\sigma\bE_2^{(0)}){\bS^{(0)}}^\inv + \sigma^2\bE_1^{(0)}{\bS^{(0)}}^{-1}\bE_1^{(0)}{\bS^{(0)}}^{-1} +\bo(\sigma^2)\right)\right)^\ell- \tilde\bA_0^\ell\right) \\
+& = \be_M^T\bigg( \Big( \bS^{(1)}{\bS^{(0)}}^\inv+\sigma\bE^{(1)}_1{\bS^{(0)}}^\inv+\sigma^2\bE^{(1)}_2{\bS^{(0)}}^\inv - \sigma \bS^{(1)}{\bS^{(0)}}^\inv\bE_1^{(0)}{\bS^{(0)}}^\inv - \sigma^2\bS^{(1)}{\bS^{(0)}}^\inv\bE_2^{(0)}{\bS^{(0)}}^\inv\\
+& \hspace{50pt}-\sigma^2\bE^{(1)}_1{\bS^{(0)}}^{-1}\bE_1^{(0)}{\bS^{(0)}}^{-1} + \sigma^2\bS^{(1)}{\bS^{(0)}}^\inv\bE_1{\bS^{(0)}}^{-1}\bE_1^{(0)}{\bS^{(0)}}^{-1} +\bo(\sigma^2)\Big)^\ell- \tilde\bA_0^\ell\bigg) \\
+&= \be_M^T\left( \tilde\bA_0^\ell\left( \bI+\sigma\tilde\bA_0^{-1}\bQ_1+\sigma^2\tilde\bA_0^{-1}\bQ_2 +\bo(\sigma^2)\right)^\ell- \tilde\bA_0^\ell\right)\ ,\\
+\end{align*}
+where:
+\begin{align*}
+\bQ_1 &= \left( \bE^{(1)}_1- \tilde\bA_0\bE_1^{(0)} \right){\bS^{(0)}}^\inv\\
+\bQ_2 &= \left( \bE^{(1)}_2 - \tilde\bA_0\bE_2^{(0)} - \bE^{(1)}_1{\bS^{(0)}}^{-1}\bE_1^{(0)} + \tilde\bA_0\bE_1^{(0)}{\bS^{(0)}}^{-1}\bE_1^{(0)}\right){\bS^{(0)}}^\inv \ .
+\end{align*}
+Then:
+\begin{align*}
+\bh^{(\ell)} &= \balpha_0^{(\ell-1)}\left(\ell\sigma\bQ_1 + \ell\sigma^2\bQ_2 + \sigma^2\dfrac{\ell(\ell-1)}{2}\bQ_1\tilde\bA_0^{-1}\bQ_1 + \bo(\sigma^2)\right)\ .
+\end{align*}
+Furthermore, from equation~\eqref{eq:bias.1} we have:
+\begin{equation*}
+\bb[\ell] = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]
+\end{equation*}
+with:
+\begin{align*}
+\EE\left\{\bh^{(\ell)}\right\} &= \ell\sigma^2\balpha_0^{(\ell-1)}\left(\EE\{\bQ_2\} + \dfrac{(\ell-1)}{2}\EE\{\bQ_1\tilde\bA_0^{-1}\bQ_1\}\right)  + \bo(\sigma^2)\\
+\sigma\EE\left\{\bh^{(\ell)}\bw_K\right\} &= \ell\sigma^2\balpha_0^{(\ell-1)}\EE\{\bQ_1\bw_K\} + \bo(\sigma^2)
+\end{align*}
+Then:
+%\begin{align*}
+%\be_M^T\EE\left\{\bQ_2\right\} =& -\EE\left\{ \bq_1{\bS^{(0)}}^{-1}\bE_1^{(0)} \right\}{\bS^{(1)}}^\inv\\
+%\be_M^T\EE\left\{\bQ_1^2\right\} =& \left( \EE\left\{\bq_1{\bS^{(1)}}^{-1}\bE^{(1)}_1\right\} - \EE\left\{\bq_1{\bS^{(0)}}^{-1}\bE_1^{(0)}\right\} \right) {\bS^{(1)}}^{-1} \\
+%\be_M^T\EE\{\bQ_1\tilde\bA_0^\ell\bw_K\} =& \EE\left\{\bq_1{\bS^{(1)}}^{-1}\tilde\bA_0^\ell\bw_K\right\}
+%\end{align*}
+%Then:
+\begin{equation}
+\bb[\ell] =  \balpha_0^{(\ell)}\bz_{K} - \bz[N-1+\ell] + \ell\sigma^2\balpha_0^{(\ell-1)}\bu + o(\sigma^2)
+\label{eq:bias.2}
+\end{equation}
+where
+\begin{equation}
+\bu = \EE\left\{\bQ_1\bw_K\right\}-\left(\EE\{\bQ_2\} + \dfrac{(\ell-1)}{2}\EE\{\bQ_1\tilde\bA_0^{-1}\bQ_1\}\right)\bz_K \ .
+\label{eq:bias.err}
+\end{equation}
+
+Besides
+\begin{align*}
+\bgamma[\ell] =& -\bz[N-1+\ell]^2 +\sigma^2 -2\bz[N-1+\ell]\bb[\ell] +(\balpha_0^{(\ell)}\bz_K)^2 +2\balpha_0^{(\ell)}\bz_K\EE\{\bh^{(\ell)}\}\bz_K+ \EE\{(\bh^{(\ell)}\bz_K)^2\}  \\
+&+ 2\sigma\balpha_0^{(\ell)}\bz_K\EE\{\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{(\bh^{(\ell)}\bw_K)^2\} \\
+&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2 \\
+=&\ 2\balpha_0^{(\ell)}\bz_K\bz[N-1+\ell] -(\balpha_0^{(\ell)}\bz_K)^2-\bz[N-1+\ell]^2 +\sigma^2 +2\left(\balpha_0^{(\ell)}\bz_K-\bz[N-1+\ell]\right)\bb[\ell] \\
+& +\EE\{(\bh^{(\ell)}\bz_K)^2\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{(\bh^{(\ell)}\bw_K)^2\} \\
+&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2
+\end{align*}
+Therefore:
+\begin{equation}
+\bgamma[\ell] = \bz[N-1+\ell]^2 +(\balpha_0^{(\ell)}\bz_K)^2 -2\balpha_0^{(\ell)}\bz_K\bz[N-1+\ell]  +\sigma^2\bv[\ell] + o(\sigma^2)
+\label{eq:mse}
+\end{equation}
+where
+\begin{align}
+\nonumber
+\bv[\ell] &= 1+\|\balpha_0^{(\ell)}\|^2 +2\ell\left( \left(\balpha_0^{(\ell)}\bz_K-\bz[N-1+\ell]\right)\bu[\ell] +\balpha_0^{(\ell)}\EE\{\bw_K \balpha_0^{(\ell-1)}\bQ_1\}\bz_K \right)  \\
+&  +\ell^2\balpha_0^{(\ell-1)}\EE\{(\balpha_0^{(\ell-1)}\bQ_1\bz_K)^2\}
+\label{eq:mse.err}
+\end{align}
+
+\subsection{Sum of sine waves}
+
+In that section, the deterministic part of the observed signal is assumed to be a multicomponent harmonic signal, that is a sum of sine waves. Then:
+\[
+\bz[n]=\sum_{j=0}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs}\right)\ ,
+\]
+where $J$ denotes the number of components, $\Omega_j$ the amplitude of the $j$-th component, and $f_j$ its frequency.
+
+{\bf Assumption}: $f_j = \dfrac{p_j}{M}\fs = \dfrac{p'_j}{K}\fs$ for some $p_j$, $p'_j\in\NN^*$.
+
+\paragraph{Evaluation of $\tilde\bA_0$ and $\balpha_0^{(\ell)}\bz_K$.}
+\begin{align*}
+\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)\right) \\
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}{2K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)\\
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\left( \dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \dfrac{\Omega_j^2}{2K}\underbrace{\sum_{k=0}^{K-1}\cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)}_{=0\ \mathrm{because}\ \frac{f_j}\fs=\frac{p'_j}K } \right)\\
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
+\end{align*}
+Thus, $\bS^{(0)}$ is a circulant matrix and is therefore diagonalizable in the Fourier basis:
+\[
+\bS^{(0)} = \bU\bLambda^{(0)}\bU^*\ ,
+\]
+where $\bU[m,m']=\frac1{\sqrt{M}}e^{-2\ii\pi mm'/M}$ and $\bLambda^{(0)} = \mathrm{diag}(\lambda_0^{(0)},\dots,\lambda_{M-1}^{(0)})$ with:
+\begin{align*}
+\lambda_m^{(0)} &= \sigma^2 + \sum_{j=1}^J\dfrac{\Omega_j^2}2\sum_{q=0}^{M-1} \cos\left(2\pi\frac{f_j}{\fs} q\right) e^{-2\ii\pi qm/M} \\
+&= \sigma^2 + \dfrac{M}{4}\sum_{j=1}^J\Omega_j^2(\delta_{m,p_j} + \delta_{m,M-p_j})\ .
+\end{align*}
+Therefore:
+\begin{align*}
+{\bS^{(0)}}^\inv  &= \bU{\bLambda^{(0)}}^\inv\bU^*
+\end{align*}
+which leads to:
+\begin{align*}
+{\bS^{(0)}}^\inv[m,m']  &= \dfrac1{\sigma^2}\delta_{m,m'}-\sum_{j=1}^J\dfrac{\Omega_j^2}{2\sigma^2(\sigma^2+\Omega_j^2M/4)}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\ ,
+\end{align*}
+and, consequently:
+\begin{align}
+\nonumber
+\tilde\bA_0[m,m']  &= \sum_{q=0}^{M-1} {\bS^{(1)}}[m,q]{\bS^{(0)}}^\inv[q,m'] \\
+&= \delta_{m+1,m'} + \sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}
+\label{eq:A0.sine}
+\end{align}
+Thus:
+\begin{align*}
+\tilde\balpha_0^{(1)}[m]  &=\sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m}{M}\right) \\
+&= \dfrac{2}{M}\sum_{j=1}^J\cos\left(2\pi p_j\frac{m}{M}\right) + o(\sigma^2)\ .
+\end{align*}
+Besides, from equation~\eqref{eq:A0.sine}, we have
+\begin{align*}
+\tilde\bA_0\bz_{K} &= 
+\begin{pmatrix}
+\bz[N-M+1] \\
+\vdots \\
+\bz[N-1] \\
+\balpha_0^{(1)}\bz_K
+\end{pmatrix}
+\end{align*}
+By induction, we have:
+\begin{align*}
+\tilde\bA_0^{\ell}\bz_{K} &= 
+\begin{pmatrix}
+\bz[N-M+\ell] \\
+\vdots \\
+\bz[N-1] \\
+\balpha_0^{(1)}\bz_K \\
+\vdots \\
+\balpha_0^{(\ell)}\bz_K
+\end{pmatrix}
+\end{align*}
+Then:
+\begin{align}
+\nonumber
+\balpha_0^{(\ell)}\bz_{K} &= \tilde\balpha_0^{(1)}\tilde\bA_0^{\ell-1}\bz_{K} \\
+&=\sum_{m=0}^{M-\ell}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]+\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\balpha_0^{(m-M+\ell)}\bz_K
+\label{eq:seq}
+\end{align}
+But:
+\begin{align*}
+\balpha_0^{(1)}\bz_{K} &=\sum_{m=0}^{M-1}\balpha_0^{(1)}[m]\bz[N-M+m] \\
+&=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}\right)}_{=\delta_{j,j'}\frac2M\cos\left(2\pi p_j\frac{N}M\right)} + o(\sigma^2) \\
+&= \sum_{j=1}^J\Omega_j\cos\left(2\pi p_j\dfrac{N}{M}\right) + o(\sigma^2) \\
+&= \bz[N] + o(\sigma^2)
+\end{align*}
+and, by induction from~\eqref{eq:seq}:
+\begin{equation}
+\label{eq:alpha0z.sine}
+\balpha_0^{(\ell)}\bz_{K} = \bz[N-1+\ell] + o(\sigma^2)
+\end{equation}
+
+
+\paragraph{Evaluations of $\bu$ and $\bv$.}
+Because $\EE\{\bQ_2\} =  - \EE\{\bQ_1\bE^{(0)}_1\}{\bS^{(0)}}^\inv$, we only need derive $\bQ_1$ in order to determine $\bu$ and $\bv$ (see equations~\eqref{eq:bias.err} and~\eqref{eq:mse.err}). First, from equation~\eqref{eq:A0.sine} we have:
+\begin{align*}
+\bQ_1 &= \left( \bE^{(1)}_1- \tilde\bA_0\bE_1^{(0)} \right){\bS^{(0)}}^\inv \\
+&= 
+\begin{pmatrix}
+0 \\
+\vdots \\
+0 \\
+\bq{\bS^{(0)}}^\inv
+\end{pmatrix}
+\end{align*}
+where $\bq = \be_M^T\bE^{(1)}_1- \balpha^{(1)}_0\bE_1^{(0)}$. Then $\bq = \sum_{j=1}^J\bq_{j}$ with:
+\begin{align*}
+\bq_j[m] &= \dfrac{\Omega_j}K\sum_{k=0}^{K-1} \cos\left(2\pi p_j\dfrac{N-K+k}{M} \right)\bw[N_0+m+k] + \bw[N-K+k]\cos\left(2\pi p_j\dfrac{N_0+m+k}{M} \right) \\
+& \hspace{-50pt}- \sum_{q=0}^{M-1}\dfrac{2}{M}\cos\left(2\pi p_j\dfrac{q}{M}\right)\dfrac{\Omega_j}K\sum_{k=0}^{K-1} \cos\left(2\pi p_j\dfrac{N-K+q+k}{M} \right)\bw[N_0+m+k] + \bw[N_0+q+k]\cos\left(2\pi p_j\dfrac{N-K+m+k}{M} \right) \\
+&= \dfrac{\Omega_j}K\sum_{k=0}^{K-1} \left( \cos\left(2\pi p_j\dfrac{N-K+k}{M} \right) - \dfrac{2}{M}\underbrace{\sum_{q=0}^{M-1}\cos\left(2\pi p_j\dfrac{q}{M}\right) \cos\left(2\pi p_j\dfrac{N-K+q+k}{M} \right)}_{=\frac{M}{2}\cos\left(2\pi p_j \frac{M-K+k}{M}\right)} \right)\bw[N_0+m+k] \\
+& +\dfrac{\Omega_j}K\sum_{k=0}^{K-1} \underbrace{\left(\bw[N-K+k]-\dfrac{2}{M}\sum_{q=0}^{M-1}\cos\left(2\pi p_j\dfrac{q}{M}\right)\bw[N_0+q+k]\right)}_{\defeq\Delta_j[k]} \cos\left(2\pi p_j\dfrac{N_0+m+k}{M} \right) \\
+&= \dfrac{\Omega_j}K\sum_{k=0}^{K-1} \Delta_j[k] \cos\left(2\pi p_j\dfrac{N_0+m+k}{M} \right)
+\end{align*}
+Therefore:
+\begin{align*}
+\bq_j{\bS^{(0)}}^\inv[m] &= \sum_{q=0}^{M-1} \bq_j[q]{\bS^{(0)}}^\inv[q,m] \\
+&= \dfrac1{\sigma^2}\bq_j[m]-\dfrac{2}{M\sigma^2}\sum_{j'=1}^J\sum_{q=0}^{M-1} \bq_j[q]\cos\left(2\pi p_{j'}\dfrac{q-m}{M}\right) + o(\sigma^2) \\
+&= \dfrac1{\sigma^2}\bq_j[m]-\dfrac{\Omega}{\sigma^2K}\sum_{k=0}^{K-1}\Delta_\bw[k]\sum_{j=1}^J \underbrace{\left(\dfrac2M\sum_{q=0}^{M-1} \cos\left(2\pi p_{j'}\dfrac{N_0+q+k}{M}\right)\cos\left(2\pi p_j\dfrac{q-m}{M}\right) \right)}_{=\delta_{j,j'}\cos\left(2\pi p_j\dfrac{N_0+m+q}{M}\right)}+ o(\sigma^2) \\
+&= \dfrac1{\sigma^2}\bq_j[m]-\dfrac1{\sigma^2}\bq_j[m]+ o(\sigma^2) \\
+&= o(\sigma^2)\ .
+\end{align*}
+
+Thus $\bQ_1=\bo(\sigma^2)$ and $\EE\{\bQ_2\}=\bo(\sigma^2)$. Consequently:
+\begin{align}
+\label{eq:v.sine}
+\bu &= \bo(\sigma^2) \\
+\label{eq:w.sine}
+\bv &= 1+\|\balpha_0^{\ell}\|^2+\bo(\sigma^2)
+\end{align}
+
+\paragraph{Back to the forecasting error.}
+From equations~\eqref{eq:bias.2} and~\eqref{eq:mse} combined with results~\eqref{eq:alpha0z.sine},~\eqref{eq:v.sine} and~\eqref{eq:w.sine}, we get:
+\begin{align*}
+\bb[\ell] &= o(\sigma^2) \\
+\bgamma[\ell] &= \sigma^2\left(1+\|\balpha_0^{(\ell)}\|^2\right) + o(\sigma^2)
+\end{align*}
+Besides, when $\ell=1$ we have:
+\begin{equation*}
+\|\balpha_0^{(1)}\|^2 = \dfrac4{M^2}\sum_{j=1}^J\sum_{m=0}^{M-1}\cos\left(2\pi p_j\dfrac{m}{M}\right)^2 = J\dfrac2M
+\end{equation*}
+Nevertheless, when $\ell\neq 1$, we cannot determine a closed-form expression for $\balpha_0^{(\ell)}$ but we have a recurrence equation:
+\begin{align*}
+\balpha_0^{(\ell)} &= \balpha^{(1)}\tilde\bA_0^{\ell-1} \\
+&= \balpha^{(1)}
+\begin{pmatrix}
+0       & \cdots & 0      & 1      & 0      & \cdots & 0 \\
+\vdots  &        &        & \ddots & 1      & \ddots & \vdots \\
+\vdots  &        &        &        & \ddots & \ddots & 0 \\
+0       & \cdots & \cdots & \cdots & \cdots &    0   & 1 \\
+        &        &        & \balpha_0^{(1)} &        &        &   \\
+        &        &        & \vdots &        &        &   \\
+        &        &        & \balpha_0^{(\ell-1)} &        &        &   
+\end{pmatrix} \\
+&=\balpha_0^{(1)\sharp(\ell -1)} + \sum_{q=1}^{\ell-1}\balpha_0^{(1)}[M-q]\balpha_0^{(\ell-q)}
+\end{align*}
+where
+\begin{equation*}
+\balpha_0^{(1)\sharp(n)} = 
+\begin{pmatrix}
+0 & \cdots & 0 & \balpha_0^{(1)}[0] & \cdots & \balpha_0^{(1)}[M-1-n]
+\end{pmatrix}
+\end{equation*}
+Then:
+\begin{align*}
+\|\balpha_0^{(\ell)}\| &\leq \|\balpha_0^{(1)\sharp(\ell -1)}\| + \sum_{q=1}^{\ell-1}\underbrace{|\balpha_0^{(1)}[M-q]|}_{\leq J\frac2M}\|\balpha_0^{(\ell-q)}\| \\
+&\leq \|\balpha_0^{(1)}\| + \sum_{q=1}^{\ell-1}\dfrac2M\|\balpha_0^{(\ell-q)}\| = \sqrt{\dfrac{2J}M} + \dfrac{2J}M\sum_{q=1}^{\ell-1}\|\balpha_0^{(q)}\|
+\end{align*}
+By induction, we deduce from the previous inequality that
+\[
+\|\balpha_0^{(\ell)}\| \leq \sqrt{\dfrac{2J}M} \left( 1+ \dfrac{2J}M \right)^{\ell-1}
+\]
+Finally:
+\[
+\bw[\ell] \leq 1 + \dfrac{2J}{M}\left( 1 + \dfrac{2J}{M}\right)^{2\ell-2}
+\]
+
+Conclusion:
+\begin{align*}
+\bb[\ell] &= o(\sigma^2) \\
+\bgamma[\ell] &\leq \sigma^2\left(1 + \dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{2\ell-2}\right)+ o(\sigma^2)
+\end{align*}
+
+\subsection{Adaptive Harmonic model}
+In this section, the the deterministic part of the observed signal we handle follows the \textit{adaptive harmonic model}, which in its is continuous-time version signal takes the following form:
+\begin{equation}
+z(t) = \sum_{j=1}^J a_j(t)\cos(2\pi\phi_j(t))\ ,
+\end{equation}
+where $a_p$ and $\phi'_p$ are smooth function. In other terms, we have:
+\begin{align}
+|a'_j(t)|<\varepsilon_a,\quad\forall t\in\RR\ ,\\
+|\phi''_j(t)|<\varepsilon_\phi,\quad\forall t\in\RR\ ,
+\end{align}
+for some positive constants $\varepsilon_a$ and $\varepsilon_\phi$.
