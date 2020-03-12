@@ -1,9 +1,14 @@
 library('forecast')
 
-#x = read.table("sigR")
-x = read.table("sigR2")
+LoadConvertTS <- function(TabName) {
+  x = read.table(TabName)
+  y = ts(x)
+  return(y)
+}			
 
-y = ts(x)
+setwd(getSrcDirectory(LoadConvertTS)[1])
+
+y = LoadConvertTS("../../Signals/PPG4R")
 N = length(y)
 
 fit <- tbats(y,use.box.cox=FALSE,use.trend=FALSE,use.damped.trend=FALSE,seasonal.periods=23)

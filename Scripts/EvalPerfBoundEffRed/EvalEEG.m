@@ -1,6 +1,6 @@
 clear all; close all; clc;
-addpath(genpath('../../SST'));
-addpath('../../algorithm/');
+addpath(genpath('../../TimeFrequencyScaleRep'));
+addpath('../../Algorithm/');
 
 %% load ECG signal
 addpath ../../Signals

@@ -1,10 +1,10 @@
 clear all; close all; clc;
-addpath(genpath('../../SST'));
-addpath('../../algorithm/');
+addpath(genpath('../../TimeFrequencyScaleRep'));
+addpath('../../Algorithm/');
 
 %% load PPG signal
 addpath ../../Signals/
-data = load('PPGsig');
+data = load('PPG');
 
 xtot = data.PPG;
 fs = data.fs; % sampling frequency

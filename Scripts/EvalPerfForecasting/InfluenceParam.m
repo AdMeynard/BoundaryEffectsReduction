@@ -1,7 +1,7 @@
 clear all;
 close all; clc;
-addpath('../../algorithm/');
-addpath(genpath('../../SST'));
+addpath('../../Algorithm/');
+addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Signals');
 
 %% load signal

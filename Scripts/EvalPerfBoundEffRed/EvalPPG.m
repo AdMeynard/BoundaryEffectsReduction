@@ -1,10 +1,10 @@
 clear all; close all; clc;
-addpath(genpath('../../SST'));
-addpath('../../algorithm/');
+addpath(genpath('../../TimeFrequencyScaleRep'));
+addpath('../../Algorithm/');
 
 %% load ECG signal
 addpath ../../Signals
-data = load('PPGsig.mat');
+data = load('PPG.mat');
 xtot = data.PPG;
 
 fs = data.fs ; % sampling frequency

@@ -2,7 +2,7 @@ clear all;
 close all; clc
 
 %% load THO signal
-addpath ../Signals/
+addpath ../../Signals/
 data = load('THO.mat');
 xtot = data.THO;
 fs = 100 ; % sampling frequency
@@ -38,7 +38,7 @@ Y = Y.' ;
 sigma2 = 100 ;
 
 tic;
-[Xi,mu,phix] = approxKoopmanKB(X,Y,sigma2) ;
+[Xi,mu,phix] = approxKoopman(X,Y,sigma2) ;
 toc;
 
 %% Prediction / Extension

@@ -1,4 +1,4 @@
-function [Xi,mu,phi_end] = approxKoopmanKB(X,Y,sigma2)
+function [Xi,mu,phi_end] = approxKoopman(X,Y,sigma2)
 % evaluate Koopman modes V, eigen values Mu, and eigen function Psi*Xi
 % EDMD (from paper of Hua et al.)
 

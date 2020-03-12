@@ -149,7 +149,7 @@ while nend <= Ntot
             OTD.rs.S(ind) = slicedOT(rsS, rsTRUE) ;
             OTD.rs.LSE(ind) = slicedOT(rsLSE, rsTRUE) ;
             OTD.rs.EDMD(ind) = slicedOT(rsEDMD, rsTRUE) ;
-            OTD.rs.GPR(ind) = slicedOT(rsEDMD, rsTRUE) ;
+            OTD.rs.GPR(ind) = slicedOT(rsGPR, rsTRUE) ;
         otherwise
             % nothing to do
     end

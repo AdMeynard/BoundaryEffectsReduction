@@ -30,7 +30,7 @@ switch method.name
         
     case 'edmd'
         sigma2 = method.param ;
-        [Xi,mu,phix] = approxKoopmanKB(X,Y,sigma2) ;
+        [Xi,mu,phix] = approxKoopman(X,Y,sigma2) ;
         
     case 'gpr'
         y = Y(end,:).' ;

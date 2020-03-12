@@ -1,6 +1,6 @@
 clear all; 
 %close all; clc;
-addpath('../../algorithm/');
+addpath('../../Algorithm/');
 
 %% Parameters
 
@@ -8,8 +8,7 @@ N = 10000 ; fs = N-1 ;
 t = linspace(0,1,N);
 
 f = 100;
-a = 0;%100;
-x0 = cos(2*pi*(0.5*a*t.^2+f*t));
+x0 = cos(2*pi*f*t);
 
 % forecasting parameters
 HOP = 1 ;
@@ -22,7 +21,7 @@ if extK + extM >length(x0) - 10
 end
 
 tt = linspace(-L/fs, 1+L/fs, N+2*L) ;
-xx0L = cos(2*pi*(0.5*a*tt.^2+f*tt));
+xx0L = cos(2*pi*f*tt);
 
 %% Forecasting
 method.name = 'lseV' ;
@@ -53,4 +52,4 @@ for sigman = Sigma
     k = k+1 ;
 end
 
-save('../../Results/MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m');
+save('../../Results/MSEnoise','MSE10m','MSE100m','MSE200m','MSE500m','extM');
