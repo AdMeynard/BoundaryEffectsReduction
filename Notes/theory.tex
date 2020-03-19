@@ -3,21 +3,20 @@ We model the observed signal as a given waveform corrupted by an additive Gaussi
 \[ 
 \bx = \bz + \sigma\bw\ ,
 \]
-where $\bz$ is a deterministic signal, $\bw$ is a Gaussian white noise: $\bw\sim\cN(\bzero,\bI)$, and $\sigma^2$ is the noise variance.
+where $\bz$ is a deterministic signal, $\bw$ is a (Gaussian) white noise, whose variance is denoted by $\sigma^2$. %: $\bw\sim\cN(\bzero,\bI)$
 
 \subsection{Forecasting error}
-Let us evaluate the behavior of the forward forecasting error $\bepsilon\in\RR^L$ defined as:
+On the forecasting interval, we decompose the estimated signal $\tilde\bx$ as follows:
 \[
-\bepsilon[\ell] = \tilde \bx[N-1+\ell]-\bx[N-1+\ell]\ .
+\tilde \bx[N-1+\ell] = \bz[N-1+\ell] + \bepsilon[\ell]\ ,
 \]
-To that aim, we determine two characteristics of the error term:
+where $\bepsilon\in\RR^L$ is a the forward forecasting error, which would ideally behave like the measurement noise $\sigma\bw$.  To evaluate the actual behavior of the forward forecasting error $\bepsilon$, we determine its two first moments.
 \begin{enumerate}
-
 \item 
-The bias: 
+The mean, which is also the estimation bias, is such that: 
 \begin{align}
 \nonumber
-\bb[\ell]&\defeq\EE\{\bepsilon[\ell]\} \\
+\bmu[\ell]&\defeq\EE\{\bepsilon[\ell]\} \\
 \nonumber
 &= \EE\{\be_M^T\tilde\bA^\ell\}\bz_{K} + \EE\{\be_M^T\tilde\bA^\ell\bw_{K}\} - \bz[N-1+\ell] \\
 &=  \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]
@@ -26,24 +25,32 @@ The bias:
 where $\balpha^{(\ell)}\in\RR^{1\times M}$ denotes the last row of $\tilde\bA^\ell$.
 
 \item 
-The mean square error:
-\begin{align*}
-\bgamma[\ell] &\defeq \EE\{\bepsilon[\ell]^2\} \\
-&=\EE\{\bx[N-1+\ell]^2\} - 2 \EE\{\bx[N-1+\ell]\tilde\bx[N-1+\ell]\} + \EE\{\tilde\bx[N-1+\ell]^2\} \ .
+The covariance is given by:
+\begin{equation*}
+\bgamma[\ell,\lambda] \defeq \EE\{\left(\bepsilon[\ell]-\bmu[\ell]\right)\left(\bepsilon[\lambda]-\bmu[\lambda]\right)\} 
+\end{equation*}
+By means of the Cauchy-Schwarz inequality the covariance, we provide an upper bound on the covariance:  
+\begin{equation}
+\left|\bgamma[\ell,\lambda]\right| \leq \sqrt{\bgamma[\ell,\ell]\bgamma[\lambda,\lambda]}\ .
+\end{equation}
+We then focus on the determination of $\bgamma[\ell,\ell]$. Thus:
+\begin{align*}  
+\bgamma[\ell,\ell] &= \EE\{\bepsilon[\ell]^2\} - \bmu[\ell]^2 \\
+&=\bz[N-1+\ell]^2 - 2\bz[N-1+\ell] \EE\{\tilde\bx[N-1+\ell]\} + \EE\{\tilde\bx[N-1+\ell]^2\} - \bmu[\ell]^2 \ .
 \end{align*}
 But:
 \begin{align*}
-\EE\{\bx[N-1+\ell]^2\} &= \bz[N-1+\ell]^2 +\sigma^2 \\
-\EE\{\bx[N-1+\ell]\tilde\bx[N-1+\ell]\} &= \bz[N-1+\ell]\EE\{\tilde\bx[N-1+\ell]\} + \sigma\underbrace{\EE\{\bw[N-1+\ell]\tilde\bx[N-1+\ell]\}}_{=\EE\{\bw[N-1+\ell]\}\EE\{\tilde\bx[N-1+\ell]\}=0} \\
-&= \bz[N-1+\ell]\left(\EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\}\right) \\
-&= \bz[N-1+\ell]^2 + \bz[N-1+\ell]\bb[\ell]\\
 \EE\{\tilde\bx[N-1+\ell]^2\} &= \EE\{(\balpha^{(\ell)}\bz_K)^2\} + 2\sigma\EE\{(\balpha^{(\ell)}\bz_K)(\balpha^{(\ell)}\bw_K)\} + \sigma^2\EE\{(\balpha^{(\ell)}\bw_K)^2\}
 \end{align*}
+%\EE\{\bx[N-1+\ell]^2\} &= \bz[N-1+\ell]^2 +\sigma^2 \\
+%\EE\{\bx[N-1+\ell]\tilde\bx[N-1+\ell]\} &= \bz[N-1+\ell]\EE\{\tilde\bx[N-1+\ell]\} + \sigma\underbrace{\EE\{\bw[N-1+\ell]\tilde\bx[N-1+\ell]\}}_{=\EE\{\bw[N-1+\ell]\}\EE\{\tilde\bx[N-1+\ell]\}=0} \\
+%&= \bz[N-1+\ell]\left(\EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\}\right) \\
+%&= \bz[N-1+\ell]^2 + \bz[N-1+\ell]\bmu[\ell]\\
 The mean square error can therefore be written as follows:
 \begin{align}
 \nonumber
-\bgamma[\ell] =&-\bz[N-1+\ell]^2 +\sigma^2 +2\bz[N-1+\ell]\bb[\ell] +\EE\{(\balpha^{(\ell)}\bz_K)^2\}  \\
-&+ 2\sigma\EE\{(\balpha^{(\ell)}\bz_K)(\balpha^{(\ell)}\bw_K)\} + \sigma^2\EE\{(\balpha^{(\ell)}\bw_K)^2\}\ .
+\bgamma[\ell,\ell] =&-\bz[N-1+\ell]^2 -2\bz[N-1+\ell]\bmu[\ell] +\EE\{(\balpha^{(\ell)}\bz_K)^2\}  \\
+&+ 2\sigma\EE\{(\balpha^{(\ell)}\bz_K)(\balpha^{(\ell)}\bw_K)\} + \sigma^2\EE\{(\balpha^{(\ell)}\bw_K)^2\} - \bmu[\ell]^2\ .
 \end{align}
 \end{enumerate}
 
@@ -108,7 +115,7 @@ Then:
 \end{align*}
 Furthermore, from equation~\eqref{eq:bias.1} we have:
 \begin{equation*}
-\bb[\ell] = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]
+\bmu[\ell] = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]
 \end{equation*}
 with:
 \begin{align*}
@@ -123,7 +130,7 @@ Then:
 %\end{align*}
 %Then:
 \begin{equation}
-\bb[\ell] =  \balpha_0^{(\ell)}\bz_{K} - \bz[N-1+\ell] + \ell\sigma^2\balpha_0^{(\ell-1)}\bu + o(\sigma^2)
+\bmu[\ell] =  \balpha_0^{(\ell)}\bz_{K} - \bz[N-1+\ell] + \ell\sigma^2\balpha_0^{(\ell-1)}\bu + o(\sigma^2)
 \label{eq:bias.2}
 \end{equation}
 where
@@ -134,25 +141,23 @@ where
 
 Besides
 \begin{align*}
-\bgamma[\ell] =& -\bz[N-1+\ell]^2 +\sigma^2 -2\bz[N-1+\ell]\bb[\ell] +(\balpha_0^{(\ell)}\bz_K)^2 +2\balpha_0^{(\ell)}\bz_K\EE\{\bh^{(\ell)}\}\bz_K+ \EE\{(\bh^{(\ell)}\bz_K)^2\}  \\
+\bgamma[\ell,\ell] =& -\bz[N-1+\ell]^2 -2\bz[N-1+\ell]\bmu[\ell] +(\balpha_0^{(\ell)}\bz_K)^2 +2\balpha_0^{(\ell)}\bz_K\EE\{\bh^{(\ell)}\}\bz_K+ \EE\{(\bh^{(\ell)}\bz_K)^2\}  \\
 &+ 2\sigma\balpha_0^{(\ell)}\bz_K\EE\{\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{(\bh^{(\ell)}\bw_K)^2\} \\
-&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2 \\
-=&\ 2\balpha_0^{(\ell)}\bz_K\bz[N-1+\ell] -(\balpha_0^{(\ell)}\bz_K)^2-\bz[N-1+\ell]^2 +\sigma^2 +2\left(\balpha_0^{(\ell)}\bz_K-\bz[N-1+\ell]\right)\bb[\ell] \\
+&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2  - \bmu[\ell]^2\\
+=&\ 2\balpha_0^{(\ell)}\bz_K\bz[N-1+\ell] -(\balpha_0^{(\ell)}\bz_K)^2+\bz[N-1+\ell]^2 +2\left(\balpha_0^{(\ell)}\bz_K-\bz[N-1+\ell]\right)\bmu[\ell] \\
 & +\EE\{(\bh^{(\ell)}\bz_K)^2\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\bh^{(\ell)}\bw_K\} + 2\sigma\EE\{\bh^{(\ell)}\bz_K\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{(\bh^{(\ell)}\bw_K)^2\} \\
-&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2
+&+ 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} + \sigma^2\|\balpha_0^{(\ell)}\|^2 - \bmu[\ell]^2
 \end{align*}
 Therefore:
 \begin{equation}
-\bgamma[\ell] = \bz[N-1+\ell]^2 +(\balpha_0^{(\ell)}\bz_K)^2 -2\balpha_0^{(\ell)}\bz_K\bz[N-1+\ell]  +\sigma^2\bv[\ell] + o(\sigma^2)
+\bgamma[\ell,\ell] = \sigma^2\bv[\ell] + o(\sigma^2)
 \label{eq:mse}
 \end{equation}
 where
-\begin{align}
-\nonumber
-\bv[\ell] &= 1+\|\balpha_0^{(\ell)}\|^2 +2\ell\left( \left(\balpha_0^{(\ell)}\bz_K-\bz[N-1+\ell]\right)\bu[\ell] +\balpha_0^{(\ell)}\EE\{\bw_K \balpha_0^{(\ell-1)}\bQ_1\}\bz_K \right)  \\
-&  +\ell^2\balpha_0^{(\ell-1)}\EE\{(\balpha_0^{(\ell-1)}\bQ_1\bz_K)^2\}
+\begin{equation}
+\bv[\ell] = \|\balpha_0^{(\ell)}\|^2 +2\ell\balpha_0^{(\ell)}\EE\{\bw_K \balpha_0^{(\ell-1)}\bQ_1\}\bz_K +\ell^2\EE\{(\balpha_0^{(\ell-1)}\bQ_1\bz_K)^2\}
 \label{eq:mse.err}
-\end{align}
+\end{equation}
 
 \subsection{Sum of sine waves}
 
@@ -277,14 +282,14 @@ Thus $\bQ_1=\bo(\sigma^2)$ and $\EE\{\bQ_2\}=\bo(\sigma^2)$. Consequently:
 \label{eq:v.sine}
 \bu &= \bo(\sigma^2) \\
 \label{eq:w.sine}
-\bv &= 1+\|\balpha_0^{\ell}\|^2+\bo(\sigma^2)
+\bv &= \|\balpha_0^{(\ell)}\|^2+\bo(\sigma^2)
 \end{align}
 
 \paragraph{Back to the forecasting error.}
 From equations~\eqref{eq:bias.2} and~\eqref{eq:mse} combined with results~\eqref{eq:alpha0z.sine},~\eqref{eq:v.sine} and~\eqref{eq:w.sine}, we get:
 \begin{align*}
-\bb[\ell] &= o(\sigma^2) \\
-\bgamma[\ell] &= \sigma^2\left(1+\|\balpha_0^{(\ell)}\|^2\right) + o(\sigma^2)
+\bmu[\ell] &= o(\sigma^2) \\
+\bgamma[\ell,\ell] &= \sigma^2\|\balpha_0^{(\ell)}\|^2 + o(\sigma^2)
 \end{align*}
 Besides, when $\ell=1$ we have:
 \begin{equation*}
@@ -315,7 +320,7 @@ where
 Then:
 \begin{align*}
 \|\balpha_0^{(\ell)}\| &\leq \|\balpha_0^{(1)\sharp(\ell -1)}\| + \sum_{q=1}^{\ell-1}\underbrace{|\balpha_0^{(1)}[M-q]|}_{\leq J\frac2M}\|\balpha_0^{(\ell-q)}\| \\
-&\leq \|\balpha_0^{(1)}\| + \sum_{q=1}^{\ell-1}\dfrac2M\|\balpha_0^{(\ell-q)}\| = \sqrt{\dfrac{2J}M} + \dfrac{2J}M\sum_{q=1}^{\ell-1}\|\balpha_0^{(q)}\|
+&\leq \|\balpha_0^{(1)}\| + \sum_{q=1}^{\ell-1}\dfrac{2J}M\|\balpha_0^{(\ell-q)}\| = \sqrt{\dfrac{2J}M} + \dfrac{2J}M\sum_{q=1}^{\ell-1}\|\balpha_0^{(q)}\|
 \end{align*}
 By induction, we deduce from the previous inequality that
 \[
@@ -323,14 +328,52 @@ By induction, we deduce from the previous inequality that
 \]
 Finally:
 \[
-\bw[\ell] \leq 1 + \dfrac{2J}{M}\left( 1 + \dfrac{2J}{M}\right)^{2\ell-2}
+\bv[\ell] \leq \dfrac{2J}{M}\left( 1 + \dfrac{2J}{M}\right)^{2\ell-2}
 \]
+Thus:
+\begin{equation*}
+\bgamma[\ell,\ell] \leq \sigma^2\dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{2\ell-2} + o(\sigma^2)
+\end{equation*}
 
 Conclusion:
 \begin{align*}
-\bb[\ell] &= o(\sigma^2) \\
-\bgamma[\ell] &\leq \sigma^2\left(1 + \dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{2\ell-2}\right)+ o(\sigma^2)
+\bmu[\ell] &= o(\sigma^2) \\
+\left|\bgamma[\ell,\lambda]\right| &\leq \sigma^2\dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{\ell+\lambda-2} + o(\sigma^2)
 \end{align*}
+
+More generally, the estimated extended signal $\tilde\bx$  takes the following form:
+\begin{equation*}
+\tilde\bx[n] = \bz[n] + \brho[n]\,, \quad \forall\ n\in\{0,\dots,N-1+L\}\ .
+\end{equation*}
+where:
+\begin{equation*}
+\EE\{\brho[n]\} = \left\lbrace
+\begin{array}{ll}
+0\quad &\mbox{if} \quad n\in\{0,\ldots,N-1\}\\
+o(\sigma^2)\quad &\mbox{else,}
+\end{array}
+\right.
+\end{equation*}
+and:
+\begin{equation*}
+\left\lbrace
+\begin{array}{ll}
+\mbox{Cov}\left(\brho[n],\brho[n']\right) = \sigma^2\quad &\mbox{if} \quad (n,n')\in\{0,\ldots,N-1\}^2\\
+\mbox{Cov}\left(\brho[n],\brho[n']\right) \leq \sigma^2\dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{(n-N)^+ + (n'-N)^+} + o(\sigma^2)\quad &\mbox{if}\ \left\lbrace \begin{array}{l}
+(n\geq N)\cap(n'\geq N-M)\\
+(n'\geq N)\cap(n\geq N-M) \\
+\end{array}
+\right. \\
+\mbox{Cov}\left(\brho[n],\brho[n']\right) \leq \sigma^2\dfrac{2J}{M}\left( 1 + \dfrac{J}{M}\right)^{-(n)^- -(n')^-} + o(\sigma^2)\quad &\mbox{if}\ \left\lbrace \begin{array}{l}
+(n<0)\cap(n'\leq M-1)\\
+(n'<0)\cap(n\leq M-1) \\
+\end{array}
+\right. \\
+\mbox{Cov}\left(\brho[n],\brho[n']\right) = 0\quad &\mbox{else}\ ,
+\end{array}
+\right.
+\end{equation*}
+where $(n)^+$ (resp. $(n)^-$) denotes the positive part (resp. the negative part) of $n$.
 
 \subsection{Adaptive Harmonic model}
 In this section, the the deterministic part of the observed signal we handle follows the \textit{adaptive harmonic model}, which in its is continuous-time version signal takes the following form:
