@@ -15,7 +15,7 @@ end
 switch method.name
     
     case 'lse'
-        A = Y*X'*inv(X*X') ; % least square estimation
+        A = (Y*X') / (X*X') ; % least square estimation
         
     case 'lseV'
         r = zeros(1,extM); r(2)=1;

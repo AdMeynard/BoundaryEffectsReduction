@@ -38,22 +38,22 @@ x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 
 %% Forecasting
 method.name = 'lseV' ;
-nbXP = 20 ;
+nbXP = 100 ;
 nbXPP = 3000 ;
 Sigma = linspace(5e-3,1e-1,nbXP) ;
-Var10m = zeros(nbXP,1) ;
 k = 1 ;
-for sigman = Sigma
+for k = 1:nbXP
+    sigman = Sigma(k) ;
     for nb2 = 1:nbXPP
         noise = sigman*randn(N+2*L,1) ;
         x = x0.' + noise((L+1):(N+L)) ; % signal to be extended
-%         xxTRUE = xx0L.' + noise ;
         
         xx = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ;
-        Var(nb2,:) = ( xx((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+        MeanXP(nb2,:) = xx((N+L+1):end) - xx0((N+L+1):end) ;
+        VarXP(nb2,:) = ( xx((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
     end
-    Varm(k,:) = mean(Var) ;
-    k = k+1 ;
+    MeanXPm(k,:) = mean(MeanXP) ;
+    VarXPm(k,:) = mean(VarXP) ;
 end
 
-save('../../Results/MSEnoise','Varm','extM','Sigma');
+save('../../Results/PerfNoise','MeanXPm','VarXPm','extM','Sigma');
