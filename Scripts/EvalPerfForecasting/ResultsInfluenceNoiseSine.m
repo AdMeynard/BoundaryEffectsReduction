@@ -16,10 +16,10 @@ for k = 1:nbXP
     figure(2);
     semilogy(ll,VarXPm(k,:)/sigma^2,'linewidth',2); grid on; hold on; %,ll,BndVarTH,'--',
 end
-%legend('Experimemtal MSE[10]','Experimemtal MSE[100]','Experimemtal MSE[200]','Experimemtal MSE[500]','\sigma^2');
-figure(1); xlabel('Forecasting interval'); ylabel('Experimental Forecasting Mean');
-
-BndVarTH = 2*tmp*(1+tmp).^(2*ll-2) ;
-figure(2); 
-semilogy(ll,BndVarTH,'--','linewidth',2);
-xlabel('Forecasting interval'); ylabel('Relative Experimental Forecasting Variance (Var/\sigma^2)');
+%legend('Experimental MSE[10]','Experimental MSE[100]','Experimemtal MSE[200]','Experimental MSE[500]','\sigma^2');
+figure(1); xlabel('Forecasting sample index ($\ell$)','interpreter', 'latex','fontsize',15); ylabel('Experimental forecasting bias ($\mu_{xp}[\ell]$)','interpreter','latex','fontsize',15);
+ylim([-0.05 0.05]);
+figure(2); xlabel('Forecasting sample index ($\ell$)','interpreter', 'latex','fontsize',15); ylabel('Normalized experimental forecasting variance ($\gamma_{xp}[\ell]/\sigma^2$)','interpreter','latex','fontsize',15);
+ylim([0.2 1]);
+% BndVarTH = 2*tmp*(1+tmp).^(2*ll-2) ;
+% semilogy(ll,BndVarTH,'--','linewidth',2);
