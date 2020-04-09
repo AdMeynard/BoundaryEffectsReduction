@@ -37,18 +37,19 @@ xx0 = xx00 + xx01 ; % extended signal
 x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 
 sigman = 1e-2 ;
-noise = sigman*randn(N+2*L,1) ;
-x = x0.' + noise((L+1):(N+L)) ; % signal to be extended
 
 %% Forecasting
 method.name = 'lseV' ;
 nbXP = 50 ;
 nbXPP = 3000 ;
-KK = round(linspace(1e3,1e4,nbXP)) ;
+KK = round(linspace(1e3,6e3,nbXP)) ;
 k = 1 ;
 for k = 1:nbXP
+    extK = KK(k) ;
     for nb2 = 1:nbXPP
-        extK = KK(k) ;
+        noise = sigman*randn(N+2*L,1) ;
+        x = x0.' + noise((L+1):(N+L)) ; % signal to be extended
+        
         xx = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ;
         MeanXP(nb2,:) = xx((N+L+1):end) - xx0((N+L+1):end) ;
         VarXP(nb2,:) = ( xx((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
