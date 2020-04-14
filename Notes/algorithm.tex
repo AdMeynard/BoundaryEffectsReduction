@@ -40,6 +40,7 @@ We also consider the matrix $\bY\in\RR^{M\times K}$ given by:
 We consider here a naive dynamic model, assuming that we have the following relation:
 \begin{equation}
 \bY = \bA\bX\ ,
+\label{eq:dyn.model}
 \end{equation}
 where $\bA\in\RR^{M\times M}$. This is a linear dynamic model, which can be written equivalently in function of the sub-signals $\bx_k$, as:
 \begin{equation}
@@ -106,10 +107,10 @@ Then, except the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, th
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Kernel-based representation}
+\subsection{Representation}
 
 \paragraph{Transform restriction.} 
-Let $\ccF_{N}:\RR^{N}\to\RR^{F\times N}$ generically denotes the kernel-based representation we are interested in. It can be, for instance, such as short-time Fourier transform (STFT), the continuous wavelet transform (CWT), the synchrosqueezing transform (SST), or the reassignment (RS). Here, $F$ typically denotes the size of the representation along the frequency axis. Due to the boundary effects, the representation $\ccF_{N}(\bx)$ shows undesired patterns when approaching its edges.For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. To limit these phenomena, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF_N^{\mathrm{ext}}:\RR^{N}\to\RR^{F\times N}$ of $\bx$ is given by:
+Let $\ccF_{N}:\RR^{N}\to\RR^{F\times N}$ generically denotes the time-frequency or time-scale representation we are interested in. It can be, for instance, such as short-time Fourier transform (STFT), the continuous wavelet transform (CWT), the synchrosqueezing transform (SST), or the reassignment (RS). Here, $F$ typically denotes the size of the representation along the frequency axis. Due to the boundary effects, the representation $\ccF_{N}(\bx)$ shows undesired patterns when approaching its edges.For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. To limit these phenomena, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF_N^{\mathrm{ext}}:\RR^{N}\to\RR^{F\times N}$ of $\bx$ is given by:
 \begin{equation}
 \ccF_N^{\mathrm{ext}}(\bx)[f,n] = \ccF_{N+2L}(\tilde \bx)[f,L+n]\ ,\quad\forall f\in\{0,\cdots,F-1\},\ n\in\{0,\cdots,N-1\}\ .
 \label{eq:restriction}
@@ -120,7 +121,7 @@ This amounts to restricting the representation $\ccF_{N+2L}(\tilde \bx)$ to the 
 \end{equation*}
 
 \paragraph{Conclusion.}
-Finally, the global procedure we implement to reduce boundary effects on kernel-based representations is summarized by the pseudo-code of Algorithm~\ref{alg:boundary}.
+Finally, the global procedure we implement to reduce boundary effects on windowing-based representations is summarized by the pseudo-code of Algorithm~\ref{alg:boundary}.
 
 \begin{algorithm}
 \caption{Tackling boundary effects. $\bF_\bx = \mathsf{BoundEffRed(}\bx,M,K,L,\ccF)$}

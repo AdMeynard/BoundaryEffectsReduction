@@ -18,10 +18,10 @@
 \usepackage{hhline}
 \usepackage{hyperref}
 \usepackage{mathpazo}
-\usepackage[left=80pt,right=80pt,top=70pt,bottom=70pt]{geometry}
+\usepackage[left=90pt,right=90pt,top=70pt,bottom=70pt]{geometry}
 
 
-\title{Tackling boundary effects on kernel-based representations (draft)}
+\title{An approach for the reduction of boundary effects in time-frequency and time-scale representations}
 %\author{}
 \date{}
 
@@ -34,22 +34,48 @@
 \maketitle
 
 \section{Introduction}
-In any digital acquisition system, the measured signals are sampled and of finite length. Then, when performing any kernel-based transform, such as synchrosqueezing transform, boundaries effect is going to affect the quality of the representation in the vicinity of the borders. Consequently, signal characteristics, like instantaneous frequencies, appear to be imprecisely determined near borders.
+In any digital acquisition system, the study and the interpretation of the measured signals generally require the use an analysis tool, which enable to point out the useful characteristics of the signal. For example, any  measured physiological signal, such as photoplethysmogram (PPG), may not be interpreted as it is, from its run chart. An analysis tool would make possible the extraction of some useful characteristics such as heart rate or blood pressure. 
 
-We propose here a method to limit the disruptions caused by the boundary effect. To reduce the influence of boundaries on the kernel-based representations, we proceed in two steps:
+In general, the observed quantities are produced by transient phenomena, that can vary rapidly and irregularly. As a consequence, the measured signals exhibit nonstationary behavior. In order to adapt the analysis to nonstationarities, local analysis is generally performed. The short time Fourier transform (STFT) is a typical tool which is build that way, and allows to determine locally the frequency content of a nonstationary signal.
+
+Windowing is a common method for performing local analysis. Among others, STFT, wavelet transform~\cite{Mallat99wavelet}, synchrosqueezing transform (SST), and reassignment~\cite{Auger13time} are representations that fall back on the use of an analysis window. Let $x:I\to\RR$ denote the observed signal, where $I$ denotes the finite interval where the signal is measured. Let $g_s:\RR\to\RR$ denote the analysis window, where $s$ is a shape parameter. The support of $g_s$ is is localized around the origin, and is small with respect to $|I|$. The translation operator is $T_\tau$ defined as:
+\[
+T_\tau f = f(t-\tau)\ ,\quad \forall\ f:\RR\to\RR\ .
+\]
+Then, the local analysis of $x$ around the instant $\tau\in I$ rely on the evaluation of the following dot product:
+\begin{equation}
+V_x(s,\tau) = \langle x, T_\tau g_s \rangle_I \ .
+\label{eq:windowing}
+\end{equation}
+A major shortcoming of this technique occurs when analyzing the signal $x$ near the boundaries of the interval $I$. Indeed, at these points, half of the information is missing. Consequently the results of the dot product~\ref{eq:windowing} is disturbed by this lack of information. This phenomenon is the so-called \emph{boundary effect}. We display, on the left of Fig.~\ref{fig:ex.intro} the result of the SST of a PPG (see section~\ref{ssse:ppg} for a comprehensive description). The distortion resulting from the boundary effect is clearly visible on both sides of this representation. Indeed, while in the major central part of the image, clear lines stand out, they become blurred as they approach the left and right boundaries of the image. A zoom on the right boundary of this SST, displayed on the right of Fig.~\ref{fig:ex.intro}, emphasizes the result of boundary effect. More generally, signal characteristics, like instantaneous frequencies or amplitudes appear to be imprecisely determinable in the vicinity of the boundaries.
+
+\begin{figure}
+\includegraphics[width=.49\textwidth]{SSTintro.eps}
+\includegraphics[width=.49\textwidth]{zoomSSTintro.eps}
+\caption{Synchrosqueezing transform of a PPG (left) with a zoom on its right boundary (right). }
+\label{fig:ex.intro}
+\end{figure}
+
+The purpose of this paper is to provide a fast algorithm allowing to tackle boundary effect and limit the disruptions it may cause on the signals representations based on windowing. In that aim, we proceed in two steps:
 \begin{enumerate}
-\item Extend the signal by forecasting it.
-\item Run the kernel-based algorithm on the extended signal.
+\item \emph{Extend the signal by forecasting it.} The aim is to use a dynamic model to predict the values taken by the measured signal outside the measurement interval. Then, once this operation is done, we have access to an extended signal defined on a larger interval $I_\Delta$, where $\Delta$ denotes the size of the extension on both boundaries of $I$. 
+\item \emph{Run the local analysis tool on the extended signal.} Assuming that the support of the analysis window is smaller that $2\Delta$, the local analysis near the boundary of $I$ is now possible without lack of information thanks to knowledge brought by the extension on both sides. 
 \end{enumerate}
+Thus, assuming that the quality of the extension step is sufficient, the representation obtained that way will be less sensitive to the boundary effect than the result of the analysis tool applied directly to the non-extended signal. Notice that, in order to obtain a fast algorithm the extension step we propose must have a low computational cost.
 
 \section{Algorithm}
+\label{se:algo}
 \input{algorithm}
 
 
 \section{Theoretical performance}
+\label{se:theoretical}
 \input{theory}
 
-%\section{Numerical results}
-%\input{results}
+\section{Numerical results}
+\input{results}
+
+\bibliographystyle{plain}
+\bibliography{AM041320}
 
 \end{document}
