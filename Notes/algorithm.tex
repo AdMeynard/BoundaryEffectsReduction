@@ -1,48 +1,50 @@
+As explained above, the algorithm for the reduction of boundary effects on time-frequency representations relies on two steps. These ones are detailed in the current section.
 
 \subsection{Forecasting}
 
-\paragraph{Notations.} Let $x:\RR\to\RR$ denote a continuous-time signal. In this work, we consider a finite-length discretization of that one. Thus, the sampled signal $\bx$, whose length is denoted by $N$, is such that
+Let $x:\RR\to\RR$ denote a continuous-time signal. In this work, we consider a finite-length discretization of that one. Thus, the sampled signal $\bx$, whose length is denoted by $N$, is such that
 \[
 \bx[n] = x\left(\frac{n}{\fs}\right)\ ,\quad \forall n\in\{0,\ldots,N-1\}\ , 
 \]
 where $\fs$ denotes the sampling frequency. 
 
-Let $M<N$, $K<N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the sub-signal $\bx_k\in\RR^M$ given by:
-\[
+\paragraph{Notations} 
+Let $M$ and $K$ be two integers such that $M<N$ and $K+M<N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the sub-signal $\bx_k\in\RR^M$ given by:
+\begin{equation}
 \bx_k = 
 \begin{pmatrix}
 \bx[N-K+(k-1)-(M-1)] \\
 \vdots \\
 \bx[N-K+(k-1)]
 \end{pmatrix}\ .
-\]  
+\label{eq:xk}
+\end{equation} 
 These sub-signals are gathered into the matrix $\bX\in\RR^{M\times K}$ such that:
-\[
+\begin{equation*}
 \bX = 
 \begin{pmatrix}
 \bx_0 & \cdots & \bx_{K-1}
 \end{pmatrix}\ .
-\]
-Notice that these sub-signals are overlapping each other. Indeed, $\bx_{k+1}$ is a shifting of $\bx_k$ from one sample.
-
-We also consider the matrix $\bY\in\RR^{M\times K}$ given by:
-\[
+\end{equation*}
+Notice that these sub-signals are overlapping each other. Indeed, $\bx_{k+1}$ is a shifting of $\bx_k$ from one sample. We also consider the matrix $\bY\in\RR^{M\times K}$ given by:
+\begin{equation*}
 \bY = 
 \begin{pmatrix}
 \bx_1 & \cdots & \bx_{K}
 \end{pmatrix}\ .
-\]
+\end{equation*}
 
-\paragraph{Dynamic model and forecasting.} Establishing a dynamic model consists in determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
+\paragraph{Dynamical model and forecasting} 
+Establishing a dynamical model consists in determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
 \[
 \bY = f(\bX)\ .
 \] 
-We consider here a naive dynamic model, assuming that we have the following relation:
+We consider here a naive dynamical model, assuming that we have the following relation:
 \begin{equation}
 \bY = \bA\bX\ ,
 \label{eq:dyn.model}
 \end{equation}
-where $\bA\in\RR^{M\times M}$. This is a linear dynamic model, which can be written equivalently in function of the sub-signals $\bx_k$, as:
+where $\bA\in\RR^{M\times M}$. We adopt a classical strategy in the study of dynamical systems, that is the linearization of a nonlinear phenomenon. Notice that this linear dynamical model can be written equivalently in function of the sub-signals $\bx_k$, as:
 \begin{equation}
 \bx_{k+1} = \bA\bx_{k},\ ,\forall k\in\{0,\dots,K-1\}\ .
 \end{equation}
@@ -51,11 +53,16 @@ where $\bA\in\RR^{M\times M}$. This is a linear dynamic model, which can be writ
 The forecasting method consists in estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$, we then obtain the forecasting of the signal at time $\frac{N-1+\ell}{\fs}$ by:
 \begin{equation}
 \label{eq:prediction}
-\tilde \bx [N-1+\ell] = \be_M^T\tilde\bA^\ell\bx_{K}\ ,
+\tilde \bx [N-1+\ell] = \balpha^{(\ell)}\bx_{K}\ ,
 \end{equation}  
+where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$, that is to say:
+\begin{equation}
+\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell\ ,
+\label{eq:alpha.l}
+\end{equation}
 where $\be_M$ is the vector of length $M$ given by $\be_M = \begin{pmatrix} 0 & \cdots & 0 & 1\end{pmatrix}^T$.
 
-\paragraph{Model estimation.} To estimate the matrix $\bA$, we basically implement the least square estimator. Thus, we solve the following problem:
+\paragraph{Model estimation} To estimate the matrix $\bA$, we basically implement the least square estimator. Thus, we solve the following problem:
 \begin{equation}
 \label{eq:ls.pb}
 \tilde\bA = \arg\min_{\balpha} \cL(\bA)\ ,
@@ -64,7 +71,7 @@ where the loss function $\cL$ is given by:
 \[
 \cL(\bA) = \|\bY-\bA\bX\|^2 = \sum_{k=0}^{K-1} \|\bx_{k+1}-\bA\bx_k\|^2.
 \]
-Therefore, solving the problem~\eqref{eq:ls.pb}, \ie~$\nabla \cL(\tilde\bA)=\bzero$, gives the following estimate $\tilde\bA$ of the dynamic model matrix $\bA$:
+Therefore, solving the problem~\eqref{eq:ls.pb}, \ie~$\nabla \cL(\tilde\bA)=\bzero$, gives the following estimate $\tilde\bA$ of the dynamical model matrix $\bA$:
 \begin{align}
 \tilde\bA &= \bY\bX^T(\bX\bX^T)^{-1}\ .
 \label{eq:lse}
@@ -82,10 +89,10 @@ This expression clearly shows that the matrix $\tilde\bA$ takes the following fo
 \alpha_1& \cdots  & \cdots & \cdots & \alpha_M  \\
 \end{pmatrix}.
 \]
-Then, except the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, the matrix $\bA$ is fully determined by the dynamic model.
+Then, except the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, the matrix $\bA$ is fully determined by the dynamical model.
 \end{remark}
 
-\paragraph{Signal extension.} We can finally construct the extended signal $\tilde\bx\in\RR^{N+2L}$ concatenating the backward prediction $\tilde\bx_{\rm bw}$, the observed signal $\bx$, and the forward prediction $\tilde\bx_{\rm fw}$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we handle the backward estimation using the same strategy than described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
+\paragraph{Signal extension} In order to reduce the boundary effects on both "sides" of the time-frequency (or time-scale) representation, we finally construct the extended signal $\tilde\bx\in\RR^{N+2L}$ concatenating the backward prediction $\tilde\bx_{\rm bw}$, the observed signal $\bx$, and the forward prediction $\tilde\bx_{\rm fw}$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we handle the backward estimation using the same strategy than described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
 
 \begin{algorithm}
 \caption{Signal extension. $\tilde\bx = \mathsf{SigExt}(\bx,M,K,L)$}
@@ -108,11 +115,10 @@ Then, except the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, th
 \end{algorithm}
 
 \subsection{Representation}
-
-\paragraph{Transform restriction.} 
-Let $\ccF_{N}:\RR^{N}\to\RR^{F\times N}$ generically denotes the time-frequency or time-scale representation we are interested in. It can be, for instance, such as short-time Fourier transform (STFT), the continuous wavelet transform (CWT), the synchrosqueezing transform (SST), or the reassignment (RS). Here, $F$ typically denotes the size of the representation along the frequency axis. Due to the boundary effects, the representation $\ccF_{N}(\bx)$ shows undesired patterns when approaching its edges.For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. To limit these phenomena, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF_N^{\mathrm{ext}}:\RR^{N}\to\RR^{F\times N}$ of $\bx$ is given by:
+ 
+Let $\ccF_{N}:\RR^{N}\to\RR^{F\times N}$ generically denotes the time-frequency or time-scale representation we are interested in. It can be, for instance, such as short-time Fourier transform (STFT), the continuous wavelet transform (CWT), the synchrosqueezing transform (SST), or the reassignment (RS). Here, $F$ typically denotes the size of the representation along the frequency axis. Due to the boundary effects, the representation $\ccF_{N}(\bx)$ shows undesired patterns when approaching its edges.For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. To limit these phenomena, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF_N^{\mathrm{ext}}:\RR^{N}\to\RR^{F\times N}$ of $\bx$ is given for all $f\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
 \begin{equation}
-\ccF_N^{\mathrm{ext}}(\bx)[f,n] = \ccF_{N+2L}(\tilde \bx)[f,L+n]\ ,\quad\forall f\in\{0,\cdots,F-1\},\ n\in\{0,\cdots,N-1\}\ .
+\ccF_N^{\mathrm{ext}}(\bx)[f,n] = \ccF_{N+2L}(\tilde \bx)[f,L+n]\ .
 \label{eq:restriction}
 \end{equation}
 This amounts to restricting the representation $\ccF_{N+2L}(\tilde \bx)$ to the original measurement interval of $\bx$. For the sake of simplicity, we denotes the restriction operator by $\cR$, where $\cR:\RR^{F\times (N+2L)}\to\RR^{F\times N}$. Consequently, we have:
@@ -120,7 +126,7 @@ This amounts to restricting the representation $\ccF_{N+2L}(\tilde \bx)$ to the 
 \ccF_N^{\mathrm{ext}}(\bx) = \cR\left( \ccF_{N+2L}(\tilde \bx) \right) \ .
 \end{equation*}
 
-\paragraph{Conclusion.}
+\subsection{Global algorithm}
 Finally, the global procedure we implement to reduce boundary effects on windowing-based representations is summarized by the pseudo-code of Algorithm~\ref{alg:boundary}.
 
 \begin{algorithm}
