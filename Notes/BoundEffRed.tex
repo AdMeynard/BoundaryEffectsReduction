@@ -1,12 +1,13 @@
-\documentclass[twoside,letterpaper]{article}
+\documentclass[journal]{IEEEtran}
+
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
 \usepackage{euscript}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{ifpdf}
+%\usepackage{ifpdf}
 \usepackage[english]{babel}
-\usepackage{caption}
-\usepackage{subfig} % or can use subcaption package
+%\usepackage{caption}
+\usepackage{subfig}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{mathrsfs}
@@ -18,27 +19,40 @@
 \usepackage{hhline}
 \usepackage{hyperref}
 \usepackage{mathpazo}
-\usepackage[left=90pt,right=90pt,top=70pt,bottom=70pt]{geometry}
 
-
-\title{An approach for the reduction of boundary effects in time-frequency and time-scale representations}
-%\author{}
-\date{}
-
+\graphicspath{{figures/}}
 \input{mydefs}
 
+\title{An Approach for the Reduction of Boundary Effects in Time-Frequency Representations}
+
+\author{Adrien~Meynard, %~\IEEEmembership{Member,~IEEE,}
+        Hau-Tieng~Wu
+\thanks{A. Meynard and H.-T. Wu are with the Department
+of Mathematics, Duke University, Durham,
+NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
+
 \newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
 
 \begin{document}
 
 \maketitle
 
+\begin{abstract}
+Time-frequency representations are intrinsically subject to the boundary effects. As a consequence, the structures of signals that are highlighted by the representations are garbled when approaching the boundaries of the time-frequency domain. In this paper, we propose an approach for the reduction of such boundary effects, whose objective is to be able to be used in real time. That one relies on an extension of the analyzed signal obtained by a forecasting technique. In the case of the study of a class of locally oscillating signals, we provide a theoretical study of the performance of our approach. Following a numerical verification of the performance of the algorithm, we implement it on real-life biomedical signals.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Boundary effects, time-frequency, forecasting
+\end{IEEEkeywords}
+
 \section{Introduction}
-In any digital acquisition system, the study and the interpretation of the measured signals generally require the use an analysis tool, which enable to point out the useful characteristics of the signal. For example, any  measured physiological signal, such as photoplethysmogram (PPG), may not be interpreted as it is, from its run chart. An analysis tool would make possible the extraction of some useful characteristics such as heart rate or blood pressure. 
+\IEEEPARstart{I}{n} any digital acquisition system, the study and the interpretation of the measured signals generally require the use an analysis tool, which enable to point out the useful characteristics of the signal. For example, any  measured biomedical signal, such as photoplethysmogram (PPG), may not be interpreted as it is, from its run chart. An analysis tool would make possible the extraction of some useful characteristics such as heart rate or blood pressure~\cite{Akay96detection}. 
 
-In general, the observed quantities are produced by transient phenomena, that can vary rapidly and irregularly. As a consequence, the measured signals exhibit nonstationary behavior. In order to adapt the analysis to nonstationarities, local analysis is generally performed. The short time Fourier transform (STFT) is a typical tool which is build that way, and allows to determine locally the frequency content of a nonstationary signal.
+In general, the observed quantities are produced by transient phenomena, that can vary rapidly and irregularly. As a consequence, the measured signals exhibit nonstationary behavior. In order to adapt the analysis to nonstationarities, local analysis is generally performed. The short time Fourier transform (STFT) is a typical tool which is build that way, and enables the determination of the local frequency content of a nonstationary signal.
 
-Windowing is a common method for performing local analysis. Among others, STFT, wavelet transform~\cite{Mallat99wavelet}, synchrosqueezing transform (SST), and reassignment~\cite{Auger13time} are representations that fall back on the use of an analysis window. Let $x:I\to\RR$ denote the observed signal, where $I$ denotes the finite interval where the signal is measured. Let $g_s:\RR\to\RR$ denote the analysis window, where $s$ is a shape parameter. The support of $g_s$ is is localized around the origin, and is small with respect to $|I|$. The translation operator is $T_\tau$ defined as:
+Windowing is a common method for performing local analysis. Among others, STFT, wavelet transform~\cite{Mallat99wavelet}, synchrosqueezing transform (SST), and reassignment~\cite{Auger13time} (RS) are representations that fall back on the use of an analysis window. Let $x:I\to\RR$ denote the observed signal, where $I$ denotes the finite interval where the signal is measured. Let $g_s:\RR\to\RR$ denote the analysis window, where $s$ is a shape parameter. The support of $g_s$ is is localized around the origin, and is small with respect to $|I|$. The translation operator is $T_\tau$ defined as:
 \[
 T_\tau f = f(t-\tau)\ ,\quad \forall\ f:\RR\to\RR\ .
 \]
@@ -47,21 +61,27 @@ Then, the local analysis of $x$ around the instant $\tau\in I$ rely on the evalu
 V_x(s,\tau) = \langle x, T_\tau g_s \rangle_I \ .
 \label{eq:windowing}
 \end{equation}
-A major shortcoming of this technique occurs when analyzing the signal $x$ near the boundaries of the interval $I$. Indeed, at these points, half of the information is missing. Consequently the results of the dot product~\ref{eq:windowing} is disturbed by this lack of information. This phenomenon is the so-called \emph{boundary effect}. We display, on the left of Fig.~\ref{fig:ex.intro} the result of the SST of a PPG (see section~\ref{ssse:ppg} for a comprehensive description). The distortion resulting from the boundary effect is clearly visible on both sides of this representation. Indeed, while in the major central part of the image, clear lines stand out, they become blurred as they approach the left and right boundaries of the image. A zoom on the right boundary of this SST, displayed on the right of Fig.~\ref{fig:ex.intro}, emphasizes the result of boundary effect. More generally, signal characteristics, like instantaneous frequencies or amplitudes appear to be imprecisely determinable in the vicinity of the boundaries.
+A major shortcoming of this technique occurs when analyzing the signal $x$ near the boundaries of the interval $I$. Indeed, at these points, half of the information is missing. Consequently the results of the dot product~\ref{eq:windowing} is disturbed by this lack of information. This phenomenon is the so-called \emph{boundary effect}. We display, on the left of Fig.~\ref{fig:ex.intro} the result of the SST of a PPG (see section~\ref{ssse:ppg} for a comprehensive description). The distortion resulting from the boundary effect is clearly visible on both sides of this representation. Indeed, while in the major central part of the image, clear lines stand out, they become blurred as they approach the left and right boundaries of the image. A zoom on the right boundary of this SST, displayed on the right of Fig.~\ref{fig:ex.intro}, emphasizes the result of boundary effect. More generally, signal characteristics, like instantaneous frequencies or amplitudes appear to be imprecisely determinable from the SST in the vicinity of the boundaries.
 
 \begin{figure}
-\includegraphics[width=.49\textwidth]{SSTintro.eps}
-\includegraphics[width=.49\textwidth]{zoomSSTintro.eps}
-\caption{Synchrosqueezing transform of a PPG (left) with a zoom on its right boundary (right). }
+\centering
+%\includegraphics[width=.48\textwidth]{PPGsig.eps}
+\includegraphics[width=.48\textwidth]{SSTintro.eps}
+\includegraphics[width=.48\textwidth]{zoomSSTintro.eps}
+\caption{Synchrosqueezing transform of a PPG (top) with a zoom on its right boundary (bottom). }
 \label{fig:ex.intro}
 \end{figure}
 
-The purpose of this paper is to provide a fast algorithm allowing to tackle boundary effect and limit the disruptions it may cause on the signals representations based on windowing. In that aim, we proceed in two steps:
+The purpose of this paper is to provide a fast algorithm allowing to tackle boundary effect and limit the disruptions it may cause on the signals representations based on windowing. Attempts to minimize the boundary effects generally consists in softening the discontinuity on signals edges. In that goal, a natural idea is to extend to signal beyond its edges. Hence, to implement our boundary effects reduction procedure, we proceed in two steps.
 \begin{enumerate}
-\item \emph{Extend the signal by forecasting it.} The aim is to use a dynamic model to predict the values taken by the measured signal outside the measurement interval. Then, once this operation is done, we have access to an extended signal defined on a larger interval $I_\Delta$, where $\Delta$ denotes the size of the extension on both boundaries of $I$. 
+\item \emph{Extend the signal by forecasting it.} The aim is to use a dynamic model to predict the values taken by the measured signal outside the measurement interval. Then, once this operation is done, we have access to an extended signal defined on a larger interval $I_\Delta$, where $\Delta$ denotes the size of the extension on both boundaries of $I$.
 \item \emph{Run the local analysis tool on the extended signal.} Assuming that the support of the analysis window is smaller that $2\Delta$, the local analysis near the boundary of $I$ is now possible without lack of information thanks to knowledge brought by the extension on both sides. 
 \end{enumerate}
-Thus, assuming that the quality of the extension step is sufficient, the representation obtained that way will be less sensitive to the boundary effect than the result of the analysis tool applied directly to the non-extended signal. Notice that, in order to obtain a fast algorithm the extension step we propose must have a low computational cost.
+Thus, assuming that the quality of the extension step is sufficient, the representation obtained that way will be less sensitive to the boundary effect than the result of the analysis tool applied directly to the non-extended signal. 
+
+Various extension schemes have been proposed. On one hand, there exists simple extension schemes such as zero-padding, periodic extension, symmetric extension~\cite{Kharitonenko02wavelet}, that do not take into account the dynamical behavior of the signal. On the other hand, there exists extension schemes based on a dynamical model, such as the Empirical Dynamic Mode Decomposition~\cite{Williams15data} (EDMD), the Gaussian process regression~\cite{Rasmussen06gaussian} (GPR), the TBATS algorithm~\cite{DeLivera11forecasting}, or interpolation algorithm~\cite{Su13adaptive}.  While the second class of extension schemes give better extended signals than the first class, they generally have a great computational cost. We propose here a fast extension algorithm based on a simple dynamical model, in order to optimize the trade-off between the extension quality and the computational cost. Furthermore, we prove that the dynamical model we consider is sufficient to forecast locally oscillating signals.
+
+Therefore, in section~\ref{se:algo}, we provide an extension method based on a linear dynamic model. We derive the corresponding algorithm for boundary effect reduction. In section~\ref{se:theoretical}, we show that, even though we consider a simplistic dynamic model, it is sufficient to extend signals takings the form of sums of sine waves. An evaluation of the theoretical performance of our algorithm on a class of signals, the sums of sine waves, is given in section~\ref{se:theoretical}. In section~\ref{se:results}, we compare our extension method with more sophisticated methods such as EDMD, GPR, or TBATS. We show that our algorithm gives fast results of reasonable quality. Finally, we evaluate the performance of our boundary effect reduction algorithm on biomedical signals such as respiratory signals, and compare it to the theoretical results. 
 
 \section{Algorithm}
 \label{se:algo}
@@ -73,9 +93,32 @@ Thus, assuming that the quality of the extension step is sufficient, the represe
 \input{theory}
 
 \section{Numerical results}
+\label{se:results}
 \input{results}
 
-\bibliographystyle{plain}
+{\color{red}
+\section{Conclusion}
+\label{se:conclusion}
+The MATLAB code and datasets used to produce the numerical results of this paper are available online\footnote{\url{https://github.com/AdMeynard/BoundaryEffectsReduction}}.
+}
+
+%\appendices
+%\input{appendices}
+
+%\section*{Acknowledgment}
+
+\bibliographystyle{IEEEtran}
 \bibliography{AM041320}
 
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+%
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+
 \end{document}
+
+
