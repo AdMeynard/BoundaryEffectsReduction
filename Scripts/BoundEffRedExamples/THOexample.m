@@ -8,7 +8,9 @@ data = load('THO.mat');
 xtot = data.THO;
 fs = 100 ; % sampling frequency
 
-x = xtot(204e3:208e3);
+n0 = 1260e2; %204e3
+n1 = 1350e2; %208e3
+x = xtot(n0:n1);
 mu = mean(x) ;
 s = std(x) ;
 x = (x - mu)/s ;
@@ -43,16 +45,28 @@ xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method);
 GPRtime = toc;
 
 %% Plot
-t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
+t = (n0-1)*fs + linspace(0, (N-1)/fs, N) ;
+tt = (n0-1)*fs + linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
 
-xxTRUE = ( xtot((204e3-L):(208e3+L)) - mu ) / s ;
+xxTRUE = ( xtot((n0-L):(n1+L)) - mu ) / s ;
 xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
 
 figure;
 plot(tt,xxLSE,tt,xxEDMD,tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','GPR Estimated Extended signal','Ground truth Extended signal','Original signal'); 
+legend({'{\sf SigExt} Extended signal','EDMD Estimated Extended signal','GPR Estimated Extended signal','Ground truth Extended signal','Original signal'},'interpreter','latex'); 
 xlabel('Time (s)'); ylabel('Signals'); title('Time series');
+
+figure;
+plot(tt,xxLSE,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+legend({'{\sf SigExt} Extended signal','Ground truth Extended signal','Original signal'},'interpreter','latex'); 
+xlabel('Time (s)'); ylabel('Signals'); axis tight; ylim([-2 2]);
+set(gca,'FontSize',20);
+
+figure;
+plot(tt,xxTRUE,'linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('THO signal'); axis tight; ylim([-2 2]);
+set(gca,'FontSize',20);
+
 
 %% SST
 basicTF.hop = 10;

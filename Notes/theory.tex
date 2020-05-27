@@ -50,10 +50,12 @@ The covariance is given by:
 Thus by definition of the noise, we have $\bgamma[n,n'] =\sigma^2\delta_{n,n'}$ when $(n,n')\in I^2$. When $n\geq N$, let us denote $\ell=n-N+1$. Then, we have two cases.
 \begin{enumerate}[label=(\roman*)]
 \item If $n'\in I$:
-\begin{align*}
+\begin{align}
+\nonumber
 \bgamma[n,n'] &= \sigma\EE\{\bw[n']\balpha^{(\ell)}\}\bz_K + \sigma^2\EE\{\bw[n']\balpha^{(\ell)}\bw_K\} \\
 &\hspace{15pt} -\bz[n]\bmu[n'] - \bmu[n]\bmu[n']\ .
-\end{align*}
+\label{eq:cov00}
+\end{align}
 \item If $n'=N-1+\lambda\geq N$:
 \begin{align}
 \nonumber
@@ -61,13 +63,13 @@ Thus by definition of the noise, we have $\bgamma[n,n'] =\sigma^2\delta_{n,n'}$ 
 \nonumber
 &\hspace{-3pt} + \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K + \sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}  \\
 &\hspace{-3pt} -\!\bz[n]\bz[n']-\!\bz[n]\bmu[n']-\!\bz[n]\bmu[n'] -\! \bmu[n]\bmu[n']\,.
-\label{eq:cov0}
+\label{eq:cov01}
 \end{align}
 \end{enumerate}
 Besides, we recall that $\bgamma[n,n']=\bgamma[n',n]$.
 \end{enumerate}
 
-Expressions~\eqref{eq:bias0} and~\eqref{eq:cov0} show that these quantities depend on the behavior of the forecasting random vector $\balpha^{(\ell)}$. First, notice that the forecasting matrix $\tilde\bA$ would ideally take the form:
+Expressions~\eqref{eq:bias0},~\eqref{eq:cov00}, and~\eqref{eq:cov01} show that these quantities depend on the behavior of the forecasting random vector $\balpha^{(\ell)}$. First, notice that the forecasting matrix $\tilde\bA$ would ideally take the form:
 \begin{equation}
 \bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
 \label{eq:lse.0}
@@ -118,12 +120,12 @@ Its second-order moment $\bgamma[n,n']$ verify the following approximation equat
 \begin{enumerate}[label=(\roman*)]
 \item if $n'\in I=\{0,\ldots,N-1\}$:
 \begin{equation}
-\bgamma[n,n']\underset{K\to\infty}{\sim} \sigma^2\balpha_0^{(n-N-1)}[m-(N-M)]\1_{(m\geq N-M)}
+\bgamma[n,n']\underset{K\to\infty}{\sim} \sigma^2\balpha_0^{(n-N-1)}[n'-(N-M)]\1_{(n'\geq N-M)}
 \label{eq:cov.error.1}
 \end{equation}
 \item if $n'\geq N$:
 \begin{equation}
-\hspace{-15pt}\bgamma[n,n']\!\underset{K\to\infty}{\sim}\!\frac1K\bz_K^T\bGamma^{(l,\lambda)}\bz_K +\! \dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\!\right)\! + \sigma^2\!\left\langle\balpha_0^{(\ell)}\!, \balpha_0^{(\lambda)}\right\rangle ,
+\hspace{-15pt}\bgamma[n,n']\!\underset{K\to\infty}{\sim}\!\frac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K \!+\! \dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\!\right)\! + \sigma^2\!\left\langle\balpha_0^{(\ell)}\!, \balpha_0^{(\lambda)}\right\rangle ,
 \label{eq:cov.error.2}
 \end{equation}
 where $\ell=n-N+1$ and $\lambda=n'-N+1$.
@@ -144,6 +146,9 @@ z(t) = \sum_{j=1}^J a_j(t)\cos(2\pi\phi_j(t))\ ,
 where $a_j$ and $\phi'_j$ are smooth function. In the case, the forecasting error is additionally sensitive to the speed of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$. 
 \end{remark}
 
-{\color{red}
+
 \subsection{Performance of the boundary effects reduction}
-}
+\label{sse:perf.BoundEffRed}
+Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any time-frequency representation. Let us focus instead on the particular case of synchrosqueezing transform. Since we analyze adaptive harmonic signals, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. We can then rely on Theorem 3 in~\cite{Chen14nonparametric}. Indeed, this theorem states that when the additive noise remains small, the SST of the observed signal remains close to the ideal SST of an adaptive harmonic signal, throughout the time-frequency plane.  We refer the reader to~\cite{Chen14nonparametric} for a precise quantification of the error made in the time-frequency plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since instantaneous frequencies can now be approximately observed continuously up to the edges of the time-frequency plane.
+
+The extension of this result to other time-frequency representations is not provided theoretically. In the following section~\ref{se:results}, we verify experimentally that algorithm~\ref{alg:boundary} is efficient for a large number of representations.

@@ -12,20 +12,18 @@ fs = data.fs ; % sampling frequency
 N = 4e3; % subsignals length
 
 % Forecasting parameters
+methods = {'lse','edmd','gpr'} ;
 HOP = 1 ;
 extSEC = 5 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-basicTF.meth = 'sstSTFT' ;
+TFR = {'sstSTFT','RS'} ;
 basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;
 basicTF.fmax = 0.01 ;
-[forecastErr1, CompTime1, OTD1] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
-basicTF.meth = 'RS' ;
-[forecastErr2, CompTime2, OTD2] = SucForecast(xtot,fs,HOP,N,extM,extK,extSEC,basicTF) ;
+[forecastErr, CompTime, OTD] = SucForecast(xtot,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
 
-
-save('../../Results/resultSucForPPGcompMeth','forecastErr1','CompTime1','OTD1','forecastErr2','CompTime2','OTD2');
+save('../../Results/resultSucForPPGcompMeth','forecastErr','CompTime','OTD');

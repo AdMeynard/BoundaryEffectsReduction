@@ -36,7 +36,7 @@ As in the previous study, the experimental bias vanishes when $K$ increases, wha
 \label{fig:res.size.sine}
 \end{figure}
 
-\paragraph{Conclusion}
+\paragraph{Summary}
 Both previous experimental results combined with the theoretical asymptotic equation~\eqref{eq:cov.error.2} allow us to describe the influence of the noise variance and the size of the training dataset on the variance of the forecasting noise, which is empirically summarized as follows:
 \begin{equation}
 \gamma[N-1+\ell,N-1+\ell] \underset{K\to\infty}{\approx} \dfrac{\sigma^2}{K}g[\ell] .
@@ -80,7 +80,7 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 
 \begin{table}
 \centering
-\caption{Performance of the extension methods.}
+\caption{AHM signal. Performance of the extension methods.}
 \begin{tabular}{|c||c|c|c|}
   \hline
    \multirow{2}{*}{Algorithm} & \multicolumn{2}{c|}{MSE}  & \multirow{2}{41pt}{Computing time (sec.)} \\
@@ -107,7 +107,7 @@ The quality of the boundary effect reduction must be evaluated directly on the t
 \ccF_N^\mathrm{opt}(\bx) = \cR\left( \ccF_{N+2L}(\bx^\mathrm{ext}) \right) \ .
 \end{equation*} 
 
-In the aim of comparing the different techniques, we uses a criterion, proposed in~\cite{Daubechies16conceft}, that quantify the distance between a given time-frequency representation and the optimal one. It is built in analogy with the optimal transport distance, which enables quantifying the distance between two probability density functions. Let us generically denote a time frequency representation $\ccQ$. Then, for $t$ fixed, we consider the following pseudo-probability density function:
+In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantify the distance between a given time-frequency representation and the optimal one. It is built in analogy with the optimal transport distance, which enables quantifying the distance between two probability density functions. Let us generically denote a time frequency representation $\ccQ$. Then, for $t$ fixed, we consider the following pseudo-probability density function:
 \begin{align}
 p_\ccQ^t(\xi) &= \dfrac{|\ccQ(\xi,t)|^2}{\int_\RR |\ccQ(\nu,t)|^2\dd\nu}\ .
 \label{eq:ppdf}
@@ -140,7 +140,7 @@ From that large signal, we build a dataset of $48$ non-overlapping signals of 60
 
 \begin{table}
 \centering
-\caption{MSE of the respiratory signal extensions.}
+\caption{Respiratory signal. MSE of the respiratory signal extensions.}
 \begin{tabular}{|c||c|c|}
   \hline
    \multirow{2}{*}{Algorithm} & \multicolumn{2}{c|}{MSE} \\
@@ -157,24 +157,24 @@ From that large signal, we build a dataset of $48$ non-overlapping signals of 60
 \label{tab:mse}
 \end{table} 
 
-Then, we apply the boundary effects reduction method {\sf BoundEffRed} (Algorithm~\ref{alg:boundary}) on these extensions for diverse time-frequency representations (STFT, SST and RS). In Table~\ref{tab:otd.tho}, the results are compared in terms of OTD. They are also compared with the strategy consisting in a zero-padding extension of the signal. Even though the performance of the forecasting Algorithm~\ref{alg:extension} is somehow moderate, the boundary effects can be reduced dramatically on the time-frequency representations. Notice that the extension length $L$ has been set accordingly to the window length used by the time-frequency analysis tool. For instance, here the window length we use to evaluate the STFT is of 1500 samples. To prevent the STFT from being sensitive to the boundary effect, we set $L=750$. In this way, when evaluating the spectral content of the signal near its boundaries, the analysis is not limited by a lack of information all along the window support. From now on, all results are given for $L$ at equal to the half of the width of the window used in the time-frequency transform.  
+Then, we apply the boundary effects reduction method {\sf BoundEffRed} (Algorithm~\ref{alg:boundary}) on these extensions for diverse time-frequency representations: STFT, SST, RS, as well as ConceFT, an SST-based representation introduced in~\cite{Daubechies16conceft}. In Table~\ref{tab:otd.tho}, the results are compared in terms of OTD. They are also compared with the strategy consisting in a zero-padding extension of the signal. Even though the performance of the forecasting Algorithm~\ref{alg:extension} is somehow moderate, the boundary effects can be reduced dramatically on the time-frequency representations. Notice that the extension length $L$ has been set accordingly to the window length used by the time-frequency analysis tool. For instance, here the window length we use to evaluate the STFT is of 1500 samples. To prevent the STFT from being sensitive to the boundary effect, we set $L=750$. In this way, when evaluating the spectral content of the signal near its boundaries, the analysis is not limited by a lack of information all along the window support. From now on, all results are given for $L$ at equal to the half of the width of the window used in the time-frequency transform.  
 
 \begin{table}
 \centering
-\caption{Respiratory signal: OTD of the boundary effects reduction methods on diverse TFR.}
-\begin{tabular}{|c||c|c|c|}
+\caption{Respiratory signal. Averaged OTD of the boundary effects reduction methods on diverse representations.}
+\begin{tabular}{|>{\centering}m{35pt}||c|c|c|c|}
   \hline
-   \multirow{2}{*}{Extension method} & \multicolumn{3}{c|}{Time-Frequency Representation} \\
-   \cline{2-4}
-      & STFT & SST & RS\\
-   \hhline{|=#=|=|=|}
-   Without extension & $2.16\times 10^{-2}$ & $5.26\times 10^{-3}$ & $3.07\times 10^{-2}$ \\
+   \multirow{2}{35pt}{\centering Extension method} & \multicolumn{4}{c|}{Time-Frequency Representation} \\
+   \cline{2-5}
+      & STFT & SST & RS & ConceFT \\
+   \hhline{|=#=|=|=|=|}
+   Without extension & $2.16\times 10^{-2}$ & $5.26\times 10^{-3}$ & $3.07\times 10^{-2}$ & $1.41\times 10^{-2}$ \\
    \hline
-   {\sf SigExt} & $1.72\times 10^{-2}$ & $4.00\times 10^{-3}$ & $2.43\times 10^{-2}$ \\
+   {\sf SigExt} & $1.72\times 10^{-2}$ & $4.00\times 10^{-3}$ & $2.43\times 10^{-2}$ & $1.12\times 10^{-2}$ \\
    \hline
-   EDMD & $1.75\times 10^{-2}$ & $4.23\times 10^{-3}$ & $2.45\times 10^{-2}$ \\
+   EDMD & $1.75\times 10^{-2}$ & $4.23\times 10^{-3}$ & $2.45\times 10^{-2}$ & {\color{red}X} \\
    \hline
-   GPR & $1.84\times 10^{-2}$ & $4.10\times 10^{-3}$ & $2.48\times 10^{-2}$ \\
+   GPR & $1.84\times 10^{-2}$ & $4.10\times 10^{-3}$ & $2.48\times 10^{-2}$ & {\color{red}X} \\
    \hline
 \end{tabular}
 \label{tab:otd.tho}
@@ -196,7 +196,7 @@ We divide the signal into 32-second long pieces, and apply Algorithm~\ref{alg:bo
 
 \begin{table}
 \centering
-\caption{Performance of the Boundary effect reduction on TFR.}
+\caption{PPG signal. Averaged OTD of the boundary effects reduction methods on diverse representations.}
 \begin{tabular}{|c||c|c|c|}
   \hline
    \multirow{2}{*}{Extension method} & \multicolumn{3}{c|}{Time-Frequency Representation} \\
@@ -215,7 +215,7 @@ We divide the signal into 32-second long pieces, and apply Algorithm~\ref{alg:bo
 \label{tab:otd.ppg}
 \end{table}
 
-On Fig.~\ref{fig:ppg.boundeffred}, we display the SST resulting from the {\sf BoundEffRed} strategy, applied to the same portion of PPG than what is used to display Fig.~\ref{fig:ppg}. We clearly observe an improvement of the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished (see bottom of Fig.~\ref{fig:ppg.boundeffred}). The real-time tracking of the instantaneous frequencies contained in the measured signal is therefore largely facilitated.   
+On Fig.~\ref{fig:ppg.boundeffred}, we display the SST resulting from the {\sf BoundEffRed} strategy, applied to the same portion of PPG than what is used to display Fig.~\ref{fig:ppg}. We clearly observe an improvement of the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished (see bottom of Fig.~\ref{fig:ppg.boundeffred}). The real-time tracking of the instantaneous frequencies contained in the measured signal is therefore largely facilitated.
 
 \begin{figure}
 \centering
@@ -223,4 +223,13 @@ On Fig.~\ref{fig:ppg.boundeffred}, we display the SST resulting from the {\sf Bo
 \includegraphics[width=.48\textwidth]{zoomSSTBoundEffRed.eps}
 \caption{Result of {\sf BoundEffRed} on the synchrosqueezing transform of a PPG (top) with a zoom on its right boundary (bottom). }
 \label{fig:ppg.boundeffred}
+\end{figure}
+
+
+To evaluate the influence of the noise level on the performance of {\sf BoundEffRed}, we artificially add a Gaussian noise to the measured PPG signal, whose variance is denoted $\sigma_{\mathrm{add}}^2$. It is thus an additional noise to the measurement noise actually contained in the signal. Figure~\ref{fig:otd.noise} shows the averaged OTD of {\sf BoundEffRed} for different values of $\sigma_{\mathrm{add}}^2$. At first glance, we notice that STFT is slightly more sensitive to noise than SST. On one hand, the robustness to noise of the SST is the direct consequence of the approximation result of~\cite{Daubechies16conceft}, discussed in section~\ref{sse:perf.BoundEffRed}. On the other hand, the sentivity to noise of the STFT may be interpreted as the inability to forecast the values of the time-frequency coefficients where only noise is active, while sharp time-frequency representations, such as SST, ideally vanish at these points.
+\begin{figure}
+\centering
+\includegraphics[width=.48\textwidth]{OTDBoundEffRed.eps}
+\caption{PPG signal. Averaged OTD of {\sf BoundEffRed} in function of the noise variance.}
+\label{fig:otd.noise}
 \end{figure} 
