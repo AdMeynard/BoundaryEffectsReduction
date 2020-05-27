@@ -29,13 +29,13 @@ nXP = 12 ;
 StdNoise = logspace(-3.5,-1,nXP) ;
 for n = 1:nXP
     x = x0 + StdNoise(n)*randn(N0,1) ;
-    TFR = 'sstSTFT' ;
+    TFR = {'sstSTFT','RS'} ;
     [forecastErr, CompTime, OTD] = SucForecast(x,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
     
     NoiseForecastErr(n) = mean(forecastErr.LSE) ;
-    NoiseSST(n) = mean(OTD.sst.LSE) ;
-    NoiseSTFT(n) = mean(OTD.stft.LSE) ;
-%     NoiseRS(n) = mean(OTD.rs.LSE) ;
+    NoiseTFR.SST(n) = mean(OTD.sst.LSE) ;
+    NoiseTFR.STFT(n) = mean(OTD.stft.LSE) ;
+    NoiseTFR.RS(n) = mean(OTD.rs.LSE) ;
 end
 
-save('../../Results/resultSucForPPGnoise','StdNoise','NoiseForecastErr','NoiseSST','NoiseSTFT'); %,'NoiseRS'
+save('../../Results/resultSucForPPGnoise','StdNoise','NoiseForecastErr','NoiseTFR');

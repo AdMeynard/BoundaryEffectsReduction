@@ -19,7 +19,7 @@ L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-basicTF.meth = {'sstSTFT','RS'} ;
+TFR = {'sstSTFT','RS'} ;
 basicTF.hop = 10 ;
 basicTF.win = 201 ;
 basicTF.fmin = 0 ;
