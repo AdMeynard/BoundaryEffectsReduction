@@ -90,7 +90,7 @@ while nend <= Ntot
         end
         % On the GPR Vector estimated extended signal
         if any(strcmp(methods,'gpr'))
-            [~, ~, sstGPR, ~, ~] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            [~, ~, sstGPR, conceftGPR, ~] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
             sstGPR = sstGPR(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
             OTD.sst.GPR(ind) = slicedOT(sstGPR, sstTRUE) ;
             conceftGPR = conceftGPR(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
