@@ -95,11 +95,15 @@ Therefore, in section~\ref{se:algo}, we provide an extension method based on a l
 \label{se:results}
 \input{results}
 
-{\color{red}
 \section{Conclusion}
 \label{se:conclusion}
-The MATLAB code and datasets used to produce the numerical results of this paper are available online\footnote{\url{https://github.com/AdMeynard/BoundaryEffectsReduction}}. Applications to other biomedical signals, such as electrocardiograms, are also provided online. 
-}
+In this paper, we propose an algorithm, named {\sf BoundEffRed}, for the boundary effects reduction on time-frequency representations. This method is based on an extension of the signal obtained by forecasting. We have shown theoretically that the chosen dynamic model is sufficient for the extension of signals formed by a sum of sine waves whose instantaneous frequencies and amplitudes vary slowly. Moreover, the numerical results show that this strategy allows us to switch to a real-time implementation of {\sf BoundEffRed} is possible, due to the low computation time, unlike other pre-existing forecasting methods. The numerical results also confirmed the robustness to noise of {\sf BoundEffRed}, as well as its ability to be applied to many time-frequency representations. The MATLAB code and datasets used to produce the numerical results of this paper are available online at the following address:
+\begin{center}
+    {\small\url{https://github.com/AdMeynard/BoundaryEffectsReduction}}
+\end{center}
+Other numerical examples are also included, such as the application of {\sf BoundEffRed} to other types of biomedical signals such as ECGs.
+
+Various improvements can be considered to make the algorithm more robust to certain situations. In particular, we have noticed that when the observed signal does not oscillate, the forecasting is no longer relevant, and outlier time-frequency representations are obtained. A preliminary step should then be added to the algorithm to select the portions of the signal that exhibit oscillations, in order to reject the portions for which accurate time-frequency analysis is practically useless. A more fundamental improvement would be to perform the prediction step directly in the time-frequency plane, with the aim of specifically predicting the evolution of each instantaneous frequency. This would lead to seeing a time-frequency representation as a set of interdependent time series (corresponding to each frequency channel).
 
 %\appendices
 %\input{appendices}
