@@ -8,7 +8,7 @@ grid on;
 set(gca,'fontsize',24) ;
 
 figure;
-loglog(StdNoise.^2,NoiseTFR.SST,'+',StdNoise.^2,NoiseTFR.STFT,'^','linewidth',2,'MarkerSize',8); %,StdNoise.^2,NoiseRS,'+',
+loglog(StdNoise.^2,NoiseTFR.SST,'+',StdNoise.^2,NoiseTFR.STFT,'^',StdNoise.^2,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',8);
 xlabel('Noise Variance \sigma_{add}^2'); ylabel('Averaged OTD'); grid on;
-legend('SST','STFT');
+legend({'SST','RS','STFT'},'location','southeast');
 set(gca,'fontsize',24) ;

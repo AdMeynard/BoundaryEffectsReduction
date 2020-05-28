@@ -38,8 +38,8 @@ Notice that these sub-signals are overlapping each other. Indeed, $\bx_{k+1}$ is
 Establishing a dynamical model consists in determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
 \[
 \bY = f(\bX)\ .
-\] 
-We consider here a naive dynamical model, assuming that we have the following relation:
+\]
+In a general framework, forecasting means estimating the function $f$ from the observed values taken by the signal, in order to predict its future values. For instance, the dynamic mode decomposition~\cite{Schmid10dynamic,Williams15data} allows this by setting very few additional constraints on the regularity of $f$. We will see later, in section~\ref{se:theoretical}, that it is not necessary to consider such a complex dynamic model for the study of the signals of interest to us. That is why we consider here a naive dynamical model, assuming that we have the following relation:
 \begin{equation}
 \bY = \bA\bX\ ,
 \label{eq:dyn.model}
