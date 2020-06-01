@@ -14,8 +14,9 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{multirow}
 \usepackage{dsfont}
-\usepackage{hhline}
-\usepackage{algorithm,algorithmic}
+%\usepackage{hhline}
+%\usepackage{algorithm,algorithmic}
+
 \usepackage{xr}
 \externaldocument[I-]{../BoundEffRed}
 
@@ -34,20 +35,17 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 \begin{document}
 \maketitle
 
-\setcounter{equation}{8}
-\setcounter{figure}{3}
-
 
 \section{Proof of Lemma~1}
 \label{ap:lm.error}
 
 \subsection{Notations}
-We have:
+By definition the matrix $\bX$ and $\bY$ and because of the noisy signal model~\eqref{eq:model.noise}, we have:
 \begin{align}
 \dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
 \dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq S^{(1)}}+ \bE^{(1)} \ ,
 \end{align}
-where $\bE^{(a)} = \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$ with:
+where $\bE^{(a)} = \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$, with:
 \[
 \bE_1^{(a)}[m,m'] = \dfrac1K\sum_{k=0}^{K-1} \bz[N_0+m+a+k]\bw[N_0+m'+k] + \bw[N_0+m+a+k]\bz[N_0+m'+k]\ ,
 \]
@@ -81,7 +79,7 @@ Then:
 \end{align}
 
 \subsection{Study of $\bh^{(\ell)}$}
-The randomness of $\bh^{(\ell)}$ is completely originating from the error matrices. Besides, notice that the first $M-1$ rows in $\bE^{(1)}$ are the same as the last $M-1$ rows of $\bE^{(0)}$. Thus, we gather all the sources of randomness into an vector $\bg\in\RR^{M(M+1)}$ defined as:
+The randomness of $\bh^{(\ell)}$ is completely originating from the error matrices. Besides, notice that the first $M-1$ rows in $\bE^{(1)}$ are equals to the last $M-1$ rows of $\bE^{(0)}$. Thus, we gather all the sources of randomness into an vector $\bg\in\RR^{M(M+1)}$, containing $M$ rows and defined as:
 \[
 \bg = \vec\left(
 \begin{pmatrix}
@@ -99,7 +97,7 @@ where:
 \bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right) \\
 \bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\tilde\bI \right) \ .
 \end{align*}
-with $\tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[0] \end{pmatrix}$ and $\tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[0] \end{pmatrix}$. Then, $\bg_1$ is a Gaussian random vector as a linear combination of Gaussian random vectors. Moreover, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Combining these two results gives the following result:
+with $\tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[0] \end{pmatrix}$ and $\tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[0] \end{pmatrix}$. Then, $\bg_1$ is a Gaussian random vector because it is a linear combination of Gaussian random vectors. Moreover, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Combining these two results gives the following result:
 \[
 \sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
 \]

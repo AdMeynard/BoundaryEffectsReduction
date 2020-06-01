@@ -37,19 +37,19 @@ fprintf('| Extension Method | Computing time (sec.) |   Forecasting Error   |\n'
 fprintf('|                  |                       |    Mean   |   Median  |\n')
 fprintf('|------------------|-----------------------|-----------|-----------|\n')
 fprintf('|      LSE         |           %.2f        | %.3e | %.3e |\n', CompTime.LSE , mean(forecastErr.LSE(~isnan(OTD.sst.LSE))),median(forecastErr.LSE(~isnan(OTD.sst.LSE))) )
-fprintf('|      EDMD        |           %.2f        | %.3e | %.3e |\n', CompTime.EDMD , mean(forecastErr.EDMD),median(forecastErr.LSE))
+fprintf('|      EDMD        |          %.2f        | %.3e | %.3e |\n', CompTime.EDMD , mean(forecastErr.EDMD),median(forecastErr.LSE))
 fprintf('|      GPR         |         %.2f        | %.3e | %.3e |\n', CompTime.GPR , mean(forecastErr.GPR(~isnan(OTD.sst.GPR))),median(forecastErr.GPR(~isnan(OTD.sst.GPR))))
 fprintf('|__________________|_______________________|___________|___________|\n\n')
 
-fprintf('====================Optimal Transport Distance===================\n')
-fprintf(' ________________________________________________________________\n')
-fprintf('| Extension Method |    SST    |    STFT   |    RS     | ConceFT |\n')
-fprintf('|------------------|-----------|-----------|-----------|---------|\n')
+fprintf('====================Optimal Transport Distance=====================\n')
+fprintf(' __________________________________________________________________\n')
+fprintf('| Extension Method |    SST    |    STFT   |    RS     |  ConceFT  |\n')
+fprintf('|------------------|-----------|-----------|-----------|-----------|\n')
 fprintf('|  No extension    | %.3e | %.3e | %.3e | %.3e |\n', mean(OTD.sst.S),mean(OTD.stft.S),mean(OTD.rs.S),mean(OTD.conceft.S))
 fprintf('|  LSE extension   | %.3e | %.3e | %.3e | %.3e |\n', mean(OTD.sst.LSE(~isnan(OTD.sst.LSE))),mean(OTD.stft.LSE(~isnan(OTD.sst.LSE))),mean(OTD.rs.LSE(~isnan(OTD.sst.LSE))),mean(OTD.conceft.LSE(~isnan(OTD.sst.LSE))))
 fprintf('|  EDMD extension  | %.3e | %.3e | %.3e | %.3e |\n', mean(OTD.sst.EDMD),mean(OTD.stft.EDMD),mean(OTD.rs.EDMD),mean(OTD.conceft.EDMD))
 fprintf('|  GPR extension   | %.3e | %.3e | %.3e | %.3e |\n', mean(OTD.sst.GPR(~isnan(OTD.sst.GPR))),mean(OTD.stft.GPR(~isnan(OTD.sst.GPR))),mean(OTD.rs.GPR(~isnan(OTD.sst.GPR))),mean(OTD.conceft.GPR(~isnan(OTD.sst.GPR))))
-fprintf('|__________________|___________|___________|___________|_________|\n\n')
+fprintf('|__________________|___________|___________|___________|___________|\n\n')
 
 %% EEG
 load ../../Results/resultSucForEEGcompMeth ;

@@ -62,7 +62,7 @@ and the instantaneous phases are such that:
 \end{align*}
 Besides, the additive noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$. Numerically, we take: $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
 
-To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of the Algorithm~\ref{alg:boundary} with reference forecasting algorithm that could be used for extending such signals. These methods are:
+To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AM-FM, we compare the performance of the Algorithm~\ref{alg:boundary} with reference forecasting algorithm that could be used for extending such signals. These methods are:
 \begin{itemize}
 \item The \emph{Extended Dynamic Mode Decomposition (EDMD)} has been developped by Williams \etal~\cite{Williams15data}. The proposed algorithm is a way to obtain an approximation of the so-called Koopman operator of the observed system, which theoretically allows to catch dynamic of nonlinear systems~\cite{Korda18linear}.
 \item The \emph{Gaussian Process Regression (GPR)}~\cite{Rasmussen06gaussian} is a method relying on a probabilistic dynamical model. That one is based on the Gaussian process structure, and therefore offer more flexibility in the type of dynamic that could be modeled than the linear model~\eqref{eq:dyn.model}.
@@ -80,7 +80,7 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 
 \begin{table}
 \centering
-\caption{AHM signal. Performance of the extension methods.}
+\caption{AM-FM signal. Performance of the extension methods.}
 \begin{tabular}{|c||c|c|c|}
   \hline
    \multirow{2}{*}{Algorithm} & \multicolumn{2}{c|}{MSE}  & \multirow{2}{41pt}{Computing time (sec.)} \\
@@ -172,9 +172,9 @@ Then, we apply the boundary effects reduction method {\sf BoundEffRed} (Algorith
    \hline
    {\sf SigExt} & $1.72\!\times\! 10^{-2}$ & $4.00\!\times\! 10^{-3}$ & $2.43\!\times\! 10^{-2}$ & $1.12\!\times\! 10^{-2}$ \\
    \hline
-   EDMD & $1.75\!\times\! 10^{-2}$ & $4.23\!\times\! 10^{-3}$ & $2.45\!\times\! 10^{-2}$ & $1.14\!\times\! 10^{-2}$ \\
+   EDMD & $1.75\!\times\! 10^{-2}$ & $4.23\!\times\! 10^{-3}$ & $2.45\!\times\! 10^{-2}$ & $1.09\!\times\! 10^{-2}$ \\
    \hline
-   GPR & $1.84\!\times\! 10^{-2}$ & $4.10\!\times\! 10^{-3}$ & $2.48\!\times\! 10^{-2}$ & $1.10\!\times\! 10^{-2}$ \\
+   GPR & $1.84\!\times\! 10^{-2}$ & $4.10\!\times\! 10^{-3}$ & $2.48\!\times\! 10^{-2}$ & $1.24\!\times\! 10^{-2}$ \\
    \hline
 \end{tabular}
 \label{tab:otd.tho}

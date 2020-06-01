@@ -30,11 +30,23 @@ tsst = t(1:basicTF.hop:end);
 ff = linspace(0,fs*basicTF.fmax,400) ;
 
 figure;
+subplot(3,1,1);
+plot(t,x,'linewidth',2); axis tight ; 
+ylabel('Signal'); 
+set(gca,'fontsize',18); grid on; xticklabels([]);
+
+subplot(3,1,[2 3]);
 imagesc(tsst,ff,log1p(abs(sstS)/1e1)); axis xy; 
 xlabel('Time (sec.)'); ylabel('Frequency (Hz)'); colormap(1-gray);
 set(gca,'fontsize',18);
 
 figure;
+subplot(3,1,1);
+plot(t,x,'linewidth',2); axis tight ; xlim([27 t(end)]) ;
+ylabel('Signal'); 
+set(gca,'fontsize',18); grid on; xticklabels([]);
+
+subplot(3,1,[2 3]);
 imagesc(tsst,ff,log1p(abs(sstS)/1e1)); axis xy; xlim([27 t(end)])
 xlabel('Time (sec.)'); ylabel('Frequency (Hz)'); colormap(1-gray)
 set(gca,'fontsize',18);
