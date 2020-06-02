@@ -1,10 +1,10 @@
 \subsection{Signal model}
 We model the deterministic part of the observed signal as a multicomponent harmonic signal, that is a sum of sine waves. Then:
 \begin{equation}
-\bz[n]=\sum_{j=1}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs}\right)\ ,
+\bz[n]=\sum_{j=1}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs} + \varphi_j\right)\ ,
 \label{eq:sum.sine}
 \end{equation}
-where $J$ denotes the number of components, $\Omega_j$ the amplitude of the $j$-th component, and $f_j$ its frequency.
+where $J$ denotes the number of components, $\Omega_j>0$ the amplitude of the $j$-th component, $f_j$ its frequency, and $\varphi_j\in[0,2\pi)$ its initial phase.
 
 \begin{remark}
 For the sake of simplicity, we make an additional assumption on the frequencies of each component. We assume that for all $j\in\{1,\dots,J\}$:
@@ -69,7 +69,10 @@ Thus by definition of the noise, we have $\bgamma[n,n'] =\sigma^2\delta_{n,n'}$ 
 Besides, we recall that $\bgamma[n,n']=\bgamma[n',n]$.
 \end{enumerate}
 
-Expressions~\eqref{eq:bias0},~\eqref{eq:cov00}, and~\eqref{eq:cov01} show that these quantities depend on the behavior of the forecasting random vector $\balpha^{(\ell)}$. First, notice that the forecasting matrix $\tilde\bA$ would ideally take the form:
+Expressions~\eqref{eq:bias0},~\eqref{eq:cov00}, and~\eqref{eq:cov01} show that these quantities depend on the behavior of the forecasting random vector $\balpha^{(\ell)}$. In Lemma~\ref{lm:error}, we specify the asymptotic behavior of the forecasting vector $\balpha^{(\ell)}$ when the dataset size $K$ is great.
+\begin{lemma}
+\label{lm:error}
+Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\ell)}$ be the associated forecasting vector for the estimation of $\bx[N-1+\ell]$, given by~\eqref{eq:alpha.l} and obtained from the least square estimation~\eqref{eq:lse}. Let $\balpha_0^{(\ell)}$ be the last row of the matrix $\bA_0^\ell$, where $\bA_0$ is defined by:
 \begin{equation}
 \bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
 \label{eq:lse.0}
@@ -78,10 +81,7 @@ with $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$ and $\bZ'=\be
 \[
 \bD[m,m'] = \delta_{m+1,m'}\ .
 \]
-Lemma~\ref{lm:error} specify the asymptotic behavior of the forecasting vector $\balpha^{(\ell)}$ when the dataset size $K$ is great.
-\begin{lemma}
-\label{lm:error}
-Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\ell)}$ be the associated forecasting vector for the estimation of $\bx[N-1+\ell]$, given by~\eqref{eq:alpha.l} and obtained from the least square estimation~\eqref{eq:lse}. Let $\balpha_0^{(\ell)}$ be the last row of the ideal forecasting matrix $\bA_0^\ell$. Let $\bh^{(\ell)}$ be the error vector given by:
+Let $\bh^{(\ell)}$ be the error vector given by:
 \begin{equation*}
 \bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}\ .
 \end{equation*}

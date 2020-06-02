@@ -1,4 +1,4 @@
-\documentclass[journal, onecolumn]{IEEEtran}
+\documentclass[journal,onecolumn]{IEEEtran}
 
 \usepackage{graphicx}
 \usepackage{bbm}
@@ -8,17 +8,14 @@
 \usepackage{mathpazo}
 \usepackage[scaled=.95]{helvet}
 \usepackage{courier}
-\usepackage{xr}
 \usepackage{xspace}
 \usepackage{etoolbox}
 \usepackage[shortlabels]{enumitem}
 \usepackage{multirow}
 \usepackage{dsfont}
-%\usepackage{hhline}
-%\usepackage{algorithm,algorithmic}
 
 \usepackage{xr}
-\externaldocument[I-]{../BoundEffRed}
+\externaldocument[I-]{../BoundEffRed2}
 
 \input{../mydefs}
 
@@ -32,6 +29,8 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 
 \newtheorem{remark}{Remark}
 
+\setcounter{equation}{26}
+
 \begin{document}
 \maketitle
 
@@ -40,7 +39,7 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 \label{ap:lm.error}
 
 \subsection{Notations}
-By definition the matrix $\bX$ and $\bY$ and because of the noisy signal model~\eqref{eq:model.noise}, we have:
+By definition the matrix $\bX$ and $\bY$ and because of the noisy signal model~\eqref{I-eq:model.noise}, we have:
 \begin{align}
 \dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
 \dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq S^{(1)}}+ \bE^{(1)} \ ,
@@ -128,7 +127,7 @@ Clearly, $\bmu[n]=0$ when $n\in I$. When $n=N-1+\ell$, we have:
 \end{align*}
 Let us first evaluate the expression of $\balpha_0^{(\ell)}\bz_K$. We have:
 \begin{align*}
-\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)\right) \\
+\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)+\varphi_j\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)+\varphi_{j'}\right) \\
 &= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}{2K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)\\
 &= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\left( \dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \dfrac{\Omega_j^2}{2K}\underbrace{\sum_{k=0}^{K-1}\cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)}_{=0\ \mathrm{because}\ \frac{f_j}\fs=\frac{p'_j}K } \right)\\
 &= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
@@ -195,8 +194,8 @@ Then:
 But:
 \begin{align*}
 \balpha_0^{(1)}\bz_{K} &=\sum_{m=0}^{M-1}\balpha_0^{(1)}[m]\bz[N-M+m] \\
-&=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}\right)}_{=\delta_{j,j'}\frac{M}2\cos\left(2\pi p_j\frac{N}M\right)} + o(\sigma) \\
-&= \sum_{j=1}^J\Omega_j\cos\left(2\pi p_j\dfrac{N}{M}\right) + o(\sigma) \\
+&=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}+\varphi_{j'}\right)}_{=\delta_{j,j'}\frac{M}2\cos\left(2\pi p_j\frac{N}M +\varphi_{j}\right)} + o(\sigma) \\
+&= \sum_{j=1}^J\Omega_j\cos\left(2\pi p_j\dfrac{N}{M}+\varphi_j\right) + o(\sigma) \\
 &= \bz[N] + o(\sigma)
 \end{align*}
 and, by induction from~\eqref{eq:seq}:
@@ -214,17 +213,17 @@ Besides, from Lemma~1, we have the following results:
 \EE\{\bh^{(\ell)}\bw_{K}\} &\underset{K\to\infty}{\longrightarrow} 0
 \end{align*}
 Consequently:
-\begin{equation*}
+\begin{equation}
 \bmu[N-1+\ell] \underset{K\to\infty}{\sim} o(\sigma)\ .
 \label{eq:bias.ap}
-\end{equation*}
+\end{equation}
 
 
 \subsection{Expression of the covariance $\bgamma$.}
 We recall that $n>N$, we consequently denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
  
 \paragraph{If $n'\in I^2$}
-From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. Then, combining result~\eqref{eq:bias.ap} and equation~\eqref{eq:bias0}, we obtain:
+From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. Then, combining result~\eqref{eq:bias.ap} and equation~\eqref{I-eq:bias0}, we obtain:
 \begin{align*}
 \bgamma[n,n'] &= \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\} + o(\sigma^2) \ .
 \end{align*}
@@ -243,7 +242,7 @@ Finally:
 \end{align*}
 
 \paragraph{If $n'\geq N$}
-From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. Then, combining result~\eqref{eq:bias.ap} and equations~\eqref{eq:cov0} and~\eqref{eq:cov.ap}, we obtain:
+From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. Then, combining result~\eqref{eq:bias.ap} and equations~\eqref{I-eq:cov01} and~\eqref{eq:cov.ap}, we obtain:
 \begin{align*}  
 \bgamma[n,n'] &= \bz_K^T\EE\left\{{\balpha^{(\ell)}}^T\balpha^{(\lambda)}\right\}\bz_K + \sigma\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\}\bz_K+ \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K \\
 & +\sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}-\bz[n]\bz[n']+o(\sigma^2) \\

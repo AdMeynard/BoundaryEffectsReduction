@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.12)  1 JUN 2020 16:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.12)  1 JUN 2020 22:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -276,9 +276,6 @@ Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/courier.sty
 Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
 )
-(/usr/share/texlive/texmf-dist/tex/latex/tools/xr.sty
-Package: xr 1994/05/28 v5.02 eXternal References (DPC)
-)
 (/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 )
@@ -304,70 +301,72 @@ Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/dsfont.sty
 Package: dsfont 1995/08/01 v0.1 Double stroke roman fonts
 )
-Package xr Info: IMPORTING LABELS FROM ../BoundEffRed.aux on input line 21.
-
-(../mydefs.tex)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/xr.sty
+Package: xr 1994/05/28 v5.02 eXternal References (DPC)
+)
+Package xr Info: IMPORTING LABELS FROM ../BoundEffRed2.aux on input line 18.
+ (../mydefs.tex)
 \c@remark=\count109
- (./SupMat.aux)
+
+(./SupMat.aux)
 \openout1 = `SupMat.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Try loading font information for OT1+ppl on input line 35.
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ppl.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 34.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <5> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <7> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <8> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <9> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <11> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <11> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <17> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <17> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <20> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <20> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <24> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/it' in size <24> not available
-(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 35.
+(Font)              Font shape `OT1/ppl/b/it' tried instead on input line 34.
 
 -- Lines per column: 58 (exact).
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -431,99 +430,87 @@ e
 ))
 \AtBeginShipoutBox=\box32
 
-Underfull \hbox (badness 5105) in paragraph at lines 36--36
+Underfull \hbox (badness 5105) in paragraph at lines 35--35
 [][][]\OT1/ppl/m/n/8 A. Mey-nard and H.-T. Wu are with the De-part-ment of Math
 -e-mat-ics, Duke Uni-ver-sity, Durham, NC, 27708 USA e-mail:
  []
 
-LaTeX Font Info:    Try loading font information for OML+zplm on input line 43.
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 42.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMS+zplm on input line 43.
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 42.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Try loading font information for OMX+zplm on input line 43.
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 42.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 43.
+(Font)              scaled to size 10.42007pt on input line 42.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 43.
+(Font)              scaled to size 7.91925pt on input line 42.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 43.
+(Font)              scaled to size 6.25204pt on input line 42.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 43.
+(Font)              scaled to size 10.42007pt on input line 42.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 43.
+(Font)              scaled to size 7.91925pt on input line 42.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 43.
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 43.
+(Font)              scaled to size 6.25204pt on input line 42.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 42.
 
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 43.
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 42.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 62.
 
-LaTeX Warning: Reference `eq:model.noise' on page 1 undefined on input line 43.
-
-
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 63.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ufplmbb.fd
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
 ) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 232.
 
-LaTeX Warning: Reference `eq:bias0' on page 4 undefined on input line 227.
-
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 233.
 
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-)
-
-LaTeX Warning: Reference `eq:cov0' on page 4 undefined on input line 246.
-
-[4] [5] (./SupMat.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+) [4] [5]
+(./SupMat.aux) ) 
 Here is how much of TeX's memory you used:
- 5245 strings out of 492982
- 74946 string characters out of 6134895
- 154055 words of memory out of 5000000
- 8654 multiletter control sequences out of 15000+600000
+ 5242 strings out of 492982
+ 74912 string characters out of 6134895
+ 154924 words of memory out of 5000000
+ 8651 multiletter control sequences out of 15000+600000
  69718 words of font info for 175 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,19n,37p,805b,255s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-doublestroke/dsrom10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/math
-pazo/fplmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmb
-b.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmbi.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
-/palatino/uplri8a.pfb>
-Output written on SupMat.pdf (5 pages, 133590 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/doublestroke/dsrom10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/mathpazo/fplmb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+mathpazo/fplmbb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/
+fplmbi.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/palatino/uplri8a.pfb>
+Output written on SupMat.pdf (5 pages, 133427 bytes).
 PDF statistics:
  77 PDF objects out of 1000 (max. 8388607)
  55 compressed objects within 1 object stream
