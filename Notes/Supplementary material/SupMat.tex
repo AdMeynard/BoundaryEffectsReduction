@@ -72,8 +72,8 @@ Then:
 \nonumber
 \bh^{(\ell)} &= \balpha^{(\ell)} - \balpha^{(\ell)}_0 \\
 \nonumber
-&= \be_M^T\left(\tilde\bA^\ell-\tilde\bA_0^\ell\right) \\
-&= \be_M^T\left(\left((\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\right)^\ell- \tilde\bA_0^\ell\right)\ .
+&= \be_M^T\left(\tilde\bA^\ell-\bA_0^\ell\right) \\
+&= \be_M^T\left(\left((\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\right)^\ell- \bA_0^\ell\right)\ .
 \label{eq:error.vec}
 \end{align}
 
@@ -96,7 +96,7 @@ where:
 \bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right) \\
 \bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\tilde\bI \right) \ .
 \end{align*}
-with $\tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[0] \end{pmatrix}$ and $\tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[0] \end{pmatrix}$. Then, $\bg_1$ is a Gaussian random vector because it is a linear combination of Gaussian random vectors. Moreover, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Combining these two results gives the following result:
+with $\tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}$ and $\tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix}$. Then, $\bg_1$ is a Gaussian random vector because it is a linear combination of Gaussian random vectors. Moreover, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Combining these two results gives the following result:
 \[
 \sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
 \]

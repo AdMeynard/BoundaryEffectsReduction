@@ -77,10 +77,8 @@ Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\
 \bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
 \label{eq:lse.0}
 \end{equation}
-with $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$ and $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, where $\bz_k$ is the $k$-th sub-signal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}. Besides, $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that:
-\[
-\bD[m,m'] = \delta_{m+1,m'}\ .
-\]
+with $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$ and $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, where $\bz_k$ is the $k$-th sub-signal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}. Besides, $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that: $\bD[m,m'] = \delta_{m+1,m'}$.
+
 Let $\bh^{(\ell)}$ be the error vector given by:
 \begin{equation*}
 \bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}\ .
@@ -89,7 +87,7 @@ Then, the random vector $\bh^{(\ell)}$ converges in law to a zero-mean Gaussian 
 \begin{equation}
 \sqrt{K}\,\bh^{(\ell)}  \xrightarrow[K\to\infty]{\cD} \cN\left(\bzero,\bGamma^{(\ell,\ell)}\right)\ ,
 \end{equation}
-with $\bGamma^{(\ell,\ell)}={\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)}$, where $\bGamma_0\in\RR^{M(M+1)\times M(M+1)}$ is a covariance matrix and $\bF^{(\ell)}\in\RR^{M(M+1)\times M}$ is a Jacobian matrix. The expressions of these two matrices do not depend on $K$ or $\sigma$. 
+with $\bGamma^{(\ell,\ell)}={\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)}$, where $\bGamma_0\in\RR^{M(M+1)\times M(M+1)}$ is a covariance matrix and $\bF^{(\ell)}\in\RR^{M(M+1)\times M}$ is a Jacobian matrix. The expressions of $\bGamma^{(\ell,\ell)}$ does not depend on $K$ or $\sigma$. 
 % such that:
 %{\color{red}
 %\begin{align*}
