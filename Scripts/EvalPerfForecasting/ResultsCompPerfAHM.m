@@ -8,6 +8,7 @@ CPUtimeXP.TBATS = dataTBATS(~isnan(dataTBATS(:,3)),3) ;
 MSE.LSE = BiasXP.LSE.^2 + VarianceXP.LSE ;
 MSE.EDMD = BiasXP.EDMD.^2 + VarianceXP.EDMD ;
 MSE.GPR = BiasXP.GPR.^2 + VarianceXP.GPR ;
+MSE.TBATS = BiasXP.TBATS.^2 + VarianceXP.TBATS ;
 
 fprintf('===================Forecasting Performance=========\n')
 fprintf(' _________________________________________________\n')

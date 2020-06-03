@@ -75,10 +75,6 @@ CPUtimeXP_TBATS = mean(TBATStime)
 
 MSE_TBATS = BiasXP_TBATS^2 + VarianceXP_TBATS
 
-lv = max(length(BiasXP_TBATS), length(CPUtimeXP_TBATS))
-length(BiasXP_TBATS) = lv
-length(VarianceXP_TBATS) = lv
-length(CPUtimeXP_TBATS) = lv
-
+length(CPUtimeXP_TBATS) = length(BiasXP_TBATS)
 ResTBATS=cbind(BiasXP_TBATS,VarianceXP_TBATS,CPUtimeXP_TBATS)
 write.csv(ResTBATS,'../../Results/PerfAHM_TBATS.csv')
