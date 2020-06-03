@@ -75,8 +75,10 @@ CPUtimeXP_TBATS = mean(TBATStime)
 
 MSE_TBATS = BiasXP_TBATS^2 + VarianceXP_TBATS
 
-plot(tt,xx0,type="l", col="blue", lty=2)
-lines(tt,xxTBATS,type="l", col="red", lty=1)
-lines(t,x,type="l", col="blue", lty=1)
+lv = max(length(BiasXP_TBATS), length(CPUtimeXP_TBATS))
+length(BiasXP_TBATS) = lv
+length(VarianceXP_TBATS) = lv
+length(CPUtimeXP_TBATS) = lv
 
-save(list =c('BiasXP_TBATS','VarianceXP_TBATS','CPUtimeXP_TBATS'),file = 'PerfAHM_TBATS.RData')
+ResTBATS=cbind(BiasXP_TBATS,VarianceXP_TBATS,CPUtimeXP_TBATS)
+write.csv(ResTBATS,'../../Results/PerfAHM_TBATS.csv')
