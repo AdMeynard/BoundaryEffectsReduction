@@ -6,7 +6,7 @@ LoadConvertTS <- function(TabName) {
   return(y)
 }			
 
-setwd(getSrcDirectory(LoadConvertTS)[1])
+#setwd(getSrcDirectory(LoadConvertTS)[1])
 
 ### TBATS Extension
 
@@ -49,8 +49,8 @@ xextR = xx0[(N+1):(N+L)]
 sigman = 1e-2
 
 # Forecasting
-nbXP = 1
-ss = 20:25
+nbXP = 15
+ss = 1:250
 
 TBATStime = rep(0,nbXP)
 MeanTBATS = matrix(0,nrow=nbXP,ncol=L)

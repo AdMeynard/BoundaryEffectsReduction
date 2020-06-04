@@ -53,7 +53,7 @@ x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 sigman = 1e-2 ;
 
 %% Forecasting
-nbXP = 1000 ;
+nbXP = 50 ;
 
 for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
@@ -96,16 +96,3 @@ VarianceXP.GPR = mean(VarGPR) ;
 CPUtimeXP.GPR = mean(GPRtime) ;
 
 save('../../Results/PerfAHM','BiasXP','VarianceXP','CPUtimeXP');
-MSE.LSE = BiasXP.LSE.^2 + VarianceXP.LSE ;
-MSE.EDMD = BiasXP.EDMD.^2 + VarianceXP.EDMD ;
-MSE.GPR = BiasXP.GPR.^2 + VarianceXP.GPR ;
-
-fprintf('===================Forecasting Performance=========\n')
-fprintf(' _________________________________________________\n')
-fprintf('| Extension |  Computing  |   Forecasting Error   |\n')
-fprintf('|  Method   | time (sec.) |    Mean   |  Variance |\n')
-fprintf('|-----------|-------------|-----------|-----------|\n')
-fprintf('|   LSE     |     %.2f    | %.3e | %.3e |\n', CPUtimeXP.LSE , median(MSE.LSE), var(MSE.LSE))
-fprintf('|   EDMD    |     %.2f    | %.3e | %.3e |\n', CPUtimeXP.EDMD , median(MSE.EDMD), var(MSE.EDMD))
-fprintf('|   GPR     |   %.2f    | %.3e | %.3e |\n', CPUtimeXP.GPR , median(MSE.GPR), var(MSE.GPR))
-fprintf('|___________|_____________|___________|___________|\n\n')
