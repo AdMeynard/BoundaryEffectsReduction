@@ -29,7 +29,7 @@ TBATSextension <- function(sig,ss,L,xext0) {
   return(xxTBATS)
 }
 
-# Signal
+### Signal
 xx0 = LoadConvertTS("../../Signals/AMFM4R")
 
 N = 10000
@@ -44,34 +44,33 @@ xx0 = xx0[(L+1):(N+2*L)] # remove the left boundary/extension
 tt = seq(from = 0, to = 1+L/fs, by = 1/fs)
 
 x0 = xx0[1:N] # restriction to the measurement interval
-xextR = xx0[(N+1):(N+L)]
+xextR = xx0[(N+1):(N+L)] # Part to be estimated
 
 sigman = 1e-2
 
 # Forecasting
-nbXP = 15
+nbXP = 50
 ss = 1:250
 
 TBATStime = rep(0,nbXP)
 MeanTBATS = matrix(0,nrow=nbXP,ncol=L)
 VarTBATS = matrix(0,nrow=nbXP,ncol=L)
 
+start_time = Sys.time()
 for (ind in 1:nbXP){
   noise = sigman*rnorm(N+L)
   x = x0 + noise[1:N] # signal to be extended
   
-  start_time = Sys.time()
   xxTBATS = TBATSextension(x,ss,L,xextR)
-  end_time = Sys.time()
   
-  TBATStime[ind] = 2*(end_time - start_time)
   MeanTBATS[ind,] = xxTBATS[(N+1):(N+L)] - xx0[(N+1):(N+L)]
   VarTBATS[ind,] = ( xxTBATS[(N+1):(N+L)] - xx0[(N+1):(N+L)] )^2
 }
+end_time = Sys.time()
 
 BiasXP_TBATS = colMeans(MeanTBATS)
 VarianceXP_TBATS = colMeans(VarTBATS)
-CPUtimeXP_TBATS = mean(TBATStime)
+CPUtimeXP_TBATS = (2/nbXP)*(end_time - start_time)
 
 MSE_TBATS = BiasXP_TBATS^2 + VarianceXP_TBATS
 
