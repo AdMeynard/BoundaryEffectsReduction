@@ -1,17 +1,16 @@
 \subsection{Signal model}
-We model the deterministic part of the observed signal as a multicomponent harmonic signal, that is a sum of sine waves. Then:
+We model the deterministic part of the observed signal as a multicomponent harmonic signal; that is, a sum of sine waves,
 \begin{equation}
 \bz[n]=\sum_{j=1}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs} + \varphi_j\right)\ ,
 \label{eq:sum.sine}
 \end{equation}
 where $J$ denotes the number of components, $\Omega_j>0$ the amplitude of the $j$-th component, $f_j$ its frequency, and $\varphi_j\in[0,2\pi)$ its initial phase.
-
-\begin{remark}
+%
 For the sake of simplicity, we make an additional assumption on the frequencies of each component. We assume that for all $j\in\{1,\dots,J\}$:
 \begin{equation}
 \exists\, p_j,p_j'\in\NN^*: \quad f_j = \dfrac{p_j}{M}\fs = \dfrac{p'_j}{K}\fs\ .
 \end{equation}
-\end{remark}
+
 
 In addition, the observed signal is assumed to be corrupted by an additive Gaussian white noise. Therefore, the measured discrete signal $\bx$ is written as:
 \begin{equation}
@@ -26,13 +25,13 @@ On the forecasting interval, we decompose the estimated signal $\tilde\bx$ as fo
 \tilde \bx[n] = \bz[n] + \bepsilon[n]\ ,
 \label{eq:forecasting.error}
 \end{equation}
-where $\bepsilon$ is a the forecasting error. When $n\in I=\{0,\dots,N-1\}$, this error is only containing the measurement noise, that is $\bepsilon[n]=\sigma\bw[n]$. Outside the interval $I$, the importance of the forecasting error $\bepsilon$ is also affected by the loss of information resulting from the linearization of dynamical model we consider in~\eqref{eq:dyn.model}. To evaluate the actual behavior of the forward forecasting error $\bepsilon[n]$ when $n\geq N$, we determine its two first moments.
+where $\bepsilon$ is a the forecasting error. When $n\in I=\{0,\dots,N-1\}$, this error is only containing the measurement noise, that is $\bepsilon[n]=\sigma\bw[n]$. Outside the interval $I$, the importance of the forecasting error $\bepsilon$ is also affected by the loss of information resulting from the linearization of dynamical model we consider in~\eqref{eq:dyn.model}. To evaluate the actual behavior of the forward forecasting error $\bepsilon[n]$ when $n\geq N$, we determine its first two moments.
 \begin{enumerate}
 \item 
 The mean, which is also the estimation bias, is such that: 
 \begin{align*}
-\bmu[n]&\defeq\EE\{\bepsilon[n]\} \\
-&=\EE\{\tilde\bx[n]\} - \bz[n]\ .
+\bmu[n]&\defeq\EE\{\bepsilon[n]\} 
+=\EE\{\tilde\bx[n]\} - \bz[n]\ .
 \end{align*}
 Given the forecasting strategy, we have $\bmu[n]=0$ when $n\in I$ and: 
 \begin{equation}
@@ -77,7 +76,7 @@ Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\
 \bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
 \label{eq:lse.0}
 \end{equation}
-with $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$ and $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, where $\bz_k$ is the $k$-th sub-signal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}. Besides, $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that: $\bD[m,m'] = \delta_{m+1,m'}$.
+where $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$, $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, $\bz_k$ is the $k$-th sub-signal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}, and $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that $\bD[m,m'] = \delta_{m+1,m'}$.
 
 Let $\bh^{(\ell)}$ be the error vector given by:
 \begin{equation*}
@@ -136,18 +135,20 @@ See the Supplementary Material. The proof is mainly based on the results provide
 
 Ideally, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean noise whose variance is of the order of $\sigma^2$. Theorem~\ref{th:error} shows that the forecasting error is asymptotically unbiased. Concerning the covariance of the forecasting error, although equations~\eqref{eq:cov.error.1} and~\eqref{eq:cov.error.2} are not easily readable, one can evaluate the dependence of the variance in function of the tuning parameters, that are adjusted by the user. Let us focus on the forecasting error variance $\gamma[n,n]$ when $n\geq N$. First, as expected, the variance increases linearly with the noise variance $\sigma^2$. Second, it asymptotically depends linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Third, the dependency on the sub-signals lengths $M$ and the forecasting index $\ell=n-N+1$ is hidden in the expression of the covariance matrix $\bGamma^{(\ell,\ell)}$. We discuss this dependency in more detail in section~\ref{ssse:res.sine}.
 
-\begin{remark}[AM-FM Model]
+\begin{remark}[Adaptive Harmonic Model]\label{RemarkAHM}
 One can extend the previous result to the case where the instantaneous frequencies and amplitudes of the components of the deterministic part of the observed signal are slowly varying. We therefore handle the \textit{AM-FM model} which, in its is continuous-time version, takes the following form:
 \begin{equation}
 z(t) = \sum_{j=1}^J a_j(t)\cos(2\pi\phi_j(t))\ ,
 \end{equation}
-where $a_j$ and $\phi'_j$ are smooth function. These 
-restrictions fixed on the variations of the instantaneous amplitudes and frequencies are specified by the so-called adaptive harmonic model (see~\cite{Daubechies16conceft} for example). In the case, the forecasting error is additionally sensitive to the speed of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$. 
+where $a_j$ and $\phi'_j$ describe how large and fast the signal oscillate. 
+Clearly, \eqref{eq:sum.sine} is a special case satisfying the AM-FM model. It is also clear that if we apply {\sf SigExt} for the forecasting, the forecasting error is additionally sensitive to the speed of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$. 
+%
+
+In many practical signals, the amplitude and frequency do not change fast. It is thus reasonable to further restrict the regularity and variations of the instantaneous amplitudes and frequencies of these AM-FM functions so that the signal can be ``locally'' well approximated by a harmonic function in \eqref{eq:sum.sine}. We call thus functions satisfying the adaptive harmonic model (AHM) (see~\cite{Chen14nonparametric,Daubechies16conceft} for mathematical details). In this case, we know that when $K$ is not too large, the signal can be well approximated by \eqref{eq:sum.sine} and hence Theorem \ref{th:error} can still be applied to approximate the error. How to determine the optimal $K$ based on the signal is out of the scope of this paper and will be explored in the future work.
 \end{remark}
 
 
 \subsection{Performance of the boundary effects reduction}
 \label{sse:perf.BoundEffRed}
-Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any time-frequency representation. Let us focus instead on the particular case of synchrosqueezing transform. Since we analyze AM-FM signals, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. We can then rely on Theorem 3 in~\cite{Chen14nonparametric}. Indeed, this theorem states that when the additive noise remains small, the SST of the observed signal remains close to the ideal SST of an AM-FM signal, throughout the time-frequency plane.  We refer the reader to~\cite{Chen14nonparametric} for a precise quantification of the error made in the time-frequency plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since instantaneous frequencies can now be approximately observed continuously up to the edges of the time-frequency plane.
-
-The extension of this result to other time-frequency representations is not provided theoretically. In the following section~\ref{se:results}, we verify experimentally that algorithm~\ref{alg:boundary} is efficient for a large number of representations.
+Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any TF representation. Instead, let us discuss the particular case of SST. Since SST is designed to analyze signals satisfying the AHM, as is discussed in Remark \ref{RemarkAHM}, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. Recall Theorem 3 in~\cite{Chen14nonparametric}, which states that when the additive noise is stationary and remains small, the SST of the observed signal remains close to the ideal SST of an AM-FM signal, throughout the TF plane. In our case, while the additive noise is not stationary, the dependence only appears in the extended part of the signal. Thus, the proof of Theorem 3 in~\cite{Chen14nonparametric} can be generalized to explain the robustness of SST to the noise. We refer the reader to~\cite{Chen14nonparametric} for a precise quantification of the error made in the TF plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since the forecasting error does not impact SST. An immediate application is that the instantaneous frequencies can now be well estimated continuously up to the edges of the TF plane.
+While we do not provide a theoretical justification, we verify experimentally that algorithm~\ref{alg:boundary} is efficient for a large number of representations in the following section~\ref{se:results}.

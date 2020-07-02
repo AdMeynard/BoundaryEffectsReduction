@@ -4,14 +4,16 @@ if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     x = flipud(x);
 end
 
-X = [] ; Y = [] ;
-for kk = 1: extK
-    X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
-    Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
+if ~strcmpi(method.name,'symmetrization')
+    X = [] ; Y = [] ;
+    for kk = 1: extK
+        X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
+        Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
+    end
 end
 
 
-% A is extP * extP
+%% Estimate the parameters of the forecasting model
 switch method.name
     
     case 'lse'
@@ -36,9 +38,11 @@ switch method.name
         y = Y(end,:).' ;
         gprMdl = fitrgp(X.',y,'Basis','linear','FitMethod','exact','PredictMethod','exact');
         
+    otherwise
+        % nothing
 end
 
-% extension
+%% Extension
 L = round(fs*extSEC);
 Z = zeros(extM,L) ;
 
@@ -62,13 +66,16 @@ switch method.name
             xext(kk) = zpred ;
         end
         
-    otherwise
+    case {'lse','lseV'}
         Z = zeros(extM,L) ;
         Z(:,1) = A*Y(:,end) ;
         for kk = 2:L
             Z(:,kk) = A*Z(:,kk-1) ; 
         end
         xext = Z(end,:)' ;
+        
+    otherwise
+        xext = flipud( x((end-L+1):end) ) ; % symmetrization
         
 end
 

@@ -45,8 +45,8 @@ xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method);
 GPRtime = toc;
 
 %% Plot
-t = (n0-1)*fs + linspace(0, (N-1)/fs, N) ;
-tt = (n0-1)*fs + linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
+t = linspace(0, (N-1)/fs, N) ;
+tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
 
 xxTRUE = ( xtot((n0-L):(n1+L)) - mu ) / s ;
 xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding

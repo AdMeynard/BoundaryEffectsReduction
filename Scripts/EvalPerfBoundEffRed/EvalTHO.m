@@ -12,7 +12,7 @@ fs = 100 ; % sampling frequency
 N = 6e3; % subsignals length
 
 % Forecasting parameters
-methods = {'lse','edmd','gpr'} ;
+methods = {'lse','symmetrization'} ;%,'edmd','gpr'} ;
 HOP = 1 ;
 extSEC = 7 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
@@ -26,4 +26,4 @@ basicTF.fmin = 0 ;
 basicTF.fmax = 0.01 ;
 [forecastErr, CompTime, OTD] = SucForecast(xtot,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
 
-save('../../Results/resultSucForTHOcompMeth','forecastErr','CompTime','OTD');
+% save('../../Results/resultSucForTHOcompMeth','forecastErr','CompTime','OTD');

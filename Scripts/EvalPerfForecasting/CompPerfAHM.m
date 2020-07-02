@@ -59,40 +59,51 @@ for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
     x = x0.' + noise((L+1):(N+L)) ; % signal to be extended
 
-    method.name = 'lse' ;
+%     method.name = 'lse' ;
+%     tic;
+%     xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via LSE
+%     LSEtime(ind) = toc;
+%     MeanLSE(ind,:) = xxLSE((N+L+1):end) - xx0((N+L+1):end) ;
+%     VarLSE(ind,:) = ( xxLSE((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+    
+    method.name = 'symmetrization' ;
     tic;
-    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via LSE
-    LSEtime(ind) = toc;
-    MeanLSE(ind,:) = xxLSE((N+L+1):end) - xx0((N+L+1):end) ;
-    VarLSE(ind,:) = ( xxLSE((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+    xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via LSE
+    SYMtime(ind) = toc;
+    MeanSYM(ind,:) = xxSYM((N+L+1):end) - xx0((N+L+1):end) ;
+    VarSYM(ind,:) = ( xxSYM((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
     
-    method.name = 'edmd' ;
-    method.param = 100 ;
-    tic; 
-    xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
-    EDMDtime(ind) = toc;
-    MeanEDMD(ind,:) = xxEDMD((N+L+1):end) - xx0((N+L+1):end) ;
-    VarEDMD(ind,:) = ( xxEDMD((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
-    
-    method.name = 'gpr' ;
-    tic; 
-    xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
-    GPRtime(ind) = toc;
-    MeanGPR(ind,:) = xxGPR((N+L+1):end) - xx0((N+L+1):end) ;
-    VarGPR(ind,:) = ( xxGPR((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+%     method.name = 'edmd' ;
+%     method.param = 100 ;
+%     tic; 
+%     xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
+%     EDMDtime(ind) = toc;
+%     MeanEDMD(ind,:) = xxEDMD((N+L+1):end) - xx0((N+L+1):end) ;
+%     VarEDMD(ind,:) = ( xxEDMD((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+%     
+%     method.name = 'gpr' ;
+%     tic; 
+%     xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
+%     GPRtime(ind) = toc;
+%     MeanGPR(ind,:) = xxGPR((N+L+1):end) - xx0((N+L+1):end) ;
+%     VarGPR(ind,:) = ( xxGPR((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
     
 end
 
-BiasXP.LSE = mean(MeanLSE) ;
-VarianceXP.LSE = mean(VarLSE) ;
-CPUtimeXP.LSE = mean(LSEtime) ;
+% BiasXP.LSE = mean(MeanLSE) ;
+% VarianceXP.LSE = mean(VarLSE) ;
+% CPUtimeXP.LSE = mean(LSEtime) ;
 
-BiasXP.EDMD = mean(MeanEDMD) ;
-VarianceXP.EDMD = mean(VarEDMD) ;
-CPUtimeXP.EDMD = mean(EDMDtime) ;
+BiasXP.SYM = mean(MeanSYM) ;
+VarianceXP.SYM = mean(VarSYM) ;
+CPUtimeXP.SYM = mean(SYMtime) ;
 
-BiasXP.GPR = mean(MeanGPR) ;
-VarianceXP.GPR = mean(VarGPR) ;
-CPUtimeXP.GPR = mean(GPRtime) ;
+% BiasXP.EDMD = mean(MeanEDMD) ;
+% VarianceXP.EDMD = mean(VarEDMD) ;
+% CPUtimeXP.EDMD = mean(EDMDtime) ;
+% 
+% BiasXP.GPR = mean(MeanGPR) ;
+% VarianceXP.GPR = mean(VarGPR) ;
+% CPUtimeXP.GPR = mean(GPRtime) ;
 
-save('../../Results/PerfAHM','BiasXP','VarianceXP','CPUtimeXP');
+% save('../../Results/PerfAHM','BiasXP','VarianceXP','CPUtimeXP');

@@ -22,7 +22,7 @@ N = length(x) ;
 %=======================================
 
 fprintf(['Run ordinary RS\n']) ;
-[tfr, tfrtic, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, 1, h(1,:)', Dh(1,:)', 1);
+[tfr, tfrtic, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', 1);
 
 
 %=======================================
@@ -41,7 +41,7 @@ if MT > 1
 		rh = rv * h ; 
 		rDh = rv * Dh ;
 
-		[~, ~, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, 1, rh', rDh', 1);
+		[~, ~, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', 1);
 
 	 	ConceFT = ConceFT + tfrrs ;
     end

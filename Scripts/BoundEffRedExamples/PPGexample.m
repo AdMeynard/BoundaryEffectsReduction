@@ -151,20 +151,20 @@ figure;
 subplot(2,2,1);
 [WxxZP,~] = display_cwt_JEFAS(xxZP,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
 [Wx,~] = display_cwt_JEFAS(x,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original short signal');
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('CWT on original short signal');
 % On the true extended signal
 subplot(2,2,2);
 [WxxTRUE,~] = display_cwt_JEFAS(xxTRUE,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original long signal');
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('CWT on original long signal');
 % On the estimated extended signal
 subplot(2,2,3);
 [WxxLSE,~] = display_cwt_JEFAS(xxLSE,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on estimated long signal (short signal extended)');
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('CWT on estimated long signal (short signal extended)');
 % On the estimated extended signal
 subplot(2,2,4);
 [WxxGPR,~] = display_cwt_JEFAS(xxGPR,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
 [WxxEDMD,~] = display_cwt_JEFAS(xxEDMD,fs,fmin,fmax,Ms,wav_typ,wav_par) ;
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on estimated long signal (short signal extended)');
+xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('CWT on estimated long signal (short signal extended)');
 
 %save('results','tfrsq3','tfrsq3EXT');
 

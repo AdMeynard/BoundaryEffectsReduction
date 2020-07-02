@@ -2,13 +2,13 @@ clear all; close all; clc;
 load ../../Results/resultSucForPPGnoise ;
 
 figure;
-loglog(StdNoise.^2,NoiseForecastErr,'+','linewidth',2);
-xlabel('Noise Variance \sigma_{add}^2'); ylabel('Forecasting Variance');
+semilogy(SNR,NoiseForecastErr,'+','linewidth',2);
+xlabel('SNR (dB)'); ylabel('Forecasting Variance');
 grid on;
 set(gca,'fontsize',24) ;
 
 figure;
-loglog(StdNoise.^2,NoiseTFR.SST,'+',StdNoise.^2,NoiseTFR.STFT,'^',StdNoise.^2,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',8);
-xlabel('Noise Variance \sigma_{add}^2'); ylabel('Averaged OTD'); grid on;
-legend({'SST','RS','STFT'},'location','southeast');
+semilogy(SNR,NoiseTFR.STFT,'^',SNR,NoiseTFR.SST,'+',SNR,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',8);
+xlabel('SNR (dB)'); ylabel('Averaged OTD'); grid on;
+legend({'STFT','SST','RS'},'location','southwest');
 set(gca,'fontsize',24) ;

@@ -38,4 +38,6 @@ for n = 1:nXP
     NoiseTFR.RS(n) = mean(OTD.rs.LSE) ;
 end
 
-save('../../Results/resultSucForPPGnoise','StdNoise','NoiseForecastErr','NoiseTFR');
+SNR = 20*log10(std(x0)./StdNoise) ;
+
+save('../../Results/resultSucForPPGnoise','SNR','NoiseForecastErr','NoiseTFR');
