@@ -20,7 +20,7 @@ basicTF.hop = 10 ;
 basicTF.win = 2*L+1 ; % window length (in samples)
 fmin = 0/fs ;
 fmax = 4/fs ;
-df = 2e-5 ;
+df = 8e-5 ;
 
 Nt = extK+extM+1 ; % segments length
 Lo = round(1.5*L/basicTF.hop); % overlap in TF domain
@@ -39,7 +39,8 @@ x = xtot(n0:n1) ;
 % imagesc(log1p(abs(SSTtot)/5e1)); colormap(1-gray);drawnow;
 
 %% Real-time update
-Nmax = 10*60*fs ;
+minutes = 5; 
+Nmax = minutes*60*fs ;
 
 k = 1 ;
 while n1<Nmax

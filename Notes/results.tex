@@ -45,7 +45,7 @@ As in the previous study, the experimental bias vanishes when $K$ increases, wha
 \end{figure}
 
 \paragraph{Summary}
-Both previous experimental results combined with the theoretical asymptotic equation~\eqref{eq:cov.error.2} allow us to describe the influence of the noise variance and the size of the training dataset on the variance of the forecasting noise, which is empirically summarized as follows:
+Both previous experimental results combined with the theoretical asymptotic equation~\eqref{eq:cov.error.2} allow us to describe the influence of the noise variance and the size of the training dataset on the variance of the forecasting noise, empirically summarized as follows:
 \begin{equation}
 \gamma[N-1+\ell,N-1+\ell] \underset{K\to\infty}{\approx} \dfrac{\sigma^2}{K}g[\ell] .
 \end{equation} 
@@ -68,7 +68,7 @@ and the instantaneous phases are such that:
 \phi_1[n] &= \frac{p_1}{M}\left( n + \frac{0.01}{2\pi}\cos\left(2\pi\frac{n}{N}\right) \right) \\[-1mm]
 \phi_2[n] & = p_2\frac{n}{M} + \frac{20}{2N\fs}n^2
 \end{align*}
-Besides, the additive noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$. Numerically, we take: $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
+Besides, the noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$, and we take: $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
 
 To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of the Algorithm~\ref{alg:boundary} with a simple extension obtained by pointwise symmetrization~\cite{Kharitonenko02wavelet}. We also evaluate the performance of reference forecasting algorithm that could be used for extending such signals. These methods are:
 \begin{itemize}
@@ -114,7 +114,7 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 \subsubsection{Metrics}
 The quality of the boundary effects reduction is evaluated directly on the TF representation. To that aim, we compare the obtained representation to the optimal representation $\ccF_N^\mathrm{opt}(\bx)$, defined as the restriction of the representation of the ground-truth extended signal $\bx^\mathrm{ext}$. Therefore, we have:
 \begin{equation}
-\ccF_N^\mathrm{opt}(\bx) = \cR\left( \ccF_{N+2L}(\bx^\mathrm{ext}) \right) \ .
+\ccF^\mathrm{opt}(\bx_N) = \cR\left( \ccF(\bx^\mathrm{ext}) \right) \ .
 \label{eq:opt.TFR}
 \end{equation} 
 
@@ -124,14 +124,14 @@ d_{t}(\ccQ,\ccF_0) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF_0}^t(\xi)\ri
 \end{equation*}
 where $P_{\ccQ}^t(\xi)=\int_{-\infty}^\xi p_{\ccQ}^t(\nu)\dd\nu$ and $\tilde P_{\ccF_0}^t(\xi)=\int_{-\infty}^\xi\tilde p_{\ccF_0}^t(\nu)\dd\nu$. The \textit{optimal transport distance} quantifies the proximity between the estimated and actual instantaneous frequencies while favoring the sparsity of the estimated TF representation. That is why, the performance index $D(\ccQ)$ for the reduction of boundary effects of a given TF representation $\ccQ$ is given by the averaged ratio between the optimal transport distance to the optimal TF representation~\eqref{eq:opt.TFR} and the optimal transport distance of to the optimal TF representation, that is:
 \begin{equation}
-D(\ccQ) = \dfrac1{|I|}\bigintss_I\ \frac{d_{t}\left(\ccQ,\ccF_N^\mathrm{opt}\right)}{d_{t}\left(\ccF_N,\ccF_N^\mathrm{opt}\right)}\ \dd t\ .
+D(\ccQ) = \dfrac1{|I|}\bigintss_I\ \frac{d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)}{d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)}\ \dd t\ .
 \label{eq:index.perf}
 \end{equation}
 Thus, $D(\ccQ)<1$ means a reduction of the boundary effects. Let us evaluate the quality of the boundary effects reduction on biomedical signals.
 
 
 \subsubsection{Respiratory signal}
-We first consider a 6 hours 20 minutes-long respiratory signal. This signal is sampled at $\fs=100$~Hz. A zoom on a small portion of the signal is displayed in Fig.~\ref{fig:tho}.
+We first consider a respiratory signal of 6 hours 20 minutes. This signal, a small portion of which is displayed in Fig.~\ref{fig:tho}, is sampled at $\fs=100$~Hz.
 
 \begin{figure}
 \includegraphics[width=.48\textwidth]{THOforecast.eps}
