@@ -27,20 +27,22 @@ Lo = round(1.5*L/basicTF.hop); % overlap in TF domain
 LL = round(L/basicTF.hop); % extension in TF domain
 %% Initialization
 n0 = 1 ;
-n1 = 4000 ;
+n1 = n0+Nt-1 ;
 x = xtot(n0:n1) ;
 [~, ~, SSTtot, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(x, fmin, fmax,...
             df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
-n0 = n1-L;
-n1 = n0+Nt-1 ;
+%n0 = n1-L;
+%n1 = n0+Nt-1 ;
         
 % figure;
 % imagesc(log1p(abs(SSTtot)/5e1)); colormap(1-gray);drawnow;
 
 %% Real-time update
+Nmax = 10*60*fs ;
+
 k = 1 ;
-while n1<Ntot
+while n1<Nmax
     tic;
     x = xtot(n0:n1) ;
 
@@ -63,3 +65,6 @@ while n1<Ntot
     dt(k) = toc;
     k = k+1 ;
 end
+
+dtmax = basicTF.hop/fs ;
+save('RealTime','dt','dtmax')
