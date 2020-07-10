@@ -41,18 +41,20 @@ The pseudo-code of the proposed algorithm to reduce boundary effects on windowin
 \caption{Tackling boundary effects of a TF representation in real-time. $\bF_\bx = \mbox{\sf BoundEffRed}(\bx,M,K,L,\ccF)$}
 \label{alg:boundary}
 \begin{algorithmic}
-\STATE {\bf Inputs}: $\bx$, $M$, $K$, $N_0$, $L$, $\ccF$
+\STATE {\bf Inputs}: $\bx_{N}$, $M$, $K$, $N_0$, $L$, $\ccF$
+%\STATE {\bf Initialization}: $\bF_\bx^{(N_0)}=\ccF(\bx_{N_0})$
 \STATE
 \WHILE {$N$ increases}
+\STATE {\bf Real-time input}: $\bx_N$
+\STATE
 \STATE {\bf Forecasting step.}
-\STATE \quad\textbullet\ Signal extension: $\tilde\bx = \mbox{\sf SigExt}(\bx_N)$.
-\STATE 
-\STATE {\bf Representation step.}
-\STATE \quad\textbullet\ Representation evaluation: $\ccF_{N+2L}(\tilde\bx)$.
-\STATE \quad\textbullet\ Restriction of $\ccF_{N+2L}(\tilde\bx)$ to the central time interval (see~\eqref{eq:restriction}) to obtain $\bF_\bx^{(N)}=\ccF_N^{\mathrm{ext}}(\bx_N)$.
-\STATE 
+\STATE \quad\textbullet\ Signal extension: $\tilde\bx_{N+L} = \mbox{\sf SigExt}(\bx_N)$. 
+\STATE {\bf Representation estimation step.}
+\STATE \quad\textbullet\ Extended representation evaluation: $\ccF(\tilde\bx_{N+L})$.
+\STATE \quad\textbullet\ Restriction of $\ccF(\tilde\bx_{N+L})$ to the current time interval (see~\eqref{eq:restriction}) to obtain $\bF_\bx^{(N)}=\ccF^{\mathrm{ext}}(\bx_N)$.
+\STATE
 \STATE {\bf Real-time output}: Signal representation $\bF_\bx^{(N)}$
-\STATE $N \leftarrow N+1$
+%\STATE $N \leftarrow N+1$
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
@@ -121,41 +123,43 @@ This expression clearly shows that the matrix $\tilde\bA$ takes the following fo
 Then, except the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, the matrix $\bA$ is fully determined by the dynamical model.
 \end{remark}
 
-\paragraph{Signal extension} In order to reduce the boundary effects on both ``sides'' of the TF (or time-scale) representation, we finally construct the extended signal $\tilde\bx\in\RR^{N+2L}$ concatenating the backward prediction $\tilde\bx_{\rm bw}$, the observed signal $\bx$, and the forward prediction $\tilde\bx_{\rm fw}$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we handle the backward estimation using the same strategy than described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
+\paragraph{Signal extension} Since we are building a real-time algorithm, we consider that only the right ``side'' of the TF representation  is affected by boundary effects, the left "side" being fixed since it only concerns the past values of the signal. We therefore construct the extended signal $\tilde\bx\in\RR^{N+L}$ concatenating the observed signal $\bx$, and the forward forecasting $\tilde\bx_{\rm fw}$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we we could, if necessary, handle the backward estimation using the same strategy than described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
 
 \begin{algorithm}
 \caption{Signal extension. $\tilde\bx = \mbox{\sf SigExt}(\bx,M,K,L)$}
 \label{alg:extension}
 \begin{algorithmic}
-\STATE {\bf Inputs}: $\bx$, $M$, $K$, $L$
+\STATE {\bf Inputs}: $\bx_N$, $M$, $K$, $L$
 \STATE 
 \STATE {\bf Forward forecasting.}
 \STATE \quad\textbullet\ LS estimation of the forward matrix $\tilde\bA_{\rm fw}$ via equation~\eqref{eq:lse}.
 \STATE \quad\textbullet\ Forward forecasting $\tilde\bx_{\rm bw}$ obtained applying equation~\eqref{eq:prediction} with $\ell\in\{1,\ldots,L\}$.
+%\STATE 
+%\STATE {\bf Backward forecasting.}
+%\STATE \quad\textbullet\ Reverse signal $\bx$ to $\bx^{\rm r}$. 
+%\STATE \quad\textbullet\ LS estimation of the backward matrix $\tilde\bA_{\rm bw}$ via equation~\eqref{eq:lse} applied to $\bx^{\rm r}$.
+%\STATE \quad\textbullet\ Reversed backward forecasting $\tilde\bx_{\rm bw}^{\rm r}$ obtained applying equation~\eqref{eq:prediction} to $\bx^r$ with $\ell\in\{1,\ldots,L\}$.
+%\STATE \quad\textbullet\ Reverse $\tilde\bx_{\rm bw}^{\rm r}$ to obtain the estimate $\tilde\bx_{\rm bw}$.
 \STATE 
-\STATE {\bf Backward forecasting.}
-\STATE \quad\textbullet\ Reverse signal $\bx$ to $\bx^{\rm r}$. 
-\STATE \quad\textbullet\ LS estimation of the backward matrix $\tilde\bA_{\rm bw}$ via equation~\eqref{eq:lse} applied to $\bx^{\rm r}$.
-\STATE \quad\textbullet\ Reversed backward forecasting $\tilde\bx_{\rm bw}^{\rm r}$ obtained applying equation~\eqref{eq:prediction} to $\bx^r$ with $\ell\in\{1,\ldots,L\}$.
-\STATE \quad\textbullet\ Reverse $\tilde\bx_{\rm bw}^{\rm r}$ to obtain the estimate $\tilde\bx_{\rm bw}$.
-\STATE 
-\STATE {\bf Output}: Extended signal $\tilde\bx = \begin{pmatrix} \tilde\bx_{\rm bw}  & \bx & \tilde\bx_{\rm fw}\end{pmatrix}^T$.
+\STATE {\bf Output}: Extended signal $\tilde\bx_{N+L} = \begin{pmatrix} \bx_N & \tilde\bx_{\rm fw}\end{pmatrix}^T$. %\tilde\bx_{\rm bw}  &
 \end{algorithmic}
 \end{algorithm}
 
 \subsection{Step 2: Extended Time-Frequency Representation}
  
-Let $\ccF_{N}:\RR^{N}\to\RR^{F\times N}$ generically denotes the TF or time-scale representation we are interested in, which could be, for instance, STFT, CWT, SST, or RS. Here, $F$ typically denotes the size of the discretization along the frequency axis. Due to the boundary effects, the representation $\ccF_{N}(\bx)$ shows undesired patterns when approaching its edges. %For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. 
-To alleviate the boundary effect, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF_N^{\mathrm{ext}}:\RR^{N}\to\RR^{F\times N}$ of $\bx$ is given for all $\nu\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
+Let $\ccF:\RR^{N}\to\CC^{F\times N}$ generically denotes the TF representation of interest to us, which could be, for instance, STFT, CWT, SST, or RS. Here, $F$ typically denotes the size of the discretization along the frequency axis. Due to the boundary effects, the representation $\ccF(\bx_N)$ shows undesired patterns when approaching its edges. %For example, the instantaneous frequencies highlighted by the SST can be blurred near that edges. 
+To alleviate the boundary effect, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF^{\mathrm{ext}}:\RR^{N}\to\CC^{F\times N}$ of $\bx_N$ is given for all $\nu\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
 \begin{equation}
-\ccF_N^{\mathrm{ext}}(\bx)[\nu,n] = \ccF_{N+2L}(\tilde \bx)[\nu,L+n]\ .
+\ccF^{\mathrm{ext}}(\bx_N)[\nu,n] = \ccF(\tilde \bx_{N+L})[\nu,n]\ .
 \label{eq:restriction}
 \end{equation}
-This amounts to restricting the representation $\ccF_{N+2L}(\tilde \bx)$ to the original measurement interval of $\bx$. For the sake of simplicity, we denotes the restriction operator by $\cR$, where $\cR:\RR^{F\times (N+2L)}\to\RR^{F\times N}$. Consequently, we have:
+This amounts to restricting the representation $\ccF(\tilde \bx_{N+L})$ to the current measurement interval of $\bx_N$. For the sake of simplicity, we denotes the restriction operator by $\cR$, where $\cR:\CC^{F\times (N+L)}\to\CC^{F\times N}$. Consequently, we have:
 \begin{equation}
-\ccF_N^{\mathrm{ext}}(\bx) = \cR\left( \ccF_{N+2L}(\tilde \bx) \right) \ .
+\ccF^{\mathrm{ext}}(\bx_N) = \cR\left( \ccF(\tilde \bx_{N+L}) \right) \ .
 \label{eq:bound.free.TFR}
 \end{equation}
-We call $\ccF_N^{\mathrm{ext}}$ the {\em boundary-free TF representation}.
+We call $\ccF^{\mathrm{ext}}$ the {\em boundary-free TF representation}.
+
+$\bF_\bx^{(N)}\in\CC^{F\times N}$ is the estimation of the boundary-free TF representation at iteration $N$ in Algorithm~\ref{alg:boundary}. For numerical purpose, and to make the real-time implementation achievable, we do not perform a full re-estimation of $\ccF^{\mathrm{ext}}$. Instead, the additional knowledge provided by $\bx[N+1]$ only influences the values of the last $L_{\mathrm{win}}$ columns of $\ccF^{\mathrm{ext}}(\bx_{N+1})$, where $L_{\mathrm{win}}$ denotes the window half-length used by the TF representation. Thus, $\bF_\bx^{(N+1)}$ is obtained by the concatenation of the first $N-L_{\mathrm{win}}+ 1$ columns of $\bF_\bx^{(N)}$ with the last $L_{\mathrm{win}}$ columns of $\ccF^{\mathrm{ext}}(\bx_{N+1})$.
 
 

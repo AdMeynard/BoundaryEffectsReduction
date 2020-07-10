@@ -12,7 +12,7 @@ fs = data.fs ; % sampling frequency
 N = 4e3; % subsignals length
 
 % Forecasting parameters
-methods = {'lse','symmetrization','edmd','gpr'} ;
+methods = {'lse','symmetrization'} ; %,'edmd','gpr'
 HOP = 1 ;
 extSEC = 5.2 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
@@ -23,7 +23,7 @@ TFR = {'sstSTFT','conceFT'} ;
 basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;
-basicTF.fmax = 0.01 ;
+basicTF.fmax = 0.04 ;
 [forecastErr, CompTime, OTD] = SucForecast(xtot,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
 
 save('../../Results/resultSucForPPGcompMeth','forecastErr','CompTime','OTD');
