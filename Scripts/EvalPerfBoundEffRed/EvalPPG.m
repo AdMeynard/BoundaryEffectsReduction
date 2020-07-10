@@ -14,7 +14,7 @@ N = 4e3; % subsignals length
 % Forecasting parameters
 methods = {'lse','symmetrization','edmd','gpr'} ;
 HOP = 1 ;
-extSEC = 5 ; % the extension is of extSEC second
+extSEC = 5.2 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets

@@ -68,7 +68,7 @@ while nend <= Ntot
     if any(strcmp(TFR,'conceFT'))
         % SST parameters
         t = linspace(0, (N-1)/fs, N) ;
-        tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+        tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
         tsst = t(1:basicTF.hop:end);
         tsstEXT = tt(1:basicTF.hop:end);
 
@@ -117,7 +117,7 @@ while nend <= Ntot
     if any(strcmp(TFR,'sstSTFT'))
         % SST parameters
         t = linspace(0, (N-1)/fs, N) ;
-        tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+        tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
         tsst = t(1:basicTF.hop:end);
         tsstEXT = tt(1:basicTF.hop:end);
 
@@ -169,7 +169,7 @@ while nend <= Ntot
     if any(strcmp(TFR,'RS'))
         % SST parameters
         t = linspace(0, (N-1)/fs, N) ;
-        tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
+        tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
         trs = t(1:basicTF.hop:end) ;
         trsEXT = tt(1:basicTF.hop:end) ;
         n0 = find(trsEXT>=min(trs),1);
