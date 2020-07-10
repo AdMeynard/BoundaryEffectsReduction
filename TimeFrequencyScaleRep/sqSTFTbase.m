@@ -1,4 +1,4 @@
-function [tfr, tfrtic, tfrsq, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, tDS, h, Dh, Smooth);
+function [tfr, tfrtic, tfrsq, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, tDS, h, Dh, Smooth)
 
 %
 % Synchrosqueezing modifed from tfrrsp.m, by Hau-tieng Wu, 2013 
@@ -41,15 +41,12 @@ if nargin < 8
 	ODD = 0 ;
 end
 
-
-
-
 [xrow,xcol] = size(x) ;
-t = [1:length(x)] ;
+t = 1:length(x) ;
 tLen = length(t(1:tDS:length(x))) ;
 
 	% for tfr
-N = length([-0.5+alpha:alpha:0.5]) ;
+N = length(-0.5+alpha:alpha:0.5) ;
 
 	% for tfrsq
 Lidx = round( (N/2)*(lowFreq/0.5) ) + 1 ; 
@@ -60,18 +57,18 @@ fLen = Hidx - Lidx + 1 ;
 
 %====================================================================
 	%% check input signals
-if (xcol~=1),
+if (xcol~=1)
     error('X must have only one column');
 elseif highFreq > 0.5
     error('TopFreq must be a value in [0, 0.5]');
-elseif (tDS < 1) | (rem(tDS,1)) 
+elseif (tDS < 1) || (rem(tDS,1)) 
     error('tDS must be an integer value >= 1');
-end; 
+end
 
 [hrow,hcol] = size(h); Lh = (hrow-1)/2; 
-if (hcol~=1)|(rem(hrow,2)==0),
+if (hcol~=1)||(rem(hrow,2)==0)
     error('H must be a smoothing window with odd length');
-end;
+end
 
 
 %====================================================================
@@ -90,14 +87,14 @@ Mid = round(length(tfrsqtic)/2) ;
 Delta = 20*(tfrsqtic(2)-tfrsqtic(1)).^2 ;
 weight = exp(-(tfrsqtic(Mid-10:Mid+10)-tfrsqtic(Mid)).^2/Delta) ;
 weight = weight ./ sum(weight) ;
-weightIDX = [Mid-10:Mid+10] - Mid ;
+weightIDX = (Mid-10:Mid+10) - Mid ;
+% 
+% ENERGY = 0;
+% if ENERGY
+% 	fprintf('Use energy in SQ\n') ;
+% end
 
-ENERGY = 0;
-if ENERGY
-	fprintf('Use energy in SQ\n') ;
-end
-
-for tidx = 1:tLen,
+for tidx = 1:tLen
 
     ti = t((tidx-1)*tDS+1); 
     tau = -min([round(N/2)-1,Lh,ti-1]):min([round(N/2)-1,Lh,xrow-ti]);
@@ -117,13 +114,13 @@ for tidx = 1:tLen,
 	omega(avoid_warn) = round(imag(N*tf1(avoid_warn)./tf0(avoid_warn)/(2.0*pi)));
 
 	sst = zeros(fLen,1) ;
+% 
+% 	if ENERGY
+% 		tf0 = abs(tf0).^2 ;
+% 	end
 
-	if ENERGY
-		tf0 = abs(tf0).^2 ;
-	end
-
-    for jcol = 1: N/2,
-  		if abs(tf0(jcol)) > Threshold,
+    for jcol = 1: N/2
+        if abs(tf0(jcol)) > Threshold
 
    	    	jcolhat = jcol - omega(jcol) ;
    	    %jcolhat = rem(rem(jcolhat-1,N)+N,N)+1;
@@ -132,49 +129,22 @@ for tidx = 1:tLen,
 		   	%	sst(jcolhat-Lidx+1) = sst(jcolhat-Lidx+1) + tf0(jcol) ;
 	    	%end
 
-   	    	if (jcolhat <= Hidx) & (jcolhat >= Lidx)
-				%IDXa = unique(min(Hidx, max(Lidx, jcolhat-Lidx+1+weightIDX))) ; 
-
-				if Smooth 
+   	    	if ((jcolhat <= Hidx) && (jcolhat >= Lidx))
+                
+                if Smooth
 					IDXb = find((jcolhat-Lidx+1+weightIDX <= Hidx) & (jcolhat-Lidx+1+weightIDX >= Lidx)) ;
 					IDXa = jcolhat-Lidx+1+weightIDX(IDXb) ; 
-
-
                    	sst(IDXa) = sst(IDXa) + tf0(jcol)*weight(IDXb) ;
-
-				else
-
+                else
 	   				sst(jcolhat-Lidx+1) = sst(jcolhat-Lidx+1) + tf0(jcol) ;
-
-				end
-        	end
-
-  		end;
-    end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                end
+                
+            end
+        end
+    end
 
 	tfr(:, tidx) = tf0(1:N/2) ;
 	tfrsq(:, tidx) = sst ;
 
-end;
+end
 

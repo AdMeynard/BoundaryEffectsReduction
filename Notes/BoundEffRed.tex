@@ -18,11 +18,12 @@
 \usepackage{hyperref}
 \usepackage{mathpazo}
 \usepackage{array}
+\usepackage{bigints}
 
 \graphicspath{{figures/}}
 \input{mydefs}
 
-\title{An Efficient Forecasting Approach for the Reduction of Boundary Effects in Time-Frequency Representations}
+\title{An Efficient Forecasting Approach for the Real-Time Reduction of Boundary Effects in Time-Frequency Representations}
 
 \author{Adrien~Meynard, %~\IEEEmembership{Member,~IEEE,}
         Hau-Tieng~Wu
@@ -107,7 +108,7 @@ The paper is organized in the following. In section~\ref{se:algo}, we provide an
 In this paper, we propose an algorithm, named {\sf BoundEffRed}, for the boundary effects reduction on TF representations to achieve a real-time signal analysis. This method is based on an extension of the signal obtained by a simple-minded and numerically efficient forecasting. We have shown theoretically that the chosen dynamic model is sufficient for the extension of signals formed by a sum of sine waves. Moreover, the numerical results show that this strategy allows us to switch to a real-time implementation of {\sf BoundEffRed} is possible, due to the low computation time, unlike other existing forecasting methods. The numerical results also confirmed the robustness to noise of {\sf BoundEffRed}, as well as its ability to be applied to many time-frequency representations. 
 %Other numerical examples are also included, such as the application of {\sf BoundEffRed} to other types of biomedical signals such as ECGs.
 
-Various improvements can be considered to make the algorithm more robust to certain situations. In particular, we have noticed that when the observed signal does not oscillate {\color{red}[HT: we need to confirm this statement]}, the forecasting is no longer relevant, and the TF representations are not ideal. A preliminary step should then be added to the algorithm to select the portions without sufficient quality, in order to reject the portions for which a better forecasting scheme is needed. A more fundamental improvement would be to perform the prediction step directly in the TF plane, or even with the aim of specifically predicting the evolution of each instantaneous frequency. This would lead to seeing a TF representation as a multivariate time series (corresponding to each frequency band). We will explore these possibilities in our future work.
+Various improvements can be considered to make the algorithm more robust to certain situations. In particular, we have noticed (see Fig.~\ref{fig:THO.failure}) that when the regular oscillations of the observed signal break, the forecasting is no longer relevant, and the TF representations are not ideal. A preliminary step should then be added to the algorithm to select the portions without sufficient quality, in order to reject the portions for which a better forecasting scheme is needed. A more fundamental improvement would be to perform the prediction step directly in the TF plane, or even with the aim of specifically predicting the evolution of each instantaneous frequency. This would lead to seeing a TF representation as a multivariate time series (corresponding to each frequency band). We will explore these possibilities in our future work.
 
 %\appendices
 %\input{appendices}

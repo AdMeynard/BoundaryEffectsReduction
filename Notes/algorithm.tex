@@ -34,23 +34,26 @@ Notice that these sub-signals are overlapping each other. Indeed, $\bx_{k+1}$ is
 The boundary effect reduction algorithm is based on manipulating $\bX$ and $\bY$.
 
 %
-The pseudo-code of the proposed algorithm to reduce boundary effects on windowing-based TF representations is shown in the Algorithm~\ref{alg:boundary}. We coined the algorithm {\sf BoundEffRed}. Below, we detail the algorithm, particularly the Signal extension algorithm {\sf SigExt} in Algorithm~\ref{alg:boundary}.
+The pseudo-code of the proposed algorithm to reduce boundary effects on windowing-based TF representations is shown in the Algorithm~\ref{alg:boundary}. We coined the algorithm {\sf BoundEffRed}. Below, we detail the algorithm, particularly the Signal extension algorithm {\sf SigExt} in Algorithm~\ref{alg:extension}.
 
 
 \begin{algorithm}
-\caption{Tackling boundary effects. $\bF_\bx = \mbox{\sf BoundEffRed}(\bx,M,K,L,\ccF)$}
+\caption{Tackling boundary effects of a TF representation in real-time. $\bF_\bx = \mbox{\sf BoundEffRed}(\bx,M,K,L,\ccF)$}
 \label{alg:boundary}
 \begin{algorithmic}
-\STATE {\bf Inputs}: $\bx$, $M$, $K$, $L$, $\ccF$
-\STATE 
+\STATE {\bf Inputs}: $\bx$, $M$, $K$, $N_0$, $L$, $\ccF$
+\STATE
+\WHILE {$N$ increases}
 \STATE {\bf Forecasting step.}
-\STATE \quad\textbullet\ Signal extension: $\tilde\bx = \mbox{\sf SigExt}(\bx)$.
+\STATE \quad\textbullet\ Signal extension: $\tilde\bx = \mbox{\sf SigExt}(\bx_N)$.
 \STATE 
 \STATE {\bf Representation step.}
 \STATE \quad\textbullet\ Representation evaluation: $\ccF_{N+2L}(\tilde\bx)$.
-\STATE \quad\textbullet\ Restriction of $\ccF_{N+2L}(\tilde\bx)$ to the central time interval (see~\eqref{eq:restriction}) to obtain $\bF_\bx=\ccF_N^{\mathrm{ext}}(\bx)$.
+\STATE \quad\textbullet\ Restriction of $\ccF_{N+2L}(\tilde\bx)$ to the central time interval (see~\eqref{eq:restriction}) to obtain $\bF_\bx^{(N)}=\ccF_N^{\mathrm{ext}}(\bx_N)$.
 \STATE 
-\STATE {\bf Output}: Signal representation $\bF_\bx$
+\STATE {\bf Real-time output}: Signal representation $\bF_\bx^{(N)}$
+\STATE $N \leftarrow N+1$
+\ENDWHILE
 \end{algorithmic}
 \end{algorithm}
 
@@ -149,9 +152,10 @@ To alleviate the boundary effect, we apply the representation to the estimated e
 \label{eq:restriction}
 \end{equation}
 This amounts to restricting the representation $\ccF_{N+2L}(\tilde \bx)$ to the original measurement interval of $\bx$. For the sake of simplicity, we denotes the restriction operator by $\cR$, where $\cR:\RR^{F\times (N+2L)}\to\RR^{F\times N}$. Consequently, we have:
-\begin{equation*}
+\begin{equation}
 \ccF_N^{\mathrm{ext}}(\bx) = \cR\left( \ccF_{N+2L}(\tilde \bx) \right) \ .
-\end{equation*}
+\label{eq:bound.free.TFR}
+\end{equation}
 We call $\ccF_N^{\mathrm{ext}}$ the {\em boundary-free TF representation}.
 
 

@@ -15,10 +15,10 @@ N = length(x) ;
 
 
 if ~Second
-	fprintf(['Run ordinary STFT-SST x (Smoothing = ',num2str(Smooth),')\n']) ;
+% 	fprintf(['Run ordinary STFT-SST x (Smoothing = ',num2str(Smooth),')\n']) ;
     [tfr, tfrtic, tfrsq, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', Smooth);
 else
-	fprintf(['Run 2nd-order STFT-SST (no Smoothing)\n']) ;
+% 	fprintf(['Run 2nd-order STFT-SST (no Smoothing)\n']) ;
     [tfr, tfrtic, ~, tfrsq, tfrsqtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', dwindow(Dh(1,:)'));
 end
 
@@ -27,9 +27,9 @@ end
 
 ConceFT = abs(tfrsq) ;
 if strcmp(method, 'MEAN')
-	fprintf('\tUse mean\n') ;
+% 	fprintf('\tUse mean\n') ;
 else
-	fprintf('\tUse quantile\n') ;
+% 	fprintf('\tUse quantile\n') ;
 	ConceFTcum = zeros([size(tfrsq) MT+1]) ;
 	ConceFTcum(:,:,1) = tfrsq ;
 end
