@@ -171,7 +171,7 @@ We then apply {\sf BoundEffRed} (\ie~Algorithm~\ref{alg:boundary}) for diverse T
 \label{fig:THO.failure}
 \end{figure} 
 
-Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented in real time, we evaluate the computation time required for each iteration of Algorithm~\ref{alg:boundary}, corresponding to the update of the boundary-free TF representation. This check is performed on the real-time SST of a 10-minute sample of the respiratory signal. As the SST is temporally sub-sampled by a ratio of 20, the update should not exceed $20/\fs=0.2$~sec. This is indeed the case, as no iteration lasted longer than xx sec on a 6-Core Xeon CPU running at 3.5~GHz and 64~GB of RAM.
+Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented in real time, we evaluate the computation time required for each iteration of Algorithm~\ref{alg:boundary}, corresponding to the update of the boundary-free TF representation. This check is performed on the real-time SST of a 10-minute sample of the respiratory signal. As the SST is temporally sub-sampled by a ratio of 20, the update should not exceed $20/\fs=0.2$~sec. This is indeed the case, as no iteration lasted longer than $0.17$ sec on a 6-Core Xeon CPU running at 3.5~GHz and 64~GB of RAM.
 
 
 \subsubsection{Photoplethysmogram}

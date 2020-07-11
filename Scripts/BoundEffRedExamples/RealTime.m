@@ -16,7 +16,7 @@ L = round(extSEC*fs) ;
 extM = round(1.5*L) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-basicTF.hop = 20 ;
+basicTF.hop = 30 ;
 basicTF.win = 2*L+1 ; % window length (in samples)
 fmin = 0/fs ;
 fmax = 4/fs ;
@@ -59,13 +59,14 @@ while n1<Nmax
     
     SSTcurrent = [SSTcurrent(:,2:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ; % sliding sst
 
-%     imagesc(log1p(abs(SSTtot)/5e1)); colormap(1-gray);drawnow;
+%     imagesc(log1p(abs(SSTcurrent)/5e1)); colormap(1-gray); axis xy;
+%     drawnow;
     
     n0 = n0 + basicTF.hop ;
     n1 = n0 + Nt - 1 ;
     
     dt(k) = toc;
-    SSTtot = [SSTtot(:,1:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ;
+    SSTtot = [SSTtot(:,1:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ; % whole sst
     k = k+1 ;
 end
 
