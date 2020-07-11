@@ -16,11 +16,11 @@ L = round(extSEC*fs) ;
 extM = round(1.5*L) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-basicTF.hop = 10 ;
+basicTF.hop = 20 ;
 basicTF.win = 2*L+1 ; % window length (in samples)
 fmin = 0/fs ;
 fmax = 4/fs ;
-df = 8e-5 ;
+df = 2e-4 ;
 
 Nt = extK+extM+1 ; % segments length
 Lo = round(1.5*L/basicTF.hop); % overlap in TF domain
@@ -29,8 +29,9 @@ LL = round(L/basicTF.hop); % extension in TF domain
 n0 = 1 ;
 n1 = n0+Nt-1 ;
 x = xtot(n0:n1) ;
-[~, ~, SSTtot, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(x, fmin, fmax,...
+[~, ~, SSTcurrent, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(x, fmin, fmax,...
             df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+SSTtot = SSTcurrent ;
 
 %n0 = n1-L;
 %n1 = n0+Nt-1 ;
@@ -56,7 +57,7 @@ while n1<Nmax
     [~, ~, SSTxx, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(xxLSE((end-L-round(1.5*Lo*basicTF.hop)):end), fmin, fmax,...
             df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
     
-    SSTtot = [SSTtot(:,1:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ;
+    SSTcurrent = [SSTcurrent(:,2:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ; % sliding sst
 
 %     imagesc(log1p(abs(SSTtot)/5e1)); colormap(1-gray);drawnow;
     
@@ -64,8 +65,9 @@ while n1<Nmax
     n1 = n0 + Nt - 1 ;
     
     dt(k) = toc;
+    SSTtot = [SSTtot(:,1:(end-Lo)) SSTxx(:,(end-LL-Lo):(end-LL))] ;
     k = k+1 ;
 end
 
 dtmax = basicTF.hop/fs ;
-save('RealTime','dt','dtmax')
+save('../../Results/RealTime','dt','dtmax')

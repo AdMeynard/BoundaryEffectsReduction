@@ -171,7 +171,7 @@ We then apply {\sf BoundEffRed} (\ie~Algorithm~\ref{alg:boundary}) for diverse T
 \label{fig:THO.failure}
 \end{figure} 
 
-Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented in real time, we evaluate the computation time required for each iteration of Algorithm~\ref{alg:boundary}, corresponding to the update of the boundary-free TF representation. This check is performed on the real-time SST of a 10-minute sample of the respiratory signal. As the SST is temporally sub-sampled by a ratio of 10, the update should not exceed $10/\fs=0.1$~sec. This is indeed the case, as no iteration lasted longer than xx sec on a 6-Core Xeon CPU running at 3.5~GHz and 64~GB of RAM.
+Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented in real time, we evaluate the computation time required for each iteration of Algorithm~\ref{alg:boundary}, corresponding to the update of the boundary-free TF representation. This check is performed on the real-time SST of a 10-minute sample of the respiratory signal. As the SST is temporally sub-sampled by a ratio of 20, the update should not exceed $20/\fs=0.2$~sec. This is indeed the case, as no iteration lasted longer than xx sec on a 6-Core Xeon CPU running at 3.5~GHz and 64~GB of RAM.
 
 
 \subsubsection{Photoplethysmogram}
@@ -199,13 +199,13 @@ Even though, on this signal, the {\sf SigExt} extension yields TF representation
    \hhline{|=#=|=|=|}
 %   Without extension & $2.52\times 10^{-2}$ & $9.41\times 10^{-2}$ & $1.03\times 10^{-1}$ \\
 %   \hline
-   {\sf SigExt} & $0.774$ & $0.048$ & $X$ \\
+   {\sf SigExt} & $0.774$ & $0.048$ & $0.826$ \\
    \hline
-   Symmetric & $0.818$ & $0.059$ & $X$ \\
+   Symmetric & $0.818$ & $0.059$ & $1.393$ \\
    \hline
-   EDMD & $0.566$ & $0.038$ & $X$ \\
+   EDMD & $0.566$ & $0.038$ & $0.850$ \\
    \hline
-   GPR & $0.735$ & $0.045$ & $X$ \\
+   GPR & $0.735$ & $0.045$ & $0.816$ \\
    \hline
 \end{tabular}
 \label{tab:otd.ppg}
