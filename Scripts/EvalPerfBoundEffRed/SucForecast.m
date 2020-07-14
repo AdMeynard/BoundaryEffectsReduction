@@ -13,20 +13,24 @@ end
 
 %% Forecastings
 
-k = ceil( (extSEC*fs)/(N+1) ) ;
-nend = (k+1)*N + L ;
+% k = ceil( L/N ) ;
+% nend = (k+1)*N + L ;
+nleft = L+1 ;
+nend = nleft+N+L-1 ;
 ind = 1 ;
 
 % figure;
 while nend <= Ntot
     %% subsignal
-    x = xtot((k*N+1):((k+1)*N)) ;
+%     x = xtot((k*N+1):((k+1)*N)) ;
+    x = xtot(nleft:(nleft+N-1)) ;
     mu = mean(x);
     sigma = std(x);
     x = (x - mu) / sigma ;
     
     %% Extensions
-    xxTRUE = ( xtot((k*N+1-L):nend) - mu ) / sigma ; % ground-truth extension
+%     xxTRUE = ( xtot((k*N+1-L):nend) - mu ) / sigma ; % ground-truth extension
+    xxTRUE = ( xtot((nleft-L):nend) - mu ) / sigma ; % ground-truth extension
     
     if any(strcmp(methods,'lse'))
         method.name = 'lse' ;
@@ -88,7 +92,7 @@ while nend <= Ntot
             OTD.sst.LSE(ind) = slicedOT(sstLSE, sstTRUE) ;
             OTD.conceft.LSE(ind) = slicedOT(conceftLSE, conceftTRUE) ;
         end
-        % On the LS Vector estimated extended signal
+        % On the SYM extended signal
         if any(strcmp(methods,'symmetrization'))
             [~, ~, sstSYM, conceftSYM, ~] = ConceFT_sqSTFT_C(double(xxSYM-mean(xxSYM)), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
             sstSYM = sstSYM(: , (tsstEXT>=min(tsst) & tsstEXT<=max(tsst)) );
@@ -207,8 +211,10 @@ while nend <= Ntot
         end
     end
     
-    k = k+1 ;
-    nend = (k+1)*N + extSEC*fs ;
+%     k = k+1 ;
+%     nend = (k+1)*N + extSEC*fs ;
+    nleft = nleft + N ;
+    nend = nleft + N + L -1 ;
     ind = ind + 1 ;
 end
 

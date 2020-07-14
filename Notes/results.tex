@@ -88,10 +88,10 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 
 \begin{table}
 \centering
-\caption{AHM signal. Performance of the extension methods.}
+\caption{AHM signal: performance of the extension methods.}
 \begin{tabular}{|c||c|c|c|}
   \hline
-   \multirow{2}{*}{Algorithm} & \multicolumn{2}{c|}{MSE}  & \multirow{2}{41pt}{Computing time (sec.)} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{2}{c|}{MSE}  & \multirow{2}{41pt}{Computing time (sec.)} \\
    \cline{2-3} & Mean & Standard deviation & \\
    \hhline{|=#=|=|=|}
    {\sf SigExt} & $1.433\times 10^{-3}$ & $4.361\times 10^{-4}$ & $0.152$ \\
@@ -122,9 +122,13 @@ In the aim of comparing the different techniques, we use a criterion, proposed i
 \begin{equation*}
 d_{t}(\ccQ,\ccF_0) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF_0}^t(\xi)\right|\dd\xi\ ,
 \end{equation*}
-where $P_{\ccQ}^t(\xi)=\int_{-\infty}^\xi p_{\ccQ}^t(\nu)\dd\nu$ and $\tilde P_{\ccF_0}^t(\xi)=\int_{-\infty}^\xi\tilde p_{\ccF_0}^t(\nu)\dd\nu$. The \textit{optimal transport distance} quantifies the proximity between the estimated and actual instantaneous frequencies while favoring the sparsity of the estimated TF representation. That is why, the performance index $D(\ccQ)$ for the reduction of boundary effects of a given TF representation $\ccQ$ is given by the averaged ratio between the optimal transport distance to the optimal TF representation~\eqref{eq:opt.TFR} and the optimal transport distance of to the optimal TF representation, that is:
+where $P_{\ccQ}^t(\xi)=\int_{-\infty}^\xi p_{\ccQ}^t(\nu)\dd\nu$ and $\tilde P_{\ccF_0}^t(\xi)=\int_{-\infty}^\xi\tilde p_{\ccF_0}^t(\nu)\dd\nu$. The \textit{Optimal Transport Distance (OTD)} quantifies the proximity between the estimated and actual instantaneous frequencies while favoring the sparsity of the estimated TF representation. That is why, the performance index $D(\ccQ)$ for the reduction of boundary effects of a given TF representation $\ccQ$ is given by the ratio between its averaged OTD to the optimal TF representation $\ccF^\mathrm{opt}$ (see~\eqref{eq:opt.TFR}) and the averaged OTD of the original TF representation $\ccF$ to $\ccF^\mathrm{opt}$, that is:
+%\begin{equation}
+%D(\ccQ) = \dfrac1{|I|}\bigintssss_I\ \frac{d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)}{d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)}\ \dd t\ .
+%\label{eq:index.perf}
+%\end{equation}
 \begin{equation}
-D(\ccQ) = \dfrac1{|I|}\bigintss_I\ \frac{d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)}{d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)}\ \dd t\ .
+D(\ccQ) = \dfrac{\displaystyle\int_I d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)\dd t}{\displaystyle\int_I d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)\dd t}\ .
 \label{eq:index.perf}
 \end{equation}
 Thus, $D(\ccQ)<1$ means a reduction of the boundary effects. Let us evaluate the quality of the boundary effects reduction on biomedical signals.
@@ -145,10 +149,10 @@ We then apply {\sf BoundEffRed} (\ie~Algorithm~\ref{alg:boundary}) for diverse T
 
 \begin{table}
 \centering
-\caption{Performance of the extension methods on a respiratory signal.}
+\caption{Respiratory signal: Performance of extension methods and associated boundary-free TF representations.}
 \begin{tabular}{|c||c||c|c|c|c|}
   \hline
-   \multirow{2}{*}{Algorithm} & \multirow{2}{35pt}{\centering Averaged MSE} & \multicolumn{4}{c|}{Averaged performance index $D$} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{35pt}{\centering Averaged MSE} & \multicolumn{4}{c|}{Averaged performance index $D$} \\
    \cline{3-6}
       & & STFT & SST & RS & ConceFT \\
    \hhline{|=#=#=|=|=|=|}
@@ -190,10 +194,10 @@ Even though, on this signal, the {\sf SigExt} extension yields TF representation
 
 \begin{table}
 \centering
-\caption{PPG signal: averaged performance index of the boundary-free TF representations for different extensions.}
+\caption{PPG signal: Performance of the boundary-free TF representations according to the extension method.}
 \begin{tabular}{|c||c|c|c|}
   \hline
-   \multirow{2}{*}{Extension method} & \multicolumn{3}{c|}{Performance index $D$} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{3}{c|}{Averaged performance index $D$} \\
    \cline{2-4}
       & STFT & SST & ConceFT\\
    \hhline{|=#=|=|=|}
