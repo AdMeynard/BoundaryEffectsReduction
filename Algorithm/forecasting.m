@@ -1,4 +1,4 @@
-function xext = forecasting(x,fs,HOP,extK,extM,extSEC,method,varargin)
+function xext = forecasting(x,L,HOP,extK,extM,method,varargin)
 
 if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     x = flipud(x);
@@ -8,8 +8,9 @@ if ~strcmpi(method.name,'symmetrization')
     X = [] ; Y = [] ;
     for kk = 1: extK
         X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
-        Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
+%         Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
     end
+    Y = [X(:,2:end) x(end-extM+1: HOP: end)] ;
 end
 
 
@@ -43,7 +44,6 @@ switch method.name
 end
 
 %% Extension
-L = round(fs*extSEC);
 Z = zeros(extM,L) ;
 
 switch method.name

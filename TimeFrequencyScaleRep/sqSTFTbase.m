@@ -37,10 +37,6 @@ function [tfr, tfrtic, tfrsq, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha
 %	author(s). For any comment or bug report, please send e-mail to 
 %	f.auger@ieee.org 
 
-if nargin < 8
-	ODD = 0 ;
-end
-
 [xrow,xcol] = size(x) ;
 t = 1:length(x) ;
 tLen = length(t(1:tDS:length(x))) ;
@@ -111,7 +107,7 @@ for tidx = 1:tLen
 		% get the first order omega
 	omega = zeros(size(tf1)) ;
 	avoid_warn = find(tf0~=0);
-	omega(avoid_warn) = round(imag(N*tf1(avoid_warn)./tf0(avoid_warn)/(2.0*pi)));
+	omega(avoid_warn) = round( imag(N*tf1(avoid_warn)./tf0(avoid_warn)/(2.0*pi)) ) ;
 
 	sst = zeros(fLen,1) ;
 % 
@@ -147,4 +143,3 @@ for tidx = 1:tLen
 	tfrsq(:, tidx) = sst ;
 
 end
-
