@@ -3,4 +3,4 @@
 # Topic
 Reduction of the boundary effects on kernel-based methods.
 
-![](https://github.com/AdMeynard/BoundaryEffectsReduction/tree/master/Results/RTexample.gif)
+![](Results/RTexample.gif)
