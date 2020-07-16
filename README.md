@@ -11,7 +11,7 @@ The folder `signals` contains some biomedical and synthetic signals used to impl
 
 * `Algorithm`
 * `TimeFrequencyScaleRep`
-* `Scripts`: contains the scripts to perform the experiments detailed in the paper. Some corresponding results are directly provided in subfolder `results'.
+* `Scripts`: contains the scripts to perform the experiments detailed in the paper. Some corresponding results are directly provided in subfolder `results`.
 
 * `Notes`
 
