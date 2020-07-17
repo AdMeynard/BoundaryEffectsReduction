@@ -13,8 +13,6 @@ end
 
 %% Forecastings
 
-% k = ceil( L/N ) ;
-% nend = (k+1)*N + L ;
 nleft = L+1 ;
 nend = nleft+N+L-1 ;
 ind = 1 ;
@@ -22,14 +20,12 @@ ind = 1 ;
 % figure;
 while nend <= Ntot
     %% subsignal
-%     x = xtot((k*N+1):((k+1)*N)) ;
     x = xtot(nleft:(nleft+N-1)) ;
     mu = mean(x);
     sigma = std(x);
     x = (x - mu) / sigma ;
     
     %% Extensions
-%     xxTRUE = ( xtot((k*N+1-L):nend) - mu ) / sigma ; % ground-truth extension
     xxTRUE = ( xtot((nleft-L):nend) - mu ) / sigma ; % ground-truth extension
     
     if any(strcmp(methods,'lse'))

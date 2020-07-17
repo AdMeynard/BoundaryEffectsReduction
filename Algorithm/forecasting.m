@@ -1,4 +1,21 @@
 function xext = forecasting(x,L,HOP,extK,extM,method,varargin)
+% FORECASTING Predict future values of a signal
+% Usage:	xext = forecasting(x,L,HOP,extK,extM,method,side)
+%
+% Input:
+%   x: signal to be forecasted
+%   L: number of samples to be forecasted
+%   HOP: subsampling rate for forecasting
+%   extK: size of the dataset for forecasting
+%   extM: lengths of the segments used for forecasting
+%   method: forcasting method. To be chosen between
+%       'SigExt': Least square estimation
+%       'edmd': Empirical dynamical Mode decompostion
+%       'gpr': Gaussian process regression
+%       'symmetrization': Symmetric extension
+%   side (optionnal): left blank for forward forecasting, set to 'backward' otherwise
+% Output:
+%   xext: forecasted extension
 
 if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     x = flipud(x);
@@ -17,7 +34,7 @@ end
 %% Estimate the parameters of the forecasting model
 switch method.name
     
-    case 'lse'
+    case {'SigExt','lse'}
         A = (Y*X') / (X*X') ; % least square estimation
         
     case 'lseV'
@@ -66,7 +83,7 @@ switch method.name
             xext(kk) = zpred ;
         end
         
-    case {'lse','lseV'}
+    case {'SigExt','lse','lseV'}
         Z = zeros(extM,L) ;
         Z(:,1) = A*Y(:,end) ;
         for kk = 2:L

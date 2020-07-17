@@ -21,7 +21,7 @@ N = length(x) ;
 
 %=======================================
 
-fprintf(['Run ordinary RS\n']) ;
+%fprintf(['Run ordinary RS\n']) ;
 [tfr, tfrtic, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', 1);
 
 
