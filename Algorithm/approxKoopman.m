@@ -1,6 +1,15 @@
 function [Xi,mu,phi_end] = approxKoopman(X,Y,sigma2)
-% evaluate Koopman modes V, eigen values Mu, and eigen function Psi*Xi
-% EDMD (from paper of Hua et al.)
+% APPROXKOOPMAN Evaluate Koopman modes, eigen values, and eigen function (from paper of Hua et al.)
+% Usage:	[Xi,mu,phi_end] = approxKoopman(X,Y,sigma2)
+%
+% Input:
+%   X: input dataset
+%   Y: output dataset
+%   sigma2: shape parameter
+% Output:
+%   Xi: Koopman modes
+%   Mu: Koopman eigen values
+%   phi_end: Koopman eigen functions
 
 M = size(X,1) ;
 

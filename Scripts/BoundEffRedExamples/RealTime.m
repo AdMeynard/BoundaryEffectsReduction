@@ -17,13 +17,17 @@ xtot = xtot(1:Nmax) ; % shorten signal
 %% Parameters
 forecastMethod.name = 'lse' ;
 
-basicTF.representation = 'SST' ;
+basicTF.representation = 'conceFT' ;
 
 basicTF.hop = round(20/subT) ;
 basicTF.win = 501 ; % window length (in samples)
 basicTF.fmin = 0.5/fs ;
 basicTF.fmax = 4/fs ;
 basicTF.df = 2e-4 ;
+
+if strcmp(basicTF.representation,'conceFT')
+    basicTF.MT = 10 ;
+end
 
 VideoWriting = 0 ; % Change to 1 when recording
 

@@ -37,11 +37,11 @@ x = xtot(n0:n1) ;
 
 switch basicTF.representation
     case 'SST'
-        [~, ~, TFRcurrent, ~, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+        [~, ~, TFRcurrent, ~] = sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
     case 'conceFT'
-        [~, ~, ~, TFRcurrent, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+        [~, ~, ~, TFRcurrent, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
     case 'STFT'
-        [TFRcurrent, ~, ~, ~, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+        [TFRcurrent, ~] = STFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
     case 'RS'
         [~, ~, TFRcurrent, ~, ~] = ConceFT_rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
 end
@@ -74,11 +74,11 @@ while n1<Ntot
     
     switch basicTF.representation
         case 'SST'
-            [~, ~, TFRxx, ~, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            [~, ~, TFRxx, ~] = sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
         case 'conceFT'
             [~, ~, ~, TFRxx, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
         case 'STFT'
-            [TFRxx, ~, ~, ~, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            [TFRxx, ~] = STFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
         case 'RS'
             [~, ~, TFRxx, ~, ~] = ConceFT_rsSTFT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
     end
