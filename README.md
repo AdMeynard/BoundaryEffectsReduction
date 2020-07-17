@@ -1,5 +1,5 @@
 ## Overview
-This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
+This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
 
 ![](Results/RTexample.gif)
 
@@ -7,10 +7,10 @@ This repository contains all the files necessary to perform the algorithm **Boun
 
 ## Contents
 
-The folder `signals` contains some biomedical and synthetic signals used to implement the above-mentioned algorithm. The following folders are specifically related to the implementation of BoundEffRed:
+The folder `Signals` contains some biomedical and synthetic signals used to implement the above-mentioned algorithm. The following folders are specifically related to the implementation of BoundEffRed:
 
 * `Algorithm` contains the MATLAB functions enabling the implementation of BoundEffRed, using differents extensions schemes such as SigExt, EDMD, or GPR (see paper for details).
-* `TimeFrequencyScaleRep` contains the functions generating Time-Frequency and Time-Scale representations such as STFT, Synchrosqueezing Transform, Reassignement, or ConceFT.
+* `TimeFrequencyScaleRep` contains the functions generating Time-Frequency and Time-Scale representations such as STFT, Synchrosqueezing Transform, Reassignment, or ConceFT.
 * `Scripts` contains the scripts to perform the experiments detailed in the paper. Some corresponding results are directly provided in subfolder `Results`.
 
 The folder `Notes` contains the paper and the associated Supplementary Material.
