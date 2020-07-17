@@ -13,7 +13,7 @@
 %          - Dh : H' (MxN) 
 %          - tt : time vector (1xN) 
 
-function [h,Dh,tt] = hermf(N,M,tm) ; 
+function [h,Dh,tt] = hermf(N,M,tm)
 
 dt = 2*tm/(N-1) ; 
 tt = linspace(-tm,tm,N) ; 
