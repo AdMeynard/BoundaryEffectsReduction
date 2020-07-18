@@ -28,9 +28,9 @@ The experimental results show that the bias is neither depending on the noise va
 \label{fig:res.noise.sine}
 \end{figure}
 
-\paragraph{Influence of the training dataset size $K$} Here, the noise variance $\sigma$ is set to $\sigma=10^{-2}$. Then, the forecasting algorithm is run on 3000 realizations on the discrete signal $\bx$ for three different values of $K$, logarithmically equispaced from $4.5\times 10^{2}$ to $2\times 10^{3}$. For each of these values, we determine the experimental bias $\mu_{\xp}[N-1+\ell]$ and variance $\gamma_{\xp}[N-1+\ell,N-1+\ell]$ in function of the forecasting sample index $\ell$ (going from $1$ to $500$). 
+\paragraph{Influence of the training dataset size $K$} Here, the noise variance $\sigma$ is set to $\sigma=10^{-2}$. Then, the forecasting algorithm is run on 3000 realizations on the discrete signal $\bx$ for three different values of $K$, logarithmically equispaced from $4.5\times 10^{2}$ to $2\times 10^{3}$. For each of these values, we determine the experimental bias $\mu_{\xp}[N-1+\ell]$ and variance $\gamma_{\xp}[N-1+\ell,N-1+\ell]$ in function of the forecasting sample index $\ell$, going from $1$ to $500$. 
 
-As in the previous study, the experimental bias vanishes when $K$ increases, confirming the approximation result~\eqref{eq:mean.error}. Besides, the experimental variance  is displayed on Fig.~\ref{fig:res.size.sine}, and compared with the associated theoretical variance~\eqref{eq:cov.error.2}. Each color corresponds to these experimental results obtained for a given value of $K$. This result validates the asymptotic behavior provided by~\eqref{eq:cov.error.2}, and we can show that the second-order moment $\gamma[\ell,\ell]$ is less dependent on $K$ when $K$ is large.
+As in the previous study, the experimental bias vanishes when $K$ increases, confirming the approximation result~\eqref{eq:mean.error}. Besides, the experimental variance  is displayed in Fig.~\ref{fig:res.size.sine}, and compared with the associated theoretical variance~\eqref{eq:cov.error.2}. Each color corresponds to these experimental results obtained for a given value of $K$. This result validates the asymptotic behavior provided by~\eqref{eq:cov.error.2}, and we can show that the second-order moment $\gamma[\ell,\ell]$ is less dependent on $K$ when $K$ is large.
 
 
 \begin{figure}
@@ -51,7 +51,7 @@ This study neglects the analysis of the influence of the parameter $M$, whose in
 
 \subsubsection{Adaptive harmonic model}
 \label{ssse:res.ahm}
-We now consider a signal satisfying the AHM so that the instantaneous frequencies and amplitudes of its components vary from time to time. The deterministic component $\bz$ of the random vector $\bx$ (constructed following the model~\eqref{eq:model.noise}) takes the following form, for all $n\in\{1,\ldots,N\}$:
+We now consider a signal satisfying the AHM so that the instantaneous frequencies and amplitudes of its components vary from time to time. The deterministic component $\bz$ of the random vector $\bx$, constructed following the model~\eqref{eq:model.noise}, takes the following form, for all $n\in\{1,\ldots,N\}$:
 \[
 \bx[n] = \cos\left(2\pi \phi_1[n] \right) + R[n]\cos\left(2\pi \phi_2[n] \right) \ ,
 \] 
