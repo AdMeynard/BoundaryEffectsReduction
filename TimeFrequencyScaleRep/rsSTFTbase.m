@@ -77,7 +77,7 @@ Dt = 1 ;
 
 %====================================================================
 	%% run STFT and reassignment rule
-tfr = zeros(N/2, tLen); 	% for h
+tfr = zeros(fLen, tLen) ;
 tfrtic = linspace(0, 0.5, N/2)' ;
 tfrrs = zeros(fLen, tLen); 
 tfrrstic = linspace(lowFreq, highFreq, fLen)' ;
@@ -135,7 +135,7 @@ for tidx = 1:tLen,
     end;
 
 
-	tfr(:, tidx) = tf0(1:N/2) ;
+	tfr(:, tidx) = tf0(Lidx:Hidx) ;
 
 end;
 

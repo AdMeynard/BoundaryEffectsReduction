@@ -1,4 +1,4 @@
-function [MultiTaperSTFT, tfrtic, MultiTaper, MultiTaperAll, tfrrstic] = rsSTFTmultitaper(x, lowFreq, highFreq, alpha, WinLen, dim, supp) ;
+function [MultiTaperSTFT, tfrtic, MultiTaper, MultiTaperAll, tfrrstic] = rsSTFTmultitaper(x, lowFreq, highFreq, alpha, WinLen, dim, supp)
 
 %
 % Usage: 

@@ -1,10 +1,6 @@
-function [tfr, tfrtic, tfrsq, ConceFT, tfrsqtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT, Second, Smooth) ;
+function [tfr, tfrtic, tfrsq, ConceFT, tfrsqtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT, Second, Smooth)
 
-%
 method = 'MEAN' ;
-%method = 'MEDIAN' ;
-N = length(x) ;
-
 %%%% Multitapering %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [h, Dh, ~] = hermf(WinLen, dim, supp) ; % generate the window for short time Fourier transform (STFT)
 
@@ -59,7 +55,5 @@ if MT > 1
         end
         ConceFT = median(ConceFTcum, 3) ;
 	end
-
-	fprintf('\n') ;
 
 end

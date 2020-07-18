@@ -1,4 +1,5 @@
-% hermf.m
+function [h,Dh,tt] = hermf(N,M,tm)
+% HERMF
 %
 % P. Flandrin & J. Xiao, 2005
 %
@@ -12,8 +13,6 @@
 % output : - h : Hermite functions (MxN) 
 %          - Dh : H' (MxN) 
 %          - tt : time vector (1xN) 
-
-function [h,Dh,tt] = hermf(N,M,tm)
 
 dt = 2*tm/(N-1) ; 
 tt = linspace(-tm,tm,N) ; 

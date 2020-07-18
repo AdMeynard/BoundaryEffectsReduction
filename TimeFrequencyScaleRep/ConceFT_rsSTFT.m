@@ -1,6 +1,4 @@
-function [tfr, tfrtic, tfrrs, ConceFT, tfrrstic] = ConceFT_rsSTFT(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT) ;
-
-%
+function [tfr, tfrtic, tfrrs, ConceFT, tfrrstic] = ConceFT_rsSTFT(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT)
 % Usage: 
 % 	[tfrsq, ConceFT, tfrsqtic] = sqSTFT(t, x, lowFreq, highFreq, alpha, WinLen, dim, supp, MT)
 %

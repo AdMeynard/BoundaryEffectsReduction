@@ -22,10 +22,9 @@ if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
 end
 
 if ~strcmpi(method.name,'symmetrization')
-    X = [] ; Y = [] ;
+    X = zeros(extM,extK) ;
     for kk = 1: extK
         X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
-%         Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
     end
     Y = [X(:,2:end) x(end-extM+1: HOP: end)] ;
 end

@@ -45,6 +45,6 @@ for tidx = 1:tLen
     tf0(indices) = x(ti+tau).*conj( h(Lh+1+tau)) /norm_h;
     tf0 = fft(tf0) ;
 
-	tfr(:, tidx) = tf0(Lidx:Hidx);
+	tfr(:, tidx) = tf0(Lidx:Hidx) ;
 
 end

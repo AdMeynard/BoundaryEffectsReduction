@@ -24,6 +24,8 @@ basicTF.hop = 10 ;
 basicTF.win = 201 ;
 basicTF.fmin = 0 ;
 basicTF.fmax = 0.15 ;
+basicTF.df = 1e-5 ;
+basicTF.MT = 30 ;
 [forecastErr, CompTime, OTD] = SucForecast(xtot,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
 
 save('../../Results/resultSucForEEGcompMeth','forecastErr','CompTime','OTD');

@@ -43,7 +43,7 @@ switch basicTF.representation
     case 'STFT'
         [TFRcurrent, ~] = STFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
     case 'RS'
-        [~, ~, TFRcurrent, ~, ~] = ConceFT_rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
+        [~, ~, TFRcurrent, ~, ~] = rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
 end
 
 TFRtot = TFRcurrent ;

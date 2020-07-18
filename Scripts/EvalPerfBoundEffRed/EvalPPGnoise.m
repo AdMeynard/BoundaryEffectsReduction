@@ -24,6 +24,7 @@ basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;
 basicTF.fmax = 0.01 ;
+basicTF.df = 1e-5 ;
 
 nXP = 12 ;
 StdNoise = logspace(-3.5,-1,nXP) ;
