@@ -1,17 +1,39 @@
-function [tfr, tfrtic, tfrsq, ConceFT, tfrsqtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT, Second, Smooth)
+function [tfr, tfrsq, ConceFT, tfrtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT, Second, Smooth)
+% CONCEFT_SQSTFT_C ConceFT Synchrosqueezing of the STFT
+% Usage: 
+% 	[tfr, tfrsq, ConceFT, tfrtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT, Second, Smooth)
+%
+% Input:
+%   x: signal to be analized
+%   lowFreq: relative lower frequency (0<lowFreq<Highfreq)
+%   highFreq: relative higher frequency (lowFreq<Highfreq<0.5)
+%   alpha: resolution in the frequency axis
+%   hop: hop size (in samples)
+%   WinLen: Window length (in samples)
+%   dim: order of the Hermite function used as window
+%   supp: half time support of the Hermite function used as window
+%   MT = 1: ordinary RS; MT > 1: ConceFT
+%   Second: if 1, compute the second-order synchrosqueezing
+%   Smooth: if 1, compute the smoothed version of the synchrosqueezing
+% 
+% Output:
+%   tfr: STFT
+%   tfrsq: Synchrosqueezing of STFT
+%   ConceFT: ConceFT synchrosqueezing of STFT
+%   tfrtic: frequencies for which TFRs are evaluated
 
 method = 'MEAN' ;
-%%%% Multitapering %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Ordinary SST
 [h, Dh, ~] = hermf(WinLen, dim, supp) ; % generate the window for short time Fourier transform (STFT)
 
 if ~Second
-    [tfr, tfrtic, tfrsq, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', Smooth);
+    [tfr, tfrsq, tfrtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', Smooth);
 else
-    [tfr, tfrtic, ~, tfrsq, tfrsqtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', dwindow(Dh(1,:)'));
+    [tfr, ~, tfrsq, tfrtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', dwindow(Dh(1,:)'));
 end
 
-%=======================================
-
+%% Multitapering
 
 ConceFT = abs(tfrsq) ;
 if strcmp(method, 'MEAN')
@@ -30,9 +52,9 @@ if MT > 1
 		rDh = rv * Dh ;
 
 		if ~Second
-			[~, ~, tfrsqX, tfrsqtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', Smooth);
+			[~, tfrsqX, tfrtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', Smooth);
 		else
-			[~, ~, ~, tfrsqX, tfrsqtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, rh', rDh', dwindow(rDh'));
+			[~, ~, tfrsqX, tfrtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, rh', rDh', dwindow(rDh'));
 		end
 
 		if strcmp(method, 'MEAN')

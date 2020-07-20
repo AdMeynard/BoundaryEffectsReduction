@@ -1,3 +1,7 @@
+%% Evaluate BoundEffRed on an PPG
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');

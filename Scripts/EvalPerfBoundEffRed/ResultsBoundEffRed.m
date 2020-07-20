@@ -1,3 +1,7 @@
+%% Performance of BoundEffRed on PPG,THO, ECG, and EEG
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 
 %% PPG
@@ -20,7 +24,6 @@ fprintf('=============Optimal Transport Distance============\n')
 fprintf(' __________________________________________\n')
 fprintf('| Extension Method |  SST  |  STFT |ConceFT|\n')
 fprintf('|------------------|-------|-------|-------|\n')
-%fprintf('|  No extension    | %.3e | %.3e | %.3e |\n', mean(OTD.sst.S),mean(OTD.stft.S),mean(OTD.rs.S))
 fprintf('|  LSE extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE./OTD.sst.S),mean(OTD.stft.LSE./OTD.stft.S),mean(OTD.conceft.LSE./OTD.conceft.S))
 fprintf('|  Symmetrization  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.conceft.SYM./OTD.conceft.S))
 fprintf('|  EDMD extension  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.conceft.EDMD./OTD.conceft.S))
@@ -43,7 +46,6 @@ fprintf('|  Symmetrization  |           %.3f        | %.3e | %.3e |\n', CompTime
 fprintf('|      EDMD        |          %.3f        | %.3e | %.3e |\n', CompTime.EDMD , mean(forecastErr.EDMD), median(forecastErr.EDMD) )
 fprintf('|      GPR         |         %.3f        | %.3e | %.3e |\n', CompTime.GPR , mean(forecastErr.GPR(~isnan(OTD.sst.GPR))), median(forecastErr.GPR(~isnan(OTD.sst.GPR))) )
 fprintf('|__________________|________________________|___________|___________|\n\n')
-
 
 figure;
 subplot(2,1,1) ;
@@ -71,13 +73,10 @@ xlabel('Time (s)'); ylabel('Signals'); xlim([40 tt(end)]); ylim([-20 20]);
 set(gca,'fontsize',20)
 
 
-
-
 fprintf('===================Optimal Transport Distance==================\n')
 fprintf(' ______________________________________________________________\n')
 fprintf('| Extension Method |  SST  |  STFT |  RS   |ConceFT|\n')
 fprintf('|------------------|-------|-------|-------|-------|\n')
-%fprintf('|  No extension    | %.3e | %.3e | %.3e | %.3e |\n', mean(OTD.sst.S),mean(OTD.stft.S),mean(OTD.rs.S),mean(OTD.conceft.S))
 fprintf('|  LSE extension   | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE(~isnan(OTD.sst.LSE))./OTD.sst.S(~isnan(OTD.sst.LSE))),mean(OTD.stft.LSE(~isnan(OTD.sst.LSE))./OTD.stft.S(~isnan(OTD.sst.LSE))),mean(OTD.rs.LSE(~isnan(OTD.sst.LSE))./OTD.rs.S(~isnan(OTD.sst.LSE))),mean(OTD.conceft.LSE(~isnan(OTD.sst.LSE))./OTD.conceft.S(~isnan(OTD.sst.LSE))))
 fprintf('|  Symmetrization  | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.rs.SYM./OTD.rs.S),mean(OTD.conceft.SYM./OTD.conceft.S))
 fprintf('|  EDMD extension  | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.rs.EDMD./OTD.rs.S),mean(OTD.conceft.EDMD./OTD.conceft.S))

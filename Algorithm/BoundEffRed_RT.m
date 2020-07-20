@@ -37,13 +37,13 @@ x = xtot(n0:n1) ;
 
 switch basicTF.representation
     case 'SST'
-        [~, ~, TFRcurrent, ~] = sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+        [~, TFRcurrent, ~] = sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
     case 'conceFT'
-        [~, ~, ~, TFRcurrent, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+        [~, ~, TFRcurrent, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
     case 'STFT'
         [TFRcurrent, ~] = STFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
     case 'RS'
-        [~, ~, TFRcurrent, ~, ~] = rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+        [~, TFRcurrent, ~] = rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
 end
 
 TFRtot = TFRcurrent ;
@@ -74,13 +74,13 @@ while n1<Ntot
     
     switch basicTF.representation
         case 'SST'
-            [~, ~, TFRxx, ~] = sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [~, TFRxx, ~] = sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
         case 'conceFT'
-            [~, ~, ~, TFRxx, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            [~, ~, TFRxx, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
         case 'STFT'
             [TFRxx, ~] = STFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
         case 'RS'
-            [~, ~, TFRxx, ~, ~] = ConceFT_rsSTFT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            [~, TFRxx, ~, ~] = ConceFT_rsSTFT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
     end
 
     TFRcurrent = [TFRcurrent(:,2:(end-Lo)) TFRxx(:,(end-LL-Lo):(end-LL))] ; % sliding sst

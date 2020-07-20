@@ -15,6 +15,7 @@ function xx = SigExtension(x,fs,HOP,extK,extM,extSEC,method)
 %       'gpr': Gaussian process regression
 %       'symmetrization': Symmetric extension
 %   side (optionnal): left blank for forward forecasting, set to 'backward' otherwise
+% 
 % Output:
 %   xx: extended signal
 

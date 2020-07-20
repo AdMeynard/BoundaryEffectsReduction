@@ -1,3 +1,7 @@
+%% Display the results of CompPerfAHM.m and ForecastAMFM_TBATS.r
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 load('../../Results/PerfAHM') ;
 
 dataTBATS = table2array( readtable('../../Results/PerfAHM_TBATS.csv','Range','B:D','TreatAsEmpty','NA') ) ;

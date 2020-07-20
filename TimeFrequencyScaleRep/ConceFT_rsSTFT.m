@@ -1,51 +1,51 @@
-function [tfr, tfrtic, tfrrs, ConceFT, tfrrstic] = ConceFT_rsSTFT(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT)
+function [tfr, tfrrs, ConceFT, tfrtic] = ConceFT_rsSTFT(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT)
+% CONCEFT_RSSTFT ConceFT Reassigment of the STFT
 % Usage: 
-% 	[tfrsq, ConceFT, tfrsqtic] = sqSTFT(t, x, lowFreq, highFreq, alpha, WinLen, dim, supp, MT)
+% 	[tfr, tfrrs, ConceFT, tfrtic] = ConceFT_rsSTFT(x, lowFreq, highFreq, alpha, hop, WinLen, dim, supp, MT)
 %
-% MT = 1: ordinary SST; MT > 1: ConceFT
-% alpha: resolution in the frequency axis
-% WinLen, dim, supp: for hermf.m
-%
-% Example:
-% 	[tfrsq, ConceFT, tfrsqtic] = sqSTFT([1:length(y)]', y, 0,0.5, 0.0002, 121, 4, 6, 10);
+% Input:
+%   x: signal to be analized
+%   lowFreq: relative lower frequency (0<lowFreq<Highfreq)
+%   highFreq: relative higher frequency (lowFreq<Highfreq<0.5)
+%   alpha: resolution in the frequency axis
+%   hop: hop size (in samples)
+%   WinLen: Window length (in samples)
+%   dim: order of the Hermite function used as window
+%   supp: half time support of the Hermite function used as window 
+%   MT = 1: ordinary RS; MT > 1: ConceFT
+% 
+% Output:
+%   tfr: STFT
+%   tfrrs: Reassigment of STFT
+%   ConceFT: ConceFT RS of STFT
+%   tfrtic: frequencies for which TFRs are evaluated
 
 
-N = length(x) ;
+%% Ordinary Reassigment
+[h, Dh, ~] = hermf(WinLen, dim, supp) ; % generate the window for short time Fourier transform (STFT)
 
-%%%% Multitapering %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-       	%% generate the window for short time Fourier transform (STFT)
-[h, Dh, ~] = hermf(WinLen, dim, supp) ;
-
-
-%=======================================
-
-%fprintf(['Run ordinary RS\n']) ;
-[tfr, tfrtic, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', 1);
+[tfr, tfrrs, tfrtic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, h(1,:)', Dh(1,:)', 1);
 
 
-%=======================================
+%% Multitapering
 ConceFT = [] ;
 
 if MT > 1
 
-	disp('Real Sphere') ;
-	%% Conceft
+	% Conceft
     ConceFT = zeros(size(tfrrs)) ;
 
-	fprintf(['ConceFT total: ',num2str(MT),'; now:     ']) ;
     for ii = 1: MT
-		fprintf('\b\b\b\b') ;	tmp = sprintf('%4d',ii) ; fprintf([tmp]) ;
 		rv = randn(1, dim) ; rv = rv ./ norm(rv) ;
 		rh = rv * h ; 
 		rDh = rv * Dh ;
 
-		[~, ~, tfrrs, tfrrstic] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', 1);
+		[~, tfrrs, ~] = rsSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', 1);
 
 	 	ConceFT = ConceFT + tfrrs ;
     end
 
     ConceFT = ConceFT ./ MT ;
-	fprintf('\n') ;
 
 end
 

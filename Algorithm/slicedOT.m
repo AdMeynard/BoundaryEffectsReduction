@@ -1,8 +1,13 @@
 function OTD = slicedOT(mu, nu, p)
 %SLICEDOT Sliced Optimal-Transports between time-frequency images
 %   compute OT on each fixed time slice, then take the average
+% Usage:	xext = forecasting(x,L,HOP,extK,extM,method,side)
+%
+% Input:
 %   mu, nu: input source/target measures
 %   p: compute the p-wasserstein distance for each slice
+% Output:
+%   OTD: Evaluated distance between mu and nu
 
 if ~all(size(mu)==size(nu))
     error('dimensions do not match');

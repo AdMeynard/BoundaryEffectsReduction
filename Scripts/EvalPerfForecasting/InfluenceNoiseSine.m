@@ -1,5 +1,9 @@
+%% Evaluation of Gaussian white noise on SigExt's performance on a sine wave
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; 
-%close all; clc;
+close all; clc;
 addpath('../../Algorithm/');
 
 %% Parameters

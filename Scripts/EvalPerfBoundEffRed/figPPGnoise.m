@@ -1,6 +1,11 @@
+%% Display the results of EvalPPGnoise.m
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 load ../../Results/resultSucForPPGnoise ;
 
+%% SNR
 figure;
 semilogy(SNR,NoiseForecastErr,'+','linewidth',2);
 xlabel('SNR (dB)'); ylabel('Forecasting Variance');

@@ -3,7 +3,7 @@ clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');
 
-%% load ECG signal
+%% load PPG signal
 addpath ../../Signals
 data = load('PPG.mat');
 xtot = data.PPG;
@@ -26,7 +26,7 @@ basicTF.fmax = 0.06 ;
 t = linspace(0, (N-1)/fs, N) ;
 tsst = t(1:basicTF.hop:end);
 
-[~, ~, sstS, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, sstS, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 ff = linspace(0,fs*basicTF.fmax,400) ;
 
 figure;
@@ -63,7 +63,7 @@ xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ;
 
 tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*extSEC*fs) ;
 tsstEXT = tt(1:basicTF.hop:end);
-[~, ~, sstLSE, ~, ~] = ConceFT_sqSTFT_C(xxLSE-mean(xxLSE), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, sstLSE, ~, ~] = ConceFT_sqSTFT_C(xxLSE-mean(xxLSE), basicTF.fmin, basicTF.fmax,1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
 figure;
 imagesc(tsstEXT,ff,log1p(abs(sstLSE)/1e1)); axis xy; xlim([0 t(end)])

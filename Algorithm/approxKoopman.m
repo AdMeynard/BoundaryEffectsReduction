@@ -6,6 +6,7 @@ function [Xi,mu,phi_end] = approxKoopman(X,Y,sigma2)
 %   X: input dataset
 %   Y: output dataset
 %   sigma2: shape parameter
+%  
 % Output:
 %   Xi: Koopman modes
 %   Mu: Koopman eigen values

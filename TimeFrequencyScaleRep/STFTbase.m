@@ -1,4 +1,18 @@
 function [tfr, tfrtic] = STFTbase(x, lowFreq, highFreq, alpha, tDS, h)
+% STFTBASE Compute STFT
+% Usage: 
+% 	[tfr, tfrtic] = STFTbase(x, lowFreq, highFreq, alpha, tDS, h)
+%
+% Input:
+%	x     : analysed signal.
+%	[lowFreq, highFreq] : frequency range \subset [0 0.5]. For the sake of computational efficiency.
+%	alpha : the resolution in the frequency axis
+%	tDS   : the time axis in the final TF representation is downsampled by tDS (set it to 1 unless you know what you are doing)
+%	h     : frequency smoothing window, H(0) being forced to 1
+% 
+% Output:
+%	tfr   : STFT
+%   tfrtic: frequencies for which STFT is evaluated
 
 [xrow,xcol] = size(x) ;
 t = 1:length(x) ;

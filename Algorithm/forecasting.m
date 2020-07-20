@@ -14,6 +14,7 @@ function xext = forecasting(x,L,HOP,extK,extM,method,varargin)
 %       'gpr': Gaussian process regression
 %       'symmetrization': Symmetric extension
 %   side (optionnal): left blank for forward forecasting, set to 'backward' otherwise
+% 
 % Output:
 %   xext: forecasted extension
 

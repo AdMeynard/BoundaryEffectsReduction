@@ -1,3 +1,7 @@
+%% Display the results of InfluenceSizeDatasetSine.m
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all;
 
 load('../../Results/PerfSizeDataset.mat')

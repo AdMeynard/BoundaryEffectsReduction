@@ -1,3 +1,7 @@
+%% Evaluate the influence of noise on the performance of BoundEffRed on a PPG
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');

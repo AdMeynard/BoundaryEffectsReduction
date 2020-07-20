@@ -1,3 +1,7 @@
+%% Real-time SST using BoundEffRed
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');
