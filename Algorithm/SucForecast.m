@@ -101,28 +101,28 @@ while nend <= Ntot
         nf = n0 + length(tsst)-1;
 
         % On the original long signal
-        [VxxTRUE, sstTRUE, conceftTRUE, ~] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+        [VxxTRUE, sstTRUE, conceftTRUE, ~] = ConceFT_sqSTFT_C(xxTRUE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
         VxxTRUE = VxxTRUE(: , n0:nf )  ;
         sstTRUE = sstTRUE(: , n0:nf ) ;
         conceftTRUE = conceftTRUE(: , n0:nf ) ;
         % On the original short signal
-        [Vx, sstS, conceftS, ~] = ConceFT_sqSTFT_C(double(x-mean(x)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+        [Vx, sstS, conceftS, ~] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
         OTD.stft.S(ind) = slicedOT(Vx, VxxTRUE) ;
         OTD.sst.S(ind) = slicedOT(sstS, sstTRUE) ;
         OTD.conceft.S(ind) = slicedOT(conceftS, conceftTRUE) ;
         % On the LS Vector estimated extended signal
         if any(strcmp(methods,'SigExt'))
-            [VxxLSE, sstLSE, conceftLSE, ~] = ConceFT_sqSTFT_C(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+            [VxxLSE, sstLSE, conceftLSE, ~] = ConceFT_sqSTFT_C(xxLSE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
             VxxLSE = VxxLSE(: , n0:nf );
             sstLSE = sstLSE(: , n0:nf );
             conceftLSE = conceftLSE(: , n0:nf );
-            OTD.stft.S(ind) = slicedOT(VxxLSE, VxxTRUE) ;
+            OTD.stft.LSE(ind) = slicedOT(VxxLSE, VxxTRUE) ;
             OTD.sst.LSE(ind) = slicedOT(sstLSE, sstTRUE) ;
             OTD.conceft.LSE(ind) = slicedOT(conceftLSE, conceftTRUE) ;
         end
         % On the SYM extended signal
         if any(strcmp(methods,'symmetrization'))
-            [VxxSYM, sstSYM, conceftSYM, ~] = ConceFT_sqSTFT_C(double(xxSYM-mean(xxSYM)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+            [VxxSYM, sstSYM, conceftSYM, ~] = ConceFT_sqSTFT_C(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
             VxxSYM = VxxSYM(:, n0:nf ) ;
             sstSYM = sstSYM(: , n0:nf ) ;
             conceftSYM = conceftSYM(: , n0:nf ) ;
@@ -132,7 +132,7 @@ while nend <= Ntot
         end
         % On the EDMD Vector estimated extended signal
         if any(strcmp(methods,'edmd'))
-            [VxxEDMD, sstEDMD, conceftEDMD, ~] = ConceFT_sqSTFT_C(double(xxEDMD-mean(xxEDMD)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+            [VxxEDMD, sstEDMD, conceftEDMD, ~] = ConceFT_sqSTFT_C(xxEDMD, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
             VxxEDMD = VxxEDMD(: , n0:nf ) ;
             sstEDMD = sstEDMD(: , n0:nf ) ;
             conceftEDMD = conceftEDMD(: , n0:nf ) ;
@@ -142,7 +142,7 @@ while nend <= Ntot
         end
         % On the GPR Vector estimated extended signal
         if any(strcmp(methods,'gpr'))
-            [VxxGPR, sstGPR, conceftGPR, ~] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
+            [VxxGPR, sstGPR, conceftGPR, ~] = ConceFT_sqSTFT_C(xxGPR, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
             VxxGPR = VxxGPR(: , n0:nf );
             sstGPR = sstGPR(: , n0:nf );
             OTD.stft.GPR(ind) = slicedOT(VxxGPR, VxxTRUE) ;
@@ -163,16 +163,16 @@ while nend <= Ntot
         nf = n0 + length(tsst)-1;
 
         % On the original long signal
-        [VxxTRUE, sstTRUE, ~] = sqSTFT_C(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+        [VxxTRUE, sstTRUE, ~] = sqSTFT_C(xxTRUE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
         sstTRUE = sstTRUE(: , n0:nf ) ; 
         VxxTRUE = VxxTRUE(: , n0:nf ) ;
         % On the original short signal
-        [Vx, sstS, ~] = sqSTFT_C(double(x-mean(x)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+        [Vx, sstS, ~] = sqSTFT_C(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
         OTD.sst.S(ind) = slicedOT(sstS, sstTRUE) ;
         OTD.stft.S(ind) = slicedOT(Vx, VxxTRUE) ;
         % On the LS Vector estimated extended signal
         if any(strcmp(methods,'SigExt'))
-            [VxxLSE, sstLSE, ~] = sqSTFT_C(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [VxxLSE, sstLSE, ~] = sqSTFT_C(xxLSE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
             sstLSE = sstLSE(: , n0:nf );
             VxxLSE = VxxLSE(: , n0:nf );
             OTD.sst.LSE(ind) = slicedOT(sstLSE, sstTRUE) ;
@@ -180,7 +180,7 @@ while nend <= Ntot
         end
         % On the SYM Vector estimated extended signal
         if any(strcmp(methods,'symmetrization'))
-            [VxxSYM, sstSYM, ~] = sqSTFT_C(double(xxSYM-mean(xxSYM)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [VxxSYM, sstSYM, ~] = sqSTFT_C(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
             sstSYM = sstSYM(: , n0:nf );
             VxxSYM = VxxSYM(: , n0:nf );
             OTD.sst.SYM(ind) = slicedOT(sstSYM, sstTRUE) ;
@@ -188,7 +188,7 @@ while nend <= Ntot
         end
         % On the EDMD Vector estimated extended signal
         if any(strcmp(methods,'edmd'))
-            [VxxEDMD, sstEDMD, ~] = sqSTFT_C(double(xxEDMD-mean(xxEDMD)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [VxxEDMD, sstEDMD, ~] = sqSTFT_C(xxEDMD, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
             sstEDMD = sstEDMD(: , n0:nf );
             VxxEDMD = VxxEDMD(: , n0:nf );
             OTD.sst.EDMD(ind) = slicedOT(sstEDMD, sstTRUE) ;
@@ -196,7 +196,7 @@ while nend <= Ntot
         end
         % On the GPR Vector estimated extended signal
         if any(strcmp(methods,'gpr'))
-            [VxxGPR, sstGPR, ~] = sqSTFT_C(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [VxxGPR, sstGPR, ~] = sqSTFT_C(xxGPR, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
             sstGPR = sstGPR(: , n0:nf );
             VxxGPR = VxxGPR(: , n0:nf );           
             OTD.sst.GPR(ind) = slicedOT(sstGPR, sstTRUE) ;
@@ -214,32 +214,32 @@ while nend <= Ntot
         nf = n0 + length(trs)-1;
 
         % On the original long signal
-        [~, rsTRUE, ~] = rsSTFT(double(xxTRUE-mean(xxTRUE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+        [~, rsTRUE, ~] = rsSTFT(xxTRUE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
         rsTRUE = rsTRUE(: , n0:nf ) ; 
         % On the original short signal
-        [~, rsS, ~] = rsSTFT(double(x-mean(x)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+        [~, rsS, ~] = rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
         OTD.rs.S(ind) = slicedOT(rsS, rsTRUE) ;
         % On the LS Vector estimated extended signal
         if any(strcmp(methods,'SigExt'))
-            [~, rsLSE, ~] = rsSTFT(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+            [~, rsLSE, ~] = rsSTFT(xxLSE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
             rsLSE = rsLSE(: , n0:nf ) ;
             OTD.rs.LSE(ind) = slicedOT(rsLSE, rsTRUE) ;
         end
         % On the SYM Vector estimated extended signal
         if any(strcmp(methods,'symmetrization'))
-            [~, rsSYM, ~] = rsSTFT(double(xxSYM-mean(xxSYM)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+            [~, rsSYM, ~] = rsSTFT(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
             rsSYM = rsSYM(: , n0:nf ) ;
             OTD.rs.SYM(ind) = slicedOT(rsSYM, rsTRUE) ;
         end
         % On the EDMD Vector estimated extended signal
         if any(strcmp(methods,'edmd'))
-            [~, rsEDMD, ~] = rsSTFT(double(xxEDMD-mean(xxEDMD)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+            [~, rsEDMD, ~] = rsSTFT(xxEDMD, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
             rsEDMD = rsEDMD(: , n0:nf ) ;
             OTD.rs.EDMD(ind) = slicedOT(rsEDMD, rsTRUE) ;
         end
         % On the GPR Vector estimated extended signal
         if any(strcmp(methods,'gpr'))
-            [~, rsGPR, ~] = rsSTFT(double(xxGPR-mean(xxGPR)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+            [~, rsGPR, ~] = rsSTFT(xxGPR, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
             rsGPR = rsGPR(: , n0:nf ) ;
             OTD.rs.GPR(ind) = slicedOT(rsGPR, rsTRUE) ;
         end
