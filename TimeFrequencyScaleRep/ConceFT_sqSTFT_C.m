@@ -22,8 +22,6 @@ function [tfr, tfrsq, ConceFT, tfrtic] = ConceFT_sqSTFT_C(x, lowFreq, highFreq, 
 %   ConceFT: ConceFT synchrosqueezing of STFT
 %   tfrtic: frequencies for which TFRs are evaluated
 
-method = 'MEAN' ;
-
 %% Ordinary SST
 [h, Dh, ~] = hermf(WinLen, dim, supp) ; % generate the window for short time Fourier transform (STFT)
 
@@ -36,46 +34,25 @@ end
 %% Multitapering
 
 ConceFT = abs(tfrsq) ;
-if strcmp(method, 'MEAN')
-else
-	ConceFTcum = zeros([size(tfrsq) MT+1]) ;
-	ConceFTcum(:,:,1) = tfrsq ;
-end
 
 if MT > 1
 
-		%% Conceft
-
+	% Conceft
     for ii = 1: MT
-		rv = randn(1, dim) + sqrt(-1)*randn(1, dim) ; rv = rv ./ norm(rv) ;
+		rv = randn(1, dim) + 1i*randn(1, dim) ; 
+        rv = rv ./ norm(rv) ;
 		rh = rv * h ; 
 		rDh = rv * Dh ;
 
 		if ~Second
-			[~, tfrsqX, tfrtic] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', Smooth);
+			[~, tfrsqX, ~] = sqSTFTbase(x, lowFreq, highFreq, alpha, hop, rh', rDh', Smooth);
 		else
-			[~, ~, tfrsqX, tfrtic] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, rh', rDh', dwindow(rDh'));
+			[~, ~, tfrsqX, ~] = sqSTFTbase2nd(x, lowFreq, highFreq, alpha, hop, rh', rDh', dwindow(rDh'));
 		end
 
-		if strcmp(method, 'MEAN')
-	 		ConceFT = ConceFT + abs(tfrsqX) ;
-		else
-			ConceFTcum(:,:,ii+1) = tfrsqX ;
-		end
+	 	ConceFT = ConceFT + abs(tfrsqX) ;
     end
 
-	if strcmp(method, 'MEAN')
-    	ConceFT = ConceFT ./ (MT+1) ;
-    else
-        for aa = 1:size(ConceFTcum,1)
-            for bb = 1:size(ConceFTcum,2)
-                tmp = squeeze(ConceFTcum(aa,bb,:)) ; 
-                tmp2 = quantile(abs(tmp), .98) ;
-                tmp(find(abs(tmp)>tmp2)) = 0 ; %tmp2.*tmp(find(abs(tmp)>tmp2))./abs(tmp(find(abs(tmp)>tmp2))) ;
-                ConceFTcum(aa, bb, :) = tmp ;
-            end
-        end
-        ConceFT = median(ConceFTcum, 3) ;
-	end
+    ConceFT = ConceFT ./ (MT+1) ;
 
 end

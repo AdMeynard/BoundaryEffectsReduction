@@ -36,7 +36,8 @@ if MT > 1
     ConceFT = zeros(size(tfrrs)) ;
 
     for ii = 1: MT
-		rv = randn(1, dim) ; rv = rv ./ norm(rv) ;
+		rv = randn(1, dim) ; 
+        rv = rv ./ norm(rv) ;
 		rh = rv * h ; 
 		rDh = rv * Dh ;
 

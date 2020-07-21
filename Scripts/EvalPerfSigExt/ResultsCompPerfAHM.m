@@ -1,4 +1,4 @@
-%% Display the results of CompPerfAHM.m and ForecastAMFM_TBATS.r
+%% Display the results of CompPerfAHM.m and ForecastAMFM_TBATS.r (Table I in the paper)
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

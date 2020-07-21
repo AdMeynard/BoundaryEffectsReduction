@@ -16,14 +16,14 @@ fs = 100 ; % sampling frequency
 N = 6e3; % subsignals length
 
 % Forecasting parameters
-methods = {'lse','symmetrization','edmd','gpr'} ;
+methods = {'SigExt','symmetrization'} ; %,'edmd','gpr'
 HOP = 1 ;
 extSEC = 7 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-TFR = {'conceFT','sstSTFT','RS'} ;
+TFR = {'conceFT','RS'} ;
 basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;

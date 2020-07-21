@@ -1,4 +1,4 @@
-%% Performance of BoundEffRed on PPG,THO, ECG, and EEG
+%% Performance of BoundEffRed on PPG,THO, ECG, and EEG (Tables II and II in the paper)
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 
@@ -10,7 +10,7 @@ fprintf('================================================================\n')
 fprintf('                              PPG                               \n')
 fprintf('================================================================\n')
 
-fprintf('====================Forecasting Performance======================\n')
+fprintf('====================Forecasting Performance=====================\n')
 fprintf(' _______________________________________________________________\n')
 fprintf('| Extension Method | Computing time (sec.)  | Forecasting Error |\n')
 fprintf('|------------------|------------------------|-------------------|\n')
@@ -20,7 +20,7 @@ fprintf('|      EDMD        |           %.3f        |     %.3e     |\n', CompTim
 fprintf('|      GPR         |         %.3f        |     %.3e     |\n', CompTime.GPR , mean(forecastErr.GPR) )
 fprintf('|__________________|________________________|___________________|\n\n')
 
-fprintf('=============Optimal Transport Distance============\n')
+fprintf('=========Optimal Transport Distance=========\n')
 fprintf(' __________________________________________\n')
 fprintf('| Extension Method |  SST  |  STFT |ConceFT|\n')
 fprintf('|------------------|-------|-------|-------|\n')
@@ -73,8 +73,8 @@ xlabel('Time (s)'); ylabel('Signals'); xlim([40 tt(end)]); ylim([-20 20]);
 set(gca,'fontsize',20)
 
 
-fprintf('===================Optimal Transport Distance==================\n')
-fprintf(' ______________________________________________________________\n')
+fprintf('============Optimal Transport Distance=============\n')
+fprintf(' __________________________________________________\n')
 fprintf('| Extension Method |  SST  |  STFT |  RS   |ConceFT|\n')
 fprintf('|------------------|-------|-------|-------|-------|\n')
 fprintf('|  LSE extension   | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE(~isnan(OTD.sst.LSE))./OTD.sst.S(~isnan(OTD.sst.LSE))),mean(OTD.stft.LSE(~isnan(OTD.sst.LSE))./OTD.stft.S(~isnan(OTD.sst.LSE))),mean(OTD.rs.LSE(~isnan(OTD.sst.LSE))./OTD.rs.S(~isnan(OTD.sst.LSE))),mean(OTD.conceft.LSE(~isnan(OTD.sst.LSE))./OTD.conceft.S(~isnan(OTD.sst.LSE))))
@@ -98,15 +98,15 @@ fprintf('|      EDMD        |           %.2f        |     %.3e     |\n', CompTim
 fprintf('|      GPR         |          %.2f        |     %.3e     |\n', CompTime.GPR , mean(forecastErr.GPR))
 fprintf('|__________________|_______________________|___________________|\n\n')
 
-fprintf('==============Optimal Transport Distance===============\n')
-fprintf(' ______________________________________________________\n')
-fprintf('| Extension Method |    SST    |    STFT   |    RS     |\n')
-fprintf('|------------------|-----------|-----------|-----------|\n')
-fprintf('|  No extension    | %.3e | %.3e | %.3e |\n', mean(OTD.sst.S),mean(OTD.stft.S),mean(OTD.rs.S))
-fprintf('|  LSE extension   | %.3e | %.3e | %.3e |\n', mean(OTD.sst.LSE),mean(OTD.stft.LSE),mean(OTD.rs.LSE))
-fprintf('|  EDMD extension  | %.3e | %.3e | %.3e |\n', mean(OTD.sst.EDMD),mean(OTD.stft.EDMD),mean(OTD.rs.EDMD))
-fprintf('|  GPR extension   | %.3e | %.3e | %.3e |\n', mean(OTD.sst.GPR),mean(OTD.stft.GPR),mean(OTD.rs.GPR))
-fprintf('|__________________|___________|___________|___________|\n\n')
+fprintf('=========Optimal Transport Distance========\n')
+fprintf(' __________________________________________\n')
+fprintf('| Extension Method |  SST  |  STFT |  RS   |\n')
+fprintf('|------------------|-------|-------|-------|\n')
+fprintf('|  LSE extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE./OTD.sst.S),mean(OTD.stft.LSE./OTD.stft.S),mean(OTD.rs.LSE./OTD.rs.S))
+%fprintf('|  Symmetrization  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.rs.SYM./OTD.rs.S))
+fprintf('|  EDMD extension  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.rs.EDMD./OTD.rs.S))
+fprintf('|  GPR extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.GPR./OTD.sst.S),mean(OTD.stft.GPR./OTD.stft.S),mean(OTD.rs.GPR./OTD.rs.S))
+fprintf('|__________________|_______|_______|_______|\n\n')
 
 %% ECG
 load ../../Results/resultSucForECGcompMeth ;
@@ -123,12 +123,12 @@ fprintf('|      EDMD        |          %.2f        |     %.3e     |\n', CompTime
 fprintf('|      GPR         |         %.2f        |     %.3e     |\n', CompTime.GPR , mean(forecastErr.GPR))
 fprintf('|__________________|_______________________|___________________|\n\n')
 
-fprintf('==============Optimal Transport Distance===============\n')
-fprintf(' ______________________________________________________\n')
-fprintf('| Extension Method |    SST    |    STFT   |    RS     |\n')
-fprintf('|------------------|-----------|-----------|-----------|\n')
-fprintf('|  No extension    | %.3e | %.3e | %.3e |\n', mean(OTD.sst.S),mean(OTD.stft.S),mean(OTD.rs.S))
-fprintf('|  LSE extension   | %.3e | %.3e | %.3e |\n', mean(OTD.sst.LSE),mean(OTD.stft.LSE),mean(OTD.rs.LSE))
-fprintf('|  EDMD extension  | %.3e | %.3e | %.3e |\n', mean(OTD.sst.EDMD),mean(OTD.stft.EDMD),mean(OTD.rs.EDMD))
-fprintf('|  GPR extension   | %.3e | %.3e | %.3e |\n', mean(OTD.sst.GPR),mean(OTD.stft.GPR),mean(OTD.rs.GPR))
-fprintf('|__________________|___________|___________|___________|\n\n')
+fprintf('=========Optimal Transport Distance========\n')
+fprintf(' __________________________________________\n')
+fprintf('| Extension Method |  SST  |  STFT |  RS   |\n')
+fprintf('|------------------|-------|-------|-------|\n')
+fprintf('|  LSE extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE./OTD.sst.S),mean(OTD.stft.LSE./OTD.stft.S),mean(OTD.rs.LSE./OTD.rs.S))
+%fprintf('|  Symmetrization  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.rs.SYM./OTD.rs.S))
+fprintf('|  EDMD extension  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.rs.EDMD./OTD.rs.S))
+fprintf('|  GPR extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.GPR./OTD.sst.S),mean(OTD.stft.GPR./OTD.stft.S),mean(OTD.rs.GPR./OTD.rs.S))
+fprintf('|__________________|_______|_______|_______|\n\n')
