@@ -53,7 +53,7 @@ while nend <= Ntot
     %% Extensions
     xxTRUE = ( xtot((nleft-L):nend) - mu ) / sigma ; % ground-truth extension
     
-    if any( strcmp(methods, {'SigExt','lse'}) )
+    if any( strcmp(methods, 'SigExt') )
         method.name = 'SigExt' ;
         tic;
         xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ; % Forecasted signal via LSE
@@ -111,7 +111,7 @@ while nend <= Ntot
         OTD.sst.S(ind) = slicedOT(sstS, sstTRUE) ;
         OTD.conceft.S(ind) = slicedOT(conceftS, conceftTRUE) ;
         % On the LS Vector estimated extended signal
-        if any(strcmp(methods,{'SigExt','lse'}))
+        if any(strcmp(methods,'SigExt'))
             [VxxLSE, sstLSE, conceftLSE, ~] = ConceFT_sqSTFT_C(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, basicTF.MT, 0, 0) ;
             VxxLSE = VxxLSE(: , n0:nf );
             sstLSE = sstLSE(: , n0:nf );
@@ -171,7 +171,7 @@ while nend <= Ntot
         OTD.sst.S(ind) = slicedOT(sstS, sstTRUE) ;
         OTD.stft.S(ind) = slicedOT(Vx, VxxTRUE) ;
         % On the LS Vector estimated extended signal
-        if any(strcmp(methods,{'SigExt','lse'}))
+        if any(strcmp(methods,'SigExt'))
             [VxxLSE, sstLSE, ~] = sqSTFT_C(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
             sstLSE = sstLSE(: , n0:nf );
             VxxLSE = VxxLSE(: , n0:nf );
@@ -220,7 +220,7 @@ while nend <= Ntot
         [~, rsS, ~] = rsSTFT(double(x-mean(x)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
         OTD.rs.S(ind) = slicedOT(rsS, rsTRUE) ;
         % On the LS Vector estimated extended signal
-        if any(strcmp(methods,{'SigExt','lse'}))
+        if any(strcmp(methods,'SigExt'))
             [~, rsLSE, ~] = rsSTFT(double(xxLSE-mean(xxLSE)), basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
             rsLSE = rsLSE(: , n0:nf ) ;
             OTD.rs.LSE(ind) = slicedOT(rsLSE, rsTRUE) ;
@@ -250,7 +250,7 @@ while nend <= Ntot
     ind = ind + 1 ;
 end
 
-if any(strcmp(methods,{'SigExt','lse'}))
+if any(strcmp(methods,'SigExt'))
     CompTime.LSE = mean(LSEtime) ;
 end
 if any(strcmp(methods,'symmetrization'))

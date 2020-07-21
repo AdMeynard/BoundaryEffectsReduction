@@ -16,7 +16,7 @@ fs = 200 ; % sampling frequency
 N = 6e3; % subsignals length
 
 % Forecasting parameters
-methods = {'lse','edmd','gpr'} ;
+methods = {'SigExt','edmd','gpr'} ;
 HOP = 1 ;
 extSEC = 1.5 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;

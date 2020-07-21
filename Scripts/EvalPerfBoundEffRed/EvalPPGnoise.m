@@ -17,7 +17,7 @@ N0 = length(x0) ;
 N = 4e3; % subsignals length
 
 % Forecasting parameters
-methods = {'lse'} ;
+methods = {'SigExt'} ;
 HOP = 1 ;
 extSEC = 5 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
