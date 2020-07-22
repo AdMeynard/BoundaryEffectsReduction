@@ -20,15 +20,15 @@ fprintf('|      EDMD        |           %.3f        |     %.3e     |\n', CompTim
 fprintf('|      GPR         |         %.3f        |     %.3e     |\n', CompTime.GPR , mean(forecastErr.GPR) )
 fprintf('|__________________|________________________|___________________|\n\n')
 
-fprintf('=========Optimal Transport Distance=========\n')
-fprintf(' __________________________________________\n')
-fprintf('| Extension Method |  SST  |  STFT |ConceFT|\n')
-fprintf('|------------------|-------|-------|-------|\n')
-fprintf('|      SigExt      | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE./OTD.sst.S),mean(OTD.stft.LSE./OTD.stft.S),mean(OTD.conceft.LSE./OTD.conceft.S))
-fprintf('|  Symmetrization  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.conceft.SYM./OTD.conceft.S))
-fprintf('|  EDMD extension  | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.conceft.EDMD./OTD.conceft.S))
-fprintf('|  GPR extension   | %.3f | %.3f | %.3f |\n', mean(OTD.sst.GPR./OTD.sst.S),mean(OTD.stft.GPR./OTD.stft.S),mean(OTD.conceft.GPR./OTD.conceft.S))
-fprintf('|__________________|_______|_______|_______|\n\n')
+fprintf('=============Optimal Transport Distance============\n')
+fprintf(' __________________________________________________\n')
+fprintf('| Extension Method |  SST  |  STFT |ConceFT|   RS  |\n')
+fprintf('|------------------|-------|-------|-------|-------|\n')
+fprintf('|      SigExt      | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.LSE./OTD.sst.S),mean(OTD.stft.LSE./OTD.stft.S),mean(OTD.conceft.LSE./OTD.conceft.S),mean(OTD.rs.LSE./OTD.rs.S))
+fprintf('|  Symmetrization  | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.SYM./OTD.sst.S),mean(OTD.stft.SYM./OTD.stft.S),mean(OTD.conceft.SYM./OTD.conceft.S),mean(OTD.rs.SYM./OTD.rs.S))
+fprintf('|  EDMD extension  | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.EDMD./OTD.sst.S),mean(OTD.stft.EDMD./OTD.stft.S),mean(OTD.conceft.EDMD./OTD.conceft.S),mean(OTD.rs.EDMD./OTD.rs.S))
+fprintf('|  GPR extension   | %.3f | %.3f | %.3f | %.3f |\n', mean(OTD.sst.GPR./OTD.sst.S),mean(OTD.stft.GPR./OTD.stft.S),mean(OTD.conceft.GPR./OTD.conceft.S),mean(OTD.rs.GPR./OTD.rs.S))
+fprintf('|__________________|_______|_______|_______|_______|\n\n')
 
 %% THO
 load ../../Results/resultSucForTHOcompMeth ;
