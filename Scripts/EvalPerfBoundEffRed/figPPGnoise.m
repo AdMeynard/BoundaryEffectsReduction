@@ -13,7 +13,8 @@ grid on;
 set(gca,'fontsize',24) ;
 
 figure;
-semilogy(SNR,NoiseTFR.STFT,'^',SNR,NoiseTFR.SST,'+',SNR,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',8);
-xlabel('SNR (dB)'); ylabel('Averaged OTD'); grid on;
-legend({'STFT','SST','RS'},'location','southwest');
+plot(SNR,NoiseTFR.STFT,'^',SNR,NoiseTFR.SST,'+',SNR,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',10);
+ylim([0 0.6]) ;
+xlabel('SNR (dB)','interpreter','latex'); ylabel('Averaged performance index $D$','interpreter','latex'); grid on;
+legend('STFT','SST','RS');
 set(gca,'fontsize',24) ;
