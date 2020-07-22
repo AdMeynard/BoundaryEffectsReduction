@@ -114,7 +114,7 @@ The quality of the boundary effects reduction is evaluated directly on the TF re
 \label{eq:opt.TFR}
 \end{equation} 
 
-In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantifies the distance between a given TF representation and the optimal one. It is built in analogy with the optimal transport distance, which enables quantifying the distance between two probability density functions. Let us generically denote a time-frequency representation $\ccQ$. Then, for $t$ fixed, we consider the following probability density function: $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$. At each instant $t$, we then determine the optimal transport distance $d_{t}$ between the two densities. It is given by the $L^1$ norm of the difference between the associated distribution functions. In other words, we have:
+In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantifies the distance between a given TF representation and the optimal one. It is built in analogy with the optimal transport distance, which enables quantifying the distance between two probability density functions. Let us generically denote a TF representation $\ccQ$. Then, for $t$ fixed, we consider the following probability density function: $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$. At each instant $t$, we then determine the optimal transport distance $d_{t}$ between the two densities. It is given by the $L^1$ norm of the difference between the associated distribution functions. In other words, we have:
 \begin{equation*}
 d_{t}(\ccQ,\ccF_0) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF_0}^t(\xi)\right|\dd\xi\ ,
 \end{equation*}
@@ -175,7 +175,7 @@ Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented i
 
 \subsubsection{Photoplethysmogram}
 \label{ssse:ppg}
-We perform a study similar to the previous one on a 640 second-long photoplethysmogram (PPG) signal extracted from the Physionet dataset~\cite{Pimentel17toward, Goldberger00physiobank}, sampled at $\fs=125$~Hz. A portion of this signal is displayed in Fig.~\ref{fig:ppg}. The estimated 5 seconds extensions of this segment obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension in Fig.~\ref{fig:ppg}.
+We perform a study similar to the previous one on a $640$-second-long photoplethysmogram (PPG) signal extracted from the Physionet dataset~\cite{Pimentel17toward, Goldberger00physiobank}, sampled at $\fs=125$~Hz. A portion of this signal is displayed in Fig.~\ref{fig:ppg}. The estimated 5 seconds extensions of this segment obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension in Fig.~\ref{fig:ppg}.
 
 \begin{figure}
 %\includegraphics[width=.48\textwidth]{PPGsig.eps}
@@ -189,19 +189,19 @@ We divide the signal into 32-second-long segments and apply Algorithm~\ref{alg:b
 \begin{table}
 \centering
 \caption{PPG Signal: Performance of the Boundary-Free TF Representations According to the Extension Method}
-\begin{tabular}{|c||c|c|c|}
+\begin{tabular}{|c||c|c|c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{3}{c|}{Averaged performance index $D$} \\
-   \cline{2-4}
-      & STFT & SST & ConceFT\\
-   \hhline{|=#=|=|=|}
-   {\sf SigExt} & $0.280$ & $0.309$ & $0.367$ \\
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Averaged performance index $D$} \\
+   \cline{2-5}
+      & STFT & SST & ConceFT & RS\\
+   \hhline{|=#=|=|=|=|}
+   {\sf SigExt} & $0.280$ & $0.309$ & $0.367$ & $0.534$ \\
    \hline
-   Symmetric & $1.168$ & $1.209$ & $1.310$ \\
+   Symmetric & $1.168$ & $1.209$ & $1.310$ & $0.983$ \\
    \hline
-   EDMD & $0.289$ & $0.319$ & $0.375$ \\
+   EDMD & $0.289$ & $0.319$ & $0.375$ & $0.503$ \\
    \hline
-   GPR & $0.276$ & $0.303$ & $0.361$ \\
+   GPR & $0.276$ & $0.303$ & $0.361$ & $0.544$ \\
    \hline
 \end{tabular}
 \label{tab:otd.ppg}
