@@ -1,4 +1,4 @@
-\subsection{Signal model}
+\subsection{Signal Model}
 We model the deterministic part of the observed signal as a multicomponent harmonic signal; that is, a sum of sine waves:
 \begin{equation}
 \bz[n]=\sum_{j=1}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs} + \varphi_j\right)\ ,
@@ -19,7 +19,7 @@ In addition, the observed signal is assumed to be corrupted by an additive Gauss
 \end{equation}
 where $\bz$ follows model~\eqref{eq:sum.sine}, $\bw$ is a Gaussian white noise, whose variance is normalized to one. Thus, $\sigma^2$ denotes the variance of the additive noise $\sigma\bw$.
 
-\subsection{Forecasting error}
+\subsection{Forecasting Error}
 On the forecasting interval, we decompose the estimated signal $\tilde\bx$ as follows:
 \begin{equation}
 \tilde \bx[n] = \bz[n] + \bepsilon[n]\ ,
@@ -76,7 +76,7 @@ Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\
 \bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
 \label{eq:lse.0}
 \end{equation}
-where $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$, $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, $\bz_k$ is the $k$-th sub-signal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}, and $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that $\bD[m,m'] = \delta_{m+1,m'}$.
+where $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$, $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, $\bz_k$ is the $k$-th subsignal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}, and $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that $\bD[m,m'] = \delta_{m+1,m'}$.
 
 Let $\bh^{(\ell)}$ be the error vector given by:
 \begin{equation*}
@@ -133,7 +133,7 @@ where $\ell=n-N+1$ and $\lambda=n'-N+1$.
 See the Supplementary Material. The proof is mainly based on the results provided by Lemma~\ref{lm:error}, combined with the Isserlis' theorem~\cite{Isserlis16formula}, which provides a formula for the computation of higher-order moments of Gaussian random variables.
 \end{proof}
 
-Ideally, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean noise whose variance is of the order of $\sigma^2$. Theorem~\ref{th:error} shows that the forecasting error is asymptotically unbiased. Concerning the covariance of the forecasting error, although equations~\eqref{eq:cov.error.1} and~\eqref{eq:cov.error.2} are not easily readable, one can evaluate the dependence of the variance in function of the tuning parameters, that are adjusted by the user. Let us focus on the forecasting error variance $\gamma[n,n]$ when $n\geq N$. First, as expected, the variance increases linearly with the noise variance $\sigma^2$. Second, it asymptotically depends linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Third, the dependency on the sub-signals lengths $M$ and the forecasting index $\ell=n-N+1$ is hidden in the expression of the covariance matrix $\bGamma^{(\ell,\ell)}$. We discuss this dependency in more detail in section~\ref{ssse:res.sine}.
+Ideally, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean noise whose variance is of the order of $\sigma^2$. Theorem~\ref{th:error} shows that the forecasting error is asymptotically unbiased. Concerning the covariance of the forecasting error, although equations~\eqref{eq:cov.error.1} and~\eqref{eq:cov.error.2} are not easily readable, one can evaluate the dependence of the variance in function of the tuning parameters, that are adjusted by the user. Let us focus on the forecasting error variance $\gamma[n,n]$ when $n\geq N$. First, as expected, the variance increases linearly with the noise variance $\sigma^2$. Second, it asymptotically depends linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Third, the dependency on the subsignals lengths $M$ and the forecasting index $\ell=n-N+1$ is hidden in the expression of the covariance matrix $\bGamma^{(\ell,\ell)}$. We discuss this dependency in more detail in section~\ref{ssse:res.sine}.
 
 \begin{remark}[Adaptive Harmonic Model]\label{RemarkAHM}
 One can extend the previous result to the case where the instantaneous frequencies and amplitudes of the components of the deterministic part of the observed signal are slowly varying. We therefore handle the \textit{AM-FM model} which, in its is continuous-time version, takes the following form:
@@ -148,7 +148,7 @@ In many practical signals, the amplitude and frequency do not change fast. It is
 \end{remark}
 
 
-\subsection{Performance of the boundary effects reduction}
+\subsection{Performance of the Boundary Effects Reduction}
 \label{sse:perf.BoundEffRed}
-Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any TF representation. Instead, let us discuss the particular case of SST. Since SST is designed to analyze signals satisfying the AHM, as is discussed in Remark \ref{RemarkAHM}, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. Recall Theorem 3 in~\cite{Chen14nonparametric}, which states that when the additive noise is stationary and remains small, the SST of the observed signal remains close to the ideal SST of an AM-FM signal, throughout the TF plane. In our case, while the additive noise is not stationary, the dependence only appears in the extended part of the signal. Thus, the proof of Theorem 3 in~\cite{Chen14nonparametric} can be generalized to explain the robustness of SST to the noise. We refer the reader to~\cite{Chen14nonparametric} for precise quantification of the error made in the TF plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since the forecasting error does not impact SST. An immediate application is that the instantaneous frequencies can now be well estimated continuously up to the edges of the TF plane.
-While we do not provide a theoretical justification, we verify experimentally that Algorithm~\ref{alg:boundary} is efficient for a large number of representations in the following section~\ref{se:results}.
+Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any TF representation. Instead, let us discuss the particular case of SST. Since SST is designed to analyze signals satisfying the AHM, as is discussed in Remark \ref{RemarkAHM}, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. Recall Theorem 3 in~\cite{Chen14nonparametric}, which states that when the additive noise is stationary and remains small, the SST of the observed signal remains close to the ideal SST of an AM-FM signal, throughout the TF plane. In our case, whereas the additive noise is nonstationary, the dependence only appears in the extended part of the signal. Thus, the proof of Theorem 3 in~\cite{Chen14nonparametric} can be generalized to explain the robustness of SST to the noise. We refer the reader to~\cite{Chen14nonparametric} for precise quantification of the error made in the TF plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since the forecasting error does not impact SST. An immediate application is that the instantaneous frequencies can now be well estimated continuously up to the edges of the TF plane.
+Although we do not provide a theoretical justification, we verify experimentally that Algorithm~\ref{alg:boundary} is efficient for a large number of representations in the following section~\ref{se:results}.

@@ -6,7 +6,7 @@ We start with the notation. Let $x:\RR\to\RR$ denote a continuous-time signal. I
 \bx[n] = x\left(\frac{n}{\fs}\right)\ ,\quad \forall n\in\{0,\ldots,N-1\}\ , 
 \]
 where $\fs$ denotes the sampling frequency. 
-Let $M$ and $K$ be two integers such that $M<N$ and $K+M<N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the sub-signal $\bx_k\in\RR^M$ given by:
+Let $M$ and $K$ be two integers such that $M<N$ and $K+M<N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the subsignal $\bx_k\in\RR^M$ given by:
 \begin{equation}
 \bx_k = 
 \begin{pmatrix}
@@ -16,14 +16,14 @@ Let $M$ and $K$ be two integers such that $M<N$ and $K+M<N$. Then, for all $k\in
 \end{pmatrix}\ .
 \label{eq:xk}
 \end{equation} 
-These sub-signals are gathered into the matrix $\bX\in\RR^{M\times K}$ such that:
+These subsignals are gathered into the matrix $\bX\in\RR^{M\times K}$ such that:
 \begin{equation*}
 \bX = 
 \begin{pmatrix}
 \bx_0 & \cdots & \bx_{K-1}
 \end{pmatrix}\ .
 \end{equation*}
-Notice that these sub-signals are overlapping each other. Indeed, $\bx_{k+1}$ is a shifting of $\bx_k$ from one sample. We also consider the matrix $\bY\in\RR^{M\times K}$ given by:
+Notice that these subsignals are overlapping each other. Indeed, $\bx_{k+1}$ is a shifting of $\bx_k$ from one sample. We also consider the matrix $\bY\in\RR^{M\times K}$ given by:
 \begin{equation*}
 \bY = 
 \begin{pmatrix}
@@ -59,12 +59,11 @@ The pseudo-code of the proposed real-time algorithm to reduce boundary effects o
 \end{algorithm}
 
 
-\subsection{Step 1: Extension by forecasting}
+\subsection{Step 1: Extension by Forecasting}
 
 
 
-
-\paragraph{Dynamical model and forecasting} 
+\paragraph{Dynamical Model and Forecasting} 
 Establishing a dynamical model consists in determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
 \[
 \bY = f(\bX)\ .
@@ -74,7 +73,7 @@ In a general framework, forecasting means estimating the function $f$ from the o
 \bY = \bA\bX\ ,
 \label{eq:dyn.model}
 \end{equation}
-where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in the study of dynamical systems, the {\em linearization} of a nonlinear phenomenon, when the system is sufficiently regular. Notice that this linearized dynamical model can be written equivalently in function of the sub-signals $\bx_k$, as:
+where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in the study of dynamical systems, the {\em linearization} of a nonlinear phenomenon, when the system is sufficiently regular. Notice that this linearized dynamical model can be written equivalently in function of the subsignals $\bx_k$, as:
 \begin{equation}
 \bx_{k+1} = \bA\bx_{k},\ ,\forall k\in\{0,\dots,K-1\}\ .
 \end{equation}
@@ -92,7 +91,7 @@ where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$; that is to sa
 \end{equation}
 where $\be_M$ is the unit vector of length $M$ given by $\be_M = \begin{pmatrix} 0 & \cdots & 0 & 1\end{pmatrix}^T$.
 
-\paragraph{Model estimation} To estimate the matrix $\bA$, we consider the simple but numerically efficient least square estimator. That is, we solve the following problem:
+\paragraph{Model Estimation} To estimate the matrix $\bA$, we consider the simple but numerically efficient least square estimator. That is, we solve the following problem:
 \begin{equation}
 \label{eq:ls.pb}
 \tilde\bA = \arg\min_{\balpha} \cL(\bA)\ ,
@@ -122,7 +121,7 @@ This expression clearly shows that the matrix $\tilde\bA$ takes the following fo
 Then, except for the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, the matrix $\bA$ is fully determined by the dynamical model.
 \end{remark}
 
-\paragraph{Signal extension} Since we are building a real-time algorithm, we consider that only the right ``side'' of the signal has to be extended, the left ``side'' being fixed since it only concerns the past values of the signal. We therefore construct the extended signal $\tilde\bx\in\RR^{N+L}$ concatenating the observed signal $\bx$, and the forward forecasting $\tilde\bx_{\mathrm{fw}}\in\RR^L$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we could, if necessary, handle the backward estimation using the same strategy as described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
+\paragraph{Signal Extension} Since we are building a real-time algorithm, we consider that only the right ``side'' of the signal has to be extended, the left ``side'' being fixed since it only concerns the past values of the signal. We therefore construct the extended signal $\tilde\bx\in\RR^{N+L}$ concatenating the observed signal $\bx$, and the forward forecasting $\tilde\bx_{\mathrm{fw}}\in\RR^L$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we could, if necessary, handle the backward estimation using the same strategy as described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
 
 \begin{algorithm}
 \caption{Signal extension. $\tilde\bx = \mbox{\sf SigExt}(\bx,M,K,L)$}

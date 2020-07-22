@@ -34,13 +34,13 @@ nXP = 12 ;
 StdNoise = logspace(-3.5,-1,nXP) ;
 for n = 1:nXP
     x = x0 + StdNoise(n)*randn(N0,1) ;
-    TFR = {'sstSTFT','RS'} ;
+    TFR = {'sst','RS'} ;
     [forecastErr, CompTime, OTD] = SucForecast(x,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
     
     NoiseForecastErr(n) = mean(forecastErr.LSE) ;
-    NoiseTFR.SST(n) = mean(OTD.sst.LSE) ;
-    NoiseTFR.STFT(n) = mean(OTD.stft.LSE) ;
-    NoiseTFR.RS(n) = mean(OTD.rs.LSE) ;
+    NoiseTFR.SST(n) = mean(OTD.sst.LSE./OTD.sst.S) ;
+    NoiseTFR.STFT(n) = mean(OTD.stft.LSE./OTD.stft.S) ;
+    NoiseTFR.RS(n) = mean(OTD.rs.LSE./OTD.rs.S) ;
 end
 
 SNR = 20*log10(std(x0)./StdNoise) ;
