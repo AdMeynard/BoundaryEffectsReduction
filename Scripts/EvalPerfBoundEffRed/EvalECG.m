@@ -16,18 +16,18 @@ fs = 200 ; % sampling frequency
 N = 15e3; % subsignals length
 
 % Forecasting parameters
-methods = {'SigExt','edmd','gpr'} ;
+methods = {'SigExt','symmetrization','edmd','gpr'} ;
 HOP = 1 ;
 extSEC = 6 ; % the extension is of extSEC second
 L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
-TFR = {'sstSTFT','RS'} ;
+TFR = {'conceFT','RS'} ;
 basicTF.hop = 10 ;
-basicTF.win = 2301 ;
+basicTF.win = 2*L+1 ;
 basicTF.fmin = 0 ;
-basicTF.fmax = 0.01 ;
+basicTF.fmax = 0.02 ;
 basicTF.df = 1e-5 ;
 basicTF.MT = 30 ;
 [forecastErr, CompTime, OTD] = SucForecast(xtot,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;

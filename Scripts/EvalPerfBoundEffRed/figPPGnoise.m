@@ -14,7 +14,6 @@ set(gca,'fontsize',24) ;
 
 figure;
 plot(SNR,NoiseTFR.STFT,'^',SNR,NoiseTFR.SST,'+',SNR,NoiseTFR.conceFT,'s',SNR,NoiseTFR.RS,'o','linewidth',2,'MarkerSize',11);
-%ylim([0 0.6]) ;
 xlabel('SNR (dB)','interpreter','latex'); ylabel('Averaged performance index $D$','interpreter','latex'); grid on;
 legend('STFT','SST','ConceFT','RS');
 set(gca,'fontsize',24) ;

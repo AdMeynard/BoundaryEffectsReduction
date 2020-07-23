@@ -34,8 +34,6 @@ Lidx = round( (N/2)*(lowFreq/0.5) ) + 1 ;
 Hidx = round( (N/2)*(highFreq/0.5) ) ; 
 fLen = Hidx - Lidx + 1 ;
 
-
-
 %====================================================================
 	%% check input signals
 if (xcol~=1)
@@ -92,7 +90,7 @@ for tidx = 1:tLen
 
    	    	jcolhat = jcol - omega(jcol) ;
 
-   	    	if ((jcolhat <= Hidx) && (jcolhat >= Lidx))
+            if ((jcolhat <= Hidx) && (jcolhat >= Lidx))
                 
                 if Smooth
 					IDXb = find((jcolhat-Lidx+1+weightIDX <= Hidx) & (jcolhat-Lidx+1+weightIDX >= Lidx)) ;
