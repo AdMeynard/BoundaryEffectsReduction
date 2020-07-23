@@ -24,6 +24,8 @@ L = round(extSEC*fs) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
+% TFR parameters
+TFR = {'conceFT','RS'} ;
 basicTF.hop = 10 ;
 basicTF.win = 1501 ;
 basicTF.fmin = 0 ;
@@ -36,7 +38,6 @@ NoiseForecastErr = zeros(nXP,1) ;
 StdNoise = logspace(-3.5,-1,nXP) ;
 for n = 1:nXP
     x = x0 + StdNoise(n)*randn(N0,1) ;
-    TFR = {'conceFT','RS'} ;
     [forecastErr, CompTime, OTD] = SucForecast(x,fs,methods,HOP,N,extM,extK,extSEC,TFR,basicTF) ;
     
     NoiseForecastErr(n) = mean(forecastErr.LSE) ;
