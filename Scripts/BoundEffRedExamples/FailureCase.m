@@ -55,7 +55,7 @@ SYMtime = toc;
 
 %% Plot
 t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
+tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
 
 xxTRUE = ( xtot((n0-L):(n1+L)) - mu ) / s ;
 xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
@@ -84,8 +84,8 @@ set(gca,'FontSize',20); %xticklabels([]) ;
 basicTF.fmin = 0/fs ;
 basicTF.fmax = 1/fs ;
 basicTF.df = 1e-5 ;
-basicTF.hop = 10;
-basicTF.win = 2*L+1;
+basicTF.hop = 10 ;
+basicTF.win = 2*L+1 ;
 
 
 [~, SSTx, ~, tfrsqticX] = ConceFT_sqSTFT_C(x, basicTF.fmin, basicTF.fmax,...

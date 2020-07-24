@@ -25,7 +25,7 @@ extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
 TFR = {'conceFT','RS'} ;
 basicTF.hop = 10 ;
-basicTF.win = 1501 ;
+basicTF.win = 2*L+1 ;
 basicTF.fmin = 0 ;
 basicTF.fmax = 0.01 ;
 basicTF.df = 1e-5 ;

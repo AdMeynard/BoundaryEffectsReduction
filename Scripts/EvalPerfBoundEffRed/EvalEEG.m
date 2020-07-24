@@ -13,7 +13,7 @@ xtot = data.EEG;
 
 fs = 200 ; % sampling frequency
 
-N = 6e3; % subsignals length
+N = 3e3; % subsignals length
 
 % Forecasting parameters
 methods = {'SigExt','symmetrization','edmd','gpr'} ;
