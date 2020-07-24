@@ -28,7 +28,7 @@ if extK + extM >length(x) - 10
     extK = extK/2 ; extM = extM/2 ;
 end
 
-method.name = 'lseV' ;
+method.name = 'SigExt' ;
 tic; 
 xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 LSEtime = toc;
@@ -121,12 +121,21 @@ otdLSE = slicedOT(tfrsqLSEw, tfrsqTRUEw) ;
 otdEDMD = slicedOT(tfrsqEDMDw, tfrsqTRUEw) ;
 otdGPR = slicedOT(tfrsqGPRw, tfrsqTRUEw) ;
 
-fprintf(' ______________________________________________________\n')
-fprintf('| Extension Method | Computing time (sec.) |    OTD    |\n')
-fprintf('|======================================================|\n')
-fprintf('|  Zero-padding    |         %.2f          | %.3e |\n', 0, otdZP)
-fprintf('|  LSE extension   |         %.2f          | %.3e |\n', LSEtime, otdLSE)
-fprintf('|  EDMD extension  |         %.2f          | %.3e |\n', EDMDtime, otdEDMD)
-fprintf('|  GPR extension   |        %.2f          | %.3e |\n', GPRtime, otdGPR)
-fprintf('|__________________|_______________________|___________|\n')
+fprintf('=============SST===============\n')
+fprintf(' ____________________________\n')
+fprintf('| Extension Method | Index D | \n')
+fprintf('|------------------|---------|\n')
+fprintf('|     SigExt       |  %.3f  |\n', OTDLSE/OTDshort)
+fprintf('|  EDMD extension  |  %.3f  |\n', OTDEDMD/OTDshort)
+fprintf('|  GPR extension   |  %.3f  |\n', OTDGPR/OTDshort)
+fprintf('|__________________|_________|\n')
+
+fprintf(' ____________________________________________________\n')
+fprintf('| Extension Method | Computing time (sec.) | Index D |\n')
+fprintf('|------------------|-----------------------|---------|\n')
+fprintf('|  Zero-padding    |         %.2f          |  %.3f  |\n', 0, 1)
+fprintf('|     SigExt       |         %.2f          |  %.3f  |\n', LSEtime, otdLSE/otdZP)
+fprintf('|  EDMD extension  |         %.2f          |  %.3f  |\n', EDMDtime, otdEDMD/otdZP)
+fprintf('|  GPR extension   |        %.2f          |  %.3ef  |\n', GPRtime, otdGPR/otdZP)
+fprintf('|__________________|_______________________|_________|\n')
 

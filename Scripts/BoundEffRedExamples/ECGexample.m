@@ -9,7 +9,7 @@ data = load('ECG');
 xtot = data.ECG ;
 fs = 200 ; % sampling frequency
 
-n0 = 42e3;
+n0 = 51e3;
 nf = 58e3;
 x = xtot(n0:nf);
 mu = mean(x) ;
@@ -21,16 +21,12 @@ N = length(x);
 %% Forecasting
 
 HOP = 1 ;
-extSEC = 11 ; % the extension is of extSEC second
+extSEC = 6 ; % the extension is of extSEC second
 L = round( extSEC*fs ) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM );  % number of points to estimate A / size of datasets
-if extK + extM >length(x) - 10 
-    extK = extK/2 ; extM = extM/2 ;
-end
 
-
-method.name = 'lseV' ;
+method.name = 'SigExt' ;
 tic; 
 xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 LSEtime = toc;
@@ -48,49 +44,68 @@ GPRtime = toc;
 
 fprintf(' __________________________________________\n')
 fprintf('| Extension Method | Computing time (sec.) |\n')
-fprintf('|------------------------------------------|\n')
-fprintf('|  LSE extension   |        %.2f          |\n', LSEtime)
-fprintf('|  EDMD extension  |       %.2f          |\n', EDMDtime)
-fprintf('|  GPR extension   |      %.2f          |\n', GPRtime)
+fprintf('|------------------|-----------------------|\n')
+fprintf('|     SigExt       |        %.2f          |\n', LSEtime)
+fprintf('|  EDMD extension  |        %.2f          |\n', EDMDtime)
+fprintf('|  GPR extension   |       %.2f          |\n', GPRtime)
 fprintf('|__________________|_______________________|\n')
 
 
 %% Plot
 t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(-extSEC, (N-1)/fs+extSEC, N+2*round(extSEC*fs)) ;
+tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
 
 xxTRUE = ( xtot((n0-L):(nf+L)) - mu ) / s ;
 xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
 
 
 figure;
-plot(tt,xxLSE,tt,xxEDMD,tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-set(gca,'fontsize',14);
-legend('LSE Estimated Extended signal','EDMD Estimated Extended signal','GPR Estimated Extended signal','Ground truth Extended signal','Original signal'); 
-xlabel('Time (s)'); ylabel('Signals'); title('Time series'); axis tight;
+
+subplot(3,1,1)
+plot(tt,xxLSE,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+xticks([]);
+legend({'{\sf SigExt} extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',18);
+
+subplot(3,1,2)
+plot(tt,xxEDMD,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+xticks([]);
+legend({'EDMD extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',18);
+
+subplot(3,1,3)
+plot(tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+legend({'GPR extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',18);
 
 %% SST
-basicTF.hop = 10;
-basicTF.win = 2201;
+basicTF.hop = 10 ;
+basicTF.win = 2*L+1 ;
+basicTF.fmin = 0 ;
+basicTF.fmax = 0.02 ;
+basicTF.df = 1e-5 ;
 
 % On the original signal
-[~, SSTx, ~, tfrsqtic] = ConceFT_sqSTFT_C(double(x-mean(x)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTx, ~, tfrsqtic] = ConceFT_sqSTFT_C(x-mean(x), basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the true extended signal 
-[~, SSTxxTRUE, ~, tfrsqticTRUE] = ConceFT_sqSTFT_C(double(xxTRUE-mean(xxTRUE)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTxxTRUE, ~, tfrsqticTRUE] = ConceFT_sqSTFT_C(xxTRUE, basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the zero-padded extended signal 
-[~, SSTxxZP, ~, tfrsqticZP] = ConceFT_sqSTFT_C(double(xxZP-mean(xxZP)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTxxZP, ~, tfrsqticZP] = ConceFT_sqSTFT_C(xxZP, basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the estimated extended signal 
-[~, SSTxxLSE, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(double(xxLSE-mean(xxLSE)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTxxLSE, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(xxLSE, basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the estimated extended signal 
-[~, SSTxxEDMD, ~, ~] = ConceFT_sqSTFT_C(double(xxEDMD-mean(xxEDMD)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTxxEDMD, ~, ~] = ConceFT_sqSTFT_C(xxEDMD, basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 % On the estimated extended signal 
-[~, SSTxxGPR, ~, ~] = ConceFT_sqSTFT_C(double(xxGPR-mean(xxGPR)), 0, 0.01,...
-            1e-5, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+[~, SSTxxGPR, ~, ~] = ConceFT_sqSTFT_C(xxGPR, basicTF.fmin, basicTF.fmax,...
+            basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
 figure;
 subplot(2,2,1);
@@ -123,10 +138,11 @@ OTDLSE = slicedOT(tfrsqLSEw, tfrsqTRUEw) ;
 OTDEDMD = slicedOT(tfrsqEDMDw, tfrsqTRUEw) ;
 OTDGPR = slicedOT(tfrsqGPRw, tfrsqTRUEw) ;
 
-fprintf(' Extension Method |    OTD    | \n')
-fprintf('  Short signal    | %.3e |\n', OTDshort)
-fprintf('  Zero-padding    | %.3e |\n', OTDZP)
-fprintf('  LSE extension   | %.3e |\n', OTDLSE)
-fprintf('  EDMD extension  | %.3e |\n', OTDEDMD)
-fprintf('  GPR extension   | %.3e |\n', OTDGPR)
-
+fprintf('=============SST===============\n')
+fprintf(' ____________________________\n')
+fprintf('| Extension Method | Index D | \n')
+fprintf('|------------------|---------|\n')
+fprintf('|     SigExt       |  %.3f  |\n', OTDLSE/OTDshort)
+fprintf('|  EDMD extension  |  %.3f  |\n', OTDEDMD/OTDshort)
+fprintf('|  GPR extension   |  %.3f  |\n', OTDGPR/OTDshort)
+fprintf('|__________________|_________|\n')

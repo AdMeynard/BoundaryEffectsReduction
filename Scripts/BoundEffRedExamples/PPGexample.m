@@ -28,7 +28,7 @@ if extK + extM >length(x) - 10
 end
 
 
-method.name = 'lseV' ;
+method.name = 'SigExt' ;
 tic; 
 xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 LSEtime = toc;
@@ -47,7 +47,7 @@ GPRtime = toc;
 fprintf(' __________________________________________\n')
 fprintf('| Extension Method | Computing time (sec.) |\n')
 fprintf('|------------------------------------------|\n')
-fprintf('|  LSE extension   |         %.2f          |\n', LSEtime)
+fprintf('|     SigExt       |         %.2f          |\n', LSEtime)
 fprintf('|  EDMD extension  |         %.2f          |\n', EDMDtime)
 fprintf('|  GPR extension   |       %.2f          |\n', GPRtime)
 fprintf('|__________________|_______________________|\n')
@@ -130,13 +130,12 @@ sstOTDGPR = slicedOT(tfrsqGPRw, tfrsqTRUEw) ;
 
 fprintf('==============SST===============\n')
 fprintf(' _______________________________\n')
-fprintf('|  Extension Method |    OTD    | \n')
+fprintf('|  Extension Method |  Index D  | \n')
 fprintf('|-------------------|-----------|\n')
-%fprintf('|   Short signal    | %.3e |\n', sstOTDshort)
-fprintf('| Without extension | %.3e |\n', sstOTDZP)
-fprintf('|   LSE extension   | %.3e |\n', sstOTDLSE)
-fprintf('|   EDMD extension  | %.3e |\n', sstOTDEDMD)
-fprintf('|   GPR extension   | %.3e |\n', sstOTDGPR)
+fprintf('|   Zero-padding    | %.3f |\n', sstOTDZP/sstOTDshort)
+fprintf('|      SigExt       | %.3f |\n', sstOTDLSE/sstOTDshort)
+fprintf('|   EDMD extension  | %.3f |\n', sstOTDEDMD/sstOTDshort)
+fprintf('|   GPR extension   | %.3f |\n', sstOTDGPR/sstOTDshort)
 fprintf('|___________________|___________|\n')
 
 %% CWT
@@ -188,13 +187,12 @@ cwtOTDGPR = slicedOT(scaloGPRw, scaloTRUEw) ;
 
 fprintf('================CWT==============\n')
 fprintf(' ________________________________\n')
-fprintf('|  Extension Method  |    OTD    | \n')
+fprintf('|  Extension Method  |  Index D  | \n')
 fprintf('|--------------------|-----------|\n')
-fprintf('|  Without extension | %.3e |\n', cwtOTDshort)
-fprintf('|  Zero-padding      | %.3e |\n', cwtOTDZP)
-fprintf('|  LSE extension     | %.3e |\n', cwtOTDLSE)
-fprintf('|  EDMD extension    | %.3e |\n', cwtOTDEDMD)
-fprintf('|  GPR extension     | %.3e |\n', cwtOTDGPR)
+fprintf('|   Zero-padding     | %.3f |\n', cwtOTDZP/cwtOTDshort)
+fprintf('|      SigExt        | %.3f |\n', cwtOTDLSE/cwtOTDshort)
+fprintf('|   EDMD extension   | %.3f |\n', cwtOTDEDMD/cwtOTDshort)
+fprintf('|   GPR extension    | %.3f |\n', cwtOTDGPR/cwtOTDshort)
 fprintf('|____________________|___________|\n')
 
 %% Reassignment
@@ -258,12 +256,11 @@ rssOTDGPR = slicedOT(rssGPRw, rssTRUEw) ;
 
 fprintf('=================RS==============\n')
 fprintf(' ________________________________\n')
-fprintf('|  Extension Method  |    OTD    | \n')
+fprintf('|  Extension Method  |  Index D  | \n')
 fprintf('|--------------------|-----------|\n')
-fprintf('|  Without extension | %.3e |\n', rssOTDshort)
-fprintf('|  LSE extension     | %.3e |\n', rssOTDLSE)
-fprintf('|  EDMD extension    | %.3e |\n', rssOTDEDMD)
-fprintf('|  GPR extension     | %.3e |\n', rssOTDGPR)
+fprintf('|      SigExt        | %.3f |\n', rssOTDLSE/rssOTDshort)
+fprintf('|  EDMD extension    | %.3f |\n', rssOTDEDMD/rssOTDshort)
+fprintf('|  GPR extension     | %.3f |\n', rssOTDGPR/rssOTDshort)
 fprintf('|____________________|___________|\n')
 
 
@@ -299,12 +296,11 @@ stftOTDGPR = slicedOT(stftGPRw, stftTRUEw) ;
 
 
 fprintf('==============STFT===============\n')
-fprintf(' _______________________________\n')
-fprintf('|  Extension Method |    OTD    | \n')
-fprintf('|-------------------|-----------|\n')
-fprintf('| Without extension | %.3e |\n', stftOTDshort)
-fprintf('| Zero-padding      | %.3e |\n', stftOTDZP)
-fprintf('| LSE extension     | %.3e |\n', stftOTDLSE)
-fprintf('| EDMD extension    | %.3e |\n', stftOTDEDMD)
-fprintf('| GPR extension     | %.3e |\n', stftOTDGPR)
-fprintf('|___________________|___________|\n')
+fprintf(' _____________________________\n')
+fprintf('|  Extension Method | Index D | \n')
+fprintf('|-------------------|---------|\n')
+fprintf('|   Zero-padding    |  %.3f  |\n', stftOTDZP/stftOTDshort)
+fprintf('|      SigExt       |  %.3f  |\n', stftOTDLSE/stftOTDshort)
+fprintf('|   EDMD extension  |  %.3f  |\n', stftOTDEDMD/stftOTDshort)
+fprintf('|   GPR extension   |  %.3f  |\n', stftOTDGPR/stftOTDshort)
+fprintf('|___________________|_________|\n')

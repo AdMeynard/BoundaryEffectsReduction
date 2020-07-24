@@ -13,13 +13,16 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{multirow}
 \usepackage{dsfont}
+\usepackage{hhline}
+\usepackage{graphicx}
 
 \usepackage{xr}
 \externaldocument[I-]{../BoundEffRed2}
 
+
 \input{../mydefs}
 
-\title{An Efficient Forecasting Approach for the Real-Time Reduction of Boundary Effects in Time-Frequency Representations:\\ Part II}
+\title{An Efficient Forecasting Approach for the Real-Time Reduction of Boundary Effects\\ in Time-Frequency Representations:\\ Part II}
 
 \author{Adrien~Meynard, %~\IEEEmembership{Member,~IEEE,}
         Hau-Tieng~Wu
@@ -29,7 +32,9 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 
 \newtheorem{remark}{Remark}
 
-\setcounter{equation}{26}
+\setcounter{equation}{27}
+\setcounter{figure}{7}
+\setcounter{table}{3}
 
 \begin{document}
 \maketitle
@@ -119,7 +124,7 @@ where $\bF^{(\ell)}$ is the Jacobian matrix such that:
 \section{Proof of Theorem~1}
 \label{ap:th.error}
 
-\subsection{Expression of the bias $\bmu$.}
+\subsection{Expression of the Bias $\bmu$.}
 Clearly, $\bmu[n]=0$ when $n\in I$. When $n=N-1+\ell$, we have:
 \begin{align*}
 \bmu[n] &=  \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\} - \bz[n]\\
@@ -219,7 +224,7 @@ Consequently:
 \end{equation}
 
 
-\subsection{Expression of the covariance $\bgamma$.}
+\subsection{Expression of the Covariance $\bgamma$.}
 We recall that $n>N$, we consequently denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
  
 \paragraph{If $n'\in I^2$}
@@ -264,22 +269,36 @@ We conclude that:
 \bgamma[n,n'] &\underset{K\to\infty}{\sim} \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K +\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + o(\sigma^2)\ .
 \end{align*}
 
-%\begin{align*}
-%\bgamma[\ell,\ell] &\leq \dfrac1K\left(\sqrt{\bz_K^T\EE\{{\bu^{(\ell)}}^T\bu^{(\ell)}\}\bz_K} + \sigma\sqrt{\EE\{(\bu^{(\ell)}\bw_K)^2\}}\right)^2 \\
-%&\ + \dfrac{2\sigma}{\sqrt{K}}\|\balpha_0^{(\ell)}\|\left(\sqrt{\bz_K^T\EE\{{\bu^{(\ell)}}^T\bu^{(\ell)}\}\bz_K} +\sigma\sqrt{\EE\{(\bu^{(\ell)}\bw_K)^2\}} \right)+ \sigma^2\|\balpha_0^{(\ell)}\|^2 - \bmu[\ell]^2 + o(\sigma^2) \\
-%\end{align*}
-%
-%Then, Isserlis formula gives us:
-%\begin{align*}
-%\EE\{(\bu^{(\ell)}\bw_K)^2\} &= \sum_{m,m'=0}^{M-1}\EE\{\bu^{(\ell)}[m]\bw_K[m]\bu^{(\ell)}[m']\bw_K[m']\}\\
-%&\underset{K\to\infty}{\sim} \sum_{m,m'=0}^{M-1}\EE\{\bu^{(\ell)}[m]\bw_K[m]\}\EE\{\bu^{(\ell)}[m']\bw_K[m']\}+\EE\{\bu^{(\ell)}[m]\bu^{(\ell)}[m']\}\EE\{\bw_K[m]\bw_K[m']\} \\
-%&\hspace{30pt}+\EE\{\bu^{(\ell)}[m]\bw_K[m']\}\EE\{\bu^{(\ell)}[m']\bw_K[m]\}\\
-%&\leq \Tr(\bGamma^{(\ell)}) + 2\sum_{m,m'=0}^{M-1}\sqrt{\bGamma^{(\ell)}[m,m]\bGamma^{(\ell)}[m',m']}
-%\end{align*}
-%So:
-%\begin{align*}
-%\bgamma[\ell,\ell] &\leq \dfrac1K\left(\sqrt{\bz_K^T\bGamma^{(\ell)}\bz_K} + \sigma\sqrt{\Tr(\bGamma^{(\ell)}) + 2\sum_{m,m'=0}^{M-1}\sqrt{\bGamma^{(\ell)}[m,m]\bGamma^{(\ell)}[m',m']}}\right)^2 \\
-%&\ + \dfrac{2\sigma}{\sqrt{K}}\|\balpha_0^{(\ell)}\|\left(\sqrt{\bz_K^T\bGamma^{(\ell)}\bz_K} +\sigma\sqrt{\Tr(\bGamma^{(\ell)}) + 2\sum_{m,m'=0}^{M-1}\sqrt{\bGamma^{(\ell)}[m,m]\bGamma^{(\ell)}[m',m']}} \right)+ \sigma^2\|\balpha_0^{(\ell)}\|^2 + o(\sigma^2) \\
-%\end{align*}
+\section{Application to an Electrocardiogram}
+We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $14$ segments of $35$ seconds each. Fig.~\ref{fig:ecg} depicts one of these subsignals, together with the estimated 5 seconds extensions obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{ECGforecast.eps}
+\caption{Extended ECG (blue) obtained by the {\sf SigExt} forecasting (top), the EDMD forecasting (middle), and the GPR forecasting (bottom), superimposed with the ground truth signal (red).}
+\label{fig:ecg}
+\end{figure}
+
+Table~\ref{tab:otd.ecg} contains the performance index $D$ of the boundary-free TF representations, averaged over the $N$ subsignals, according to the extension method. As a result of the fair quality of the forecasts, the reduction of boundary effects is less significant than for PPG signal. Nevertheles, the results show that {\sf BoundEffRed} has the same efficiency when the {\sf SigExt} extension, the EDMD extension or the GPR extension is chosen. This justifies the choice of {\sf SigExt} for real-time implementation.
+
+\begin{table}
+\centering
+\caption{ECG: Performance of the Boundary-Free TF Representations According to the Extension Method}
+\begin{tabular}{|c||c|c|c|c|}
+  \hline
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Averaged performance index $D$} \\
+   \cline{2-5}
+      & STFT & SST & ConceFT & RS\\
+   \hhline{|=#=|=|=|=|}
+   {\sf SigExt} & $0.713$ & $0.700$ & $0.753$ & $0.761$ \\
+   \hline
+   Symmetric & $1.395$ & $1.402$ & $1.416$ & $0.976$ \\
+   \hline
+   EDMD & $0.856$ & $0.792$ & $0.559$ & $0.688$ \\
+   \hline
+   GPR & $0.723$ & $0.734$ & $0.734$ & $0.761$ \\
+   \hline
+\end{tabular}
+\label{tab:otd.ecg}
+\end{table}
 
 \end{document}
