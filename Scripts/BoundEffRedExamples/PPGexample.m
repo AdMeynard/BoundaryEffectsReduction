@@ -107,30 +107,30 @@ df = 1e-5 ;
 
 figure;
 subplot(2,2,1);
-imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(SSTx)/1e2));
+imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(SSTx)/1e2)); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original short signal');
 subplot(2,2,2);
-imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(SSTxxTRUE)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(SSTxxTRUE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on original long signal');
 subplot(2,2,3);
-imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxLSE)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxLSE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on LSE estimated long signal (short signal extended)');
 subplot(2,2,4);
-imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxEDMD)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxEDMD)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('SST on EDMD estimated long signal (short signal extended)');
 
 figure;
 subplot(2,2,1);
-imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(Vx)/1e2)); ylim([0 10]) ;
+imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(Vx)/1e2)); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on original short signal');
 subplot(2,2,2);
-imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxTRUE)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxTRUE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on original long signal');
 subplot(2,2,3);
-imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxLSE)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxLSE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT LSE estimated long signal (short signal extended)');
 subplot(2,2,4);
-imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxEDMD)/1e2)); xlim([0 t(end)]); ylim([0 10]) ;
+imagesc(tt(1:basicTF.hop:end),tfrsqticTRUE*fs,log1p(abs(VxxEDMD)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('STFT on EDMD estimated long signal (short signal extended)');
 
 %save('results','tfrsq3','tfrsq3EXT');
@@ -210,16 +210,16 @@ fprintf('|___________________|_________|\n')
 
 figure;
 subplot(2,2,1);
-imagesc(t(1:basicTF.hop:end),tfrticx*fs,log1p(abs(RSx)/1e2));
+imagesc(t(1:basicTF.hop:end),tfrticx*fs,log1p(abs(RSx)/1e2)); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on original short signal');
 subplot(2,2,2);
-imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxTRUE)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxTRUE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on original long signal');
 subplot(2,2,3);
-imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxLSE)/1e2)); xlim([0 t(end)]);
+imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxLSE)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on LSE estimated long signal (short signal extended)');
-subplot(2,2,4);
-imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxEDMD)/1e2)); xlim([0 t(end)]);
+subplot(2,2,4); 
+imagesc(tt(1:basicTF.hop:end),tfrticxx*fs,log1p(abs(RSxxEDMD)/1e2)); xlim([0 t(end)]); axis xy ;
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); title('RS on EDMD estimated long signal (short signal extended)');
 
 %save('results','tfrsq3','tfrsq3EXT');

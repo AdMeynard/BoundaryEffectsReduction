@@ -80,25 +80,25 @@ To quantify the global quality (\ie~not depending on $\ell$) of the forecasting 
 \nonumber
 &=\! \dfrac1{L}\sum_{\ell=1}^L \bmu_{\xp}[N\!-\!1\!+\!\ell]^2 \!+\! \bgamma_{\xp}[N\!-\!1\!+\!\ell,N\!-\!1\!+\!\ell] .
 \end{align}
-where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mathrm{ext} = \begin{pmatrix}\bx[-L] & \cdots & \bx[N-1+L] \end{pmatrix}$. Then, as long as the bias $\bmu[N-1+\ell]$ and the variance $\bgamma[N-1+\ell,N-1+\ell]$ of the forecasting estimator remain small for all $\ell$, the MSE takes small values either. Corresponding results are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
+where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mathrm{ext} = \begin{pmatrix}\bx[-L] & \cdots & \bx[N-1+L] \end{pmatrix}$. Then, as long as the bias $\bmu[N-1+\ell]$ and the variance $\bgamma[N-1+\ell,N-1+\ell]$ of the forecasting estimator remain small for all $\ell$, the MSE takes small values either. The numerical results when $L=1000$ are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, are able to give slightly better forecasts, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 
 \begin{table}
 \centering
 \caption{AHM Signal: Performance of the Extension Methods}
-\begin{tabular}{|c||c|c|c|}
+\begin{tabular}{|c||c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{2}{c|}{MSE}  & \multirow{2}{41pt}{Computing time (sec.)} \\
-   \cline{2-3} & Mean & Standard deviation & \\
-   \hhline{|=#=|=|=|}
-   {\sf SigExt} & $1.433\times 10^{-3}$ & $4.361\times 10^{-4}$ & $0.152$ \\
+   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE averaged on $50$ realizations}  & \multirow{2}{80pt}{\centering Averaged computing time (sec.)} \\
+    &  & \\
+   \hhline{|=#=|=|}
+   {\sf SigExt} & $1.458$ & $0.152$ \\
    \hline
-   Symmetric & $1.019\times 10^{1}$ & $1.192\times 10^{2}$ & $0.002$ \\
+   Symmetric & $8.735$ & $0.002$ \\
    \hline
-   EDMD & $3.076\times 10^{-2}$ & $8.095\times 10^{-2}$ & $2.537$\\
+   EDMD & $2.313$ &$2.537$\\
    \hline
-   GPR & $1.436\times 10^{-3}$ & $4.346\times 10^{-4}$ & $146.331$ \\
+   GPR & $1.441$ &$146.331$ \\
    \hline
-   TBATS & $1.732\times 10^{-3}$ & $4.924\times 10^{-4}$ & $1837.120$ \\
+   TBATS & $1.501$ & $1267.120$ \\
    \hline
 \end{tabular}
 \label{tab:mse.sine}

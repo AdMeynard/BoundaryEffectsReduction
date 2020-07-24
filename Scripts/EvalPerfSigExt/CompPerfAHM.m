@@ -42,7 +42,7 @@ x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 sigman = 1e-2 ;
 
 %% Forecasting
-nbXP = 1000 ;
+nbXP = 50 ;
 
 for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
@@ -79,20 +79,20 @@ for ind = 1:nbXP
     
 end
 
-BiasXP.LSE = mean(MeanLSE) ;
-VarianceXP.LSE = mean(VarLSE) ;
+BiasXP.LSE = mean(MeanLSE,2) ;
+VarianceXP.LSE = mean(VarLSE,2) ;
 CPUtimeXP.LSE = mean(LSEtime) ;
 
-BiasXP.SYM = mean(MeanSYM) ;
-VarianceXP.SYM = mean(VarSYM) ;
+BiasXP.SYM = mean(MeanSYM,2) ;
+VarianceXP.SYM = mean(VarSYM,2) ;
 CPUtimeXP.SYM = mean(SYMtime) ;
 
-BiasXP.EDMD = mean(MeanEDMD) ;
-VarianceXP.EDMD = mean(VarEDMD) ;
+BiasXP.EDMD = mean(MeanEDMD,2) ;
+VarianceXP.EDMD = mean(VarEDMD,2) ;
 CPUtimeXP.EDMD = mean(EDMDtime) ;
 
-BiasXP.GPR = mean(MeanGPR) ;
-VarianceXP.GPR = mean(VarGPR) ;
+BiasXP.GPR = mean(MeanGPR,2) ;
+VarianceXP.GPR = mean(VarGPR,2) ;
 CPUtimeXP.GPR = mean(GPRtime) ;
 
 save('../../Results/PerfAHM','BiasXP','VarianceXP','CPUtimeXP');
