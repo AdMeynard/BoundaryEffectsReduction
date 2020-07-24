@@ -270,7 +270,7 @@ We conclude that:
 \end{align*}
 
 \section{Application to an Electrocardiogram}
-We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $14$ segments of $35$ seconds each. Fig.~\ref{fig:ecg} depicts one of these subsignals, together with the estimated 5 seconds extensions obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
+We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $14$ segments of $35$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (top panel), or EDMD (middle panel), or GPR (bottom panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{ECGforecast.eps}
