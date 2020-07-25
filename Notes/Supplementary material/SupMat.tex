@@ -278,24 +278,24 @@ We provide here an additional implementation of {\sf BoundEffRed}, applied to an
 \label{fig:ecg}
 \end{figure}
 
-Table~\ref{tab:otd.ecg} contains the performance index $D$ of the boundary-free TF representations, averaged over the $N$ subsignals, according to the extension method. As a result of the fair quality of the forecasts, the reduction of boundary effects is less significant than for PPG signal. Nevertheles, the results show that {\sf BoundEffRed} has the same efficiency when the {\sf SigExt} extension, the EDMD extension or the GPR extension is chosen. This justifies the choice of {\sf SigExt} for real-time implementation.
+Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundary-free TF representations, over the $N$ subsignals evaluated, according to the extension method. As a result of the fair quality of the forecasts, the reduction of boundary effects is less significant than for PPG signal. Nevertheles, the results show that {\sf BoundEffRed} has the same efficiency when the {\sf SigExt} extension, the EDMD extension or the GPR extension is chosen. This justifies the choice of {\sf SigExt} for real-time implementation.
 
 \begin{table}
 \centering
 \caption{ECG: Performance of the Boundary-Free TF Representations According to the Extension Method}
 \begin{tabular}{|c||c|c|c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Averaged performance index $D$} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Median performance index $D$} \\
    \cline{2-5}
       & STFT & SST & ConceFT & RS\\
    \hhline{|=#=|=|=|=|}
-   {\sf SigExt} & $0.713$ & $0.700$ & $0.753$ & $0.761$ \\
+   {\sf SigExt} & $0.584$ & $0.630$ & $0.462$ & $0.642$ \\
    \hline
-   Symmetric & $1.395$ & $1.402$ & $1.416$ & $0.976$ \\
+   Symmetric & $1.199$ & $1.354$ & $1.427$ & $0.943$ \\
    \hline
-   EDMD & $0.856$ & $0.792$ & $0.559$ & $0.688$ \\
+   EDMD & $0.538$ & $0.558$ & $0.496$ & $0.714$ \\
    \hline
-   GPR & $0.723$ & $0.734$ & $0.734$ & $0.761$ \\
+   GPR & $0.639$ & $0.588$ & $0.485$ & $0.616$ \\
    \hline
 \end{tabular}
 \label{tab:otd.ecg}

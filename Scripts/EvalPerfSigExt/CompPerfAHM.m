@@ -48,16 +48,16 @@ for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
     x = x0.' + noise((L+1):(N+L)) ; % signal to be extended
 
-    method.name = 'lse' ;
+    method.name = 'SigExt' ;
     tic;
-    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via LSE
+    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via SigExt
     LSEtime(ind) = toc;
     MeanLSE(ind,:) = xxLSE((N+L+1):end) - xx0((N+L+1):end) ;
     VarLSE(ind,:) = ( xxLSE((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
     
     method.name = 'symmetrization' ;
     tic;
-    xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via LSE
+    xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ;
     SYMtime(ind) = toc;
     MeanSYM(ind,:) = xxSYM((N+L+1):end) - xx0((N+L+1):end) ;
     VarSYM(ind,:) = ( xxSYM((N+L+1):end) - xx0((N+L+1):end) ).^2 ;

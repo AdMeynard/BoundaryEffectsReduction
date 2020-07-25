@@ -87,18 +87,18 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 \caption{AHM Signal: Performance of the Extension Methods}
 \begin{tabular}{|c||c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE averaged on $50$ realizations}  & \multirow{2}{80pt}{\centering Averaged computing time (sec.)} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE averaged on $50$ realizations}  & \multirow{2}{80pt}{\centering Averaged computing time (seconds)} \\
     &  & \\
    \hhline{|=#=|=|}
-   {\sf SigExt} & $1.458$ & $0.152$ \\
+   {\sf SigExt} & $1.458$ & $1.069$ \\
    \hline
-   Symmetric & $8.735$ & $0.002$ \\
+   Symmetric & $8.735$ & $0.001$ \\
    \hline
-   EDMD & $2.313$ &$2.537$\\
+   EDMD & $2.313$ &$11.10$\\
    \hline
-   GPR & $1.441$ &$146.331$ \\
+   GPR & $1.441$ &$244.7$ \\
    \hline
-   TBATS & $1.501$ & $1267.120$ \\
+   TBATS & $1.501$ & $633.6$ \\
    \hline
 \end{tabular}
 \label{tab:mse.sine}
@@ -114,7 +114,7 @@ The quality of the boundary effects reduction is evaluated directly on the TF re
 \label{eq:opt.TFR}
 \end{equation} 
 
-In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantifies the distance between a given TF representation and the optimal one. It is built in analogy with the optimal transport distance, which enables quantifying the distance between two probability density functions. Let us generically denote a TF representation $\ccQ$. Then, for $t$ fixed, we consider the following probability density function: $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$. At each instant $t$, we then determine the optimal transport distance $d_{t}$ between the two densities. It is given by the $L^1$ norm of the difference between the associated distribution functions. In other words, we have:
+In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantifies the distance between a given TF representation and the optimal one. It is built in analogy with the optimal transport distance, which quantify the distance between two probability density functions. Let us generically denote a TF representation $\ccQ$. Then, for $t$ fixed, we consider the following probability density function: $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$. At each instant $t$, we then determine the optimal transport distance $d_{t}$ between the two densities. It is given by the $L^1$ norm of the difference between the associated distribution functions. In other words, we have:
 \begin{equation*}
 d_{t}(\ccQ,\ccF_0) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF_0}^t(\xi)\right|\dd\xi\ ,
 \end{equation*}
@@ -171,8 +171,6 @@ We then apply {\sf BoundEffRed} for diverse TF representations: STFT, SST, RS, a
 \label{fig:THO.failure}
 \end{figure} 
 
-Finally, in order to verify the ability of {\sf BoundEffRed} to be implemented in real time, we evaluate the computation time required for each iteration of Algorithm~\ref{alg:boundary}, updating of the boundary-free TF representation. This check is first performed on the real-time SST of a 10-minute sample of the respiratory signal. As the SST is temporally subsampled by a ratio of 20, the update should not exceed $20/\fs=0.2$~sec. This is indeed the case, as no iteration lasted longer than $0.17$ sec on a 6-Core Xeon CPU running at 3.5~GHz and 64~GB of RAM.
-
 \subsubsection{Photoplethysmogram}
 \label{ssse:ppg}
 We perform a study similar to the previous one on a $640$-second-long photoplethysmogram (PPG) signal extracted from the Physionet dataset~\cite{Pimentel17toward, Goldberger00physiobank}, sampled at $\fs=125$~Hz. A portion of this signal is displayed in Fig.~\ref{fig:ppg}. The estimated 5 seconds extensions of this segment obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension in Fig.~\ref{fig:ppg}.
@@ -184,7 +182,7 @@ We perform a study similar to the previous one on a $640$-second-long photopleth
 \label{fig:ppg}
 \end{figure}
 
-We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} on each piece. We provide in Table~\ref{tab:otd.ppg} the performance index $D$ of the boundary-free TF representations averaged over the signals. For all the considered TF representations, the results clearly show that our algorithm reduces the boundary effects. In addition to being the only technique that allows real-time implementation, {\sf SigExt} produces TF representations that erase boundary effects about as efficiently as extensions given by EDMD or GPR.
+We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} to each of them. Table~\ref{tab:otd.ppg} shows the performance index $D$ of the boundary-free TF representations, averaged over the signals. For all the TF representations considered, the results show that {\sf SigExt} reduces boundary effects about as efficiently as the extensions given by EDMD or GPR. Incidentally, the bottom-right panel of Fig.~\ref{fig:ex.intro} shows that the SST resulting from {\sf BoundEffRed} applied to the portion of PPG displayed in Fig.~\ref{fig:ppg} produces a significant improvement in the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished. Real-time tracking of the instantaneous frequencies contained in the measured signal is therefore greatly facilitated.
 
 \begin{table}
 \centering
@@ -207,23 +205,21 @@ We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} on
 \label{tab:otd.ppg}
 \end{table}
 
-On the bottom-right panel of Fig.~\ref{fig:ex.intro}, we display the SST resulting from {\sf BoundEffRed} applied to the portion of PPG displayed in Fig.~\ref{fig:ppg}. We distinctly observe an improvement in the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished. The real-time tracking of the instantaneous frequencies contained in the measured signal is therefore largely facilitated.
-
-%\begin{figure}
-%\centering
-%\includegraphics[width=.48\textwidth]{SSTBoundEffRed.eps}
-%\includegraphics[width=.48\textwidth]{zoomSSTBoundEffRed.eps}
-%\caption{Result of {\sf BoundEffRed} on the synchrosqueezing transform of a PPG (top) with a zoom on its right boundary (bottom). }
-%\label{fig:ppg.boundeffred}
-%\end{figure}
-
-
 To evaluate the influence of the noise level on the performance of {\sf BoundEffRed}, we artificially add Gaussian noise to the measured PPG signal. It is thus an additional noise to the measurement noise actually contained in the signal. Fig.~\ref{fig:otd.noise} shows the averaged performance index of {\sf BoundEffRed} for different values of the Signal-to-Noise Ratio (SNR). Whatever the representation considered, {\sf BoundEffRed} is relatively robust to noise, as long as the SNR remains above $10$~dB. Below this level, the reduction of boundary effects gradually deteriorates.
-
 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{OTDBoundEffRed.eps}
 \caption{Performance index of {\sf BoundEffRed} applied on a PPG, in function of the SNR.}
 \label{fig:otd.noise}
-\end{figure} 
+\end{figure}
+
+
+\subsection{Real-Time Implementation}
+We simulate the real-time implementation of the SST from {\sf BoundEffRed} applied to the PPG described in section~\ref{ssse:ppg}, subsampled by a factor of $2$. The test is performed on a 2-Core Intel Core i5 CPU running at $1.7$~GHz and $7.7$~GB of RAM. 
+
+For this signal, sampled at $\fs=65.5$~Hz, the suitable window is $8$ seconds long. Therefore, the extension must be over $4$ seconds, \ie~$L=250$. The forecasting step in each iteration of {\sf BoundEffRed} then takes no more than $t_{\mathrm{forecast}}=46$~ms. As indicated in section~\ref{sse:extension.TFR}, the update of the SST requires the calculation of $\lceil L/H \rceil$ new columns of the SST, where $H$ denotes the hop size. In this example, the frequency dimension of the SST being $512$, the computational time of one column is $t_{\mathrm{SST}}=2.08$~ms, on average. Thus, acceptable values of $H$ for real-time implementation verify:
+\[
+t_{\mathrm{forecast}} + \left\lceil \frac{L}H \right\rceil t_{\mathrm{SST}} < \frac{H}\fs\ . 
+\]
+In our example, taking $H\geq 4$~samples is sufficient, which is a reasonable latency. A video clip illustrating this is available in the GitHub repository. 

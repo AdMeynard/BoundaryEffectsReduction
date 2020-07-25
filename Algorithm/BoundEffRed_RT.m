@@ -1,4 +1,4 @@
-function [TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
+function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
 % BOUNDEFFRED_RT Real-time implementation of BoundEffRed
 % Usage:	[TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
 %
@@ -11,7 +11,8 @@ function [TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriti
 %
 % Output:
 %   TFRtot: Whole time-frequency representation
-%   dt: iteration time
+%   ForecastTime: forecastion iteration time
+%   TFRtime: TF representation update time
 
 
 %% Parameters
@@ -23,8 +24,7 @@ extM = round(1.5*L) ; % dimension of embedding / signals length
 extK = round( 2.5*extM ) ;  % number of points to estimate A / size of datasets
 
 Nt = extK + extM + 1 ; % segments length
-Lo = round(1.5*L/basicTF.hop); % overlap in TF domain
-LL = round(L/basicTF.hop); % extension in TF domain
+LL = ceil(L/basicTF.hop); % extension in TF domain
 
 freqs = fs * (basicTF.fmin:basicTF.df:basicTF.fmax) ;
 
@@ -46,7 +46,7 @@ switch basicTF.representation
         [~, TFRcurrent, ~] = rsSTFT(x, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
 end
 
-TFRtot = TFRcurrent ;
+TFRtot = TFRcurrent(:,end-LL) ;
         
 figure;
 imagesc(t,freqs,log1p(abs(TFRcurrent)/5e0)); colormap(1-gray);
@@ -62,30 +62,32 @@ end
 k = 1 ;
 while n1<Ntot
     t = (n0:n1)/fs ;
-    tic;
     x = xtot(n0:n1) ;
 
     %% Forecasting
+    tic;
     xext = forecasting(x,L,HOP,extK,extM,forecastMethod);
     xx = [x; xext]; % size Nt + L
-
+    ForecastTime(k) = toc;
+    
     %% Update TF Representation
-    xxPREC = xx((end-L-round(1.5*Lo*basicTF.hop)):end) ; % Part of the signal to be used to update TFR
+    tic;
+    xxPREC = xx((end-round(2.5*L)):end) ; % Part of the signal to be used to update TFR
     
     switch basicTF.representation
         case 'SST'
-            [~, TFRxx, ~] = sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+            [~, TFRxx, ~] = sqSTFT_RT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 0, 0) ;
         case 'conceFT'
-            [~, ~, TFRxx, ~] = ConceFT_sqSTFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+            [~, ~, TFRxx, ~] = ConceFT_sqSTFT_RT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1, 0, 0) ;
         case 'STFT'
-            [TFRxx, ~] = STFT_C(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+            [TFRxx, ~] = STFT_RT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
         case 'RS'
-            [~, TFRxx, ~, ~] = ConceFT_rsSTFT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
+            [~, TFRxx, ~, ~] = ConceFT_rsSTFT_RT(xxPREC, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
     end
 
-    TFRcurrent = [TFRcurrent(:,2:(end-Lo)) TFRxx(:,(end-LL-Lo):(end-LL))] ; % sliding sst
+    TFRcurrent = [TFRcurrent(:,2:(end-LL)) TFRxx] ; % sliding sst
     
-    dt(k) = toc ;
+    TFRtime(k) = toc ;
     
     %% Display
     
@@ -96,7 +98,7 @@ while n1<Ntot
     n0 = n0 + basicTF.hop ;
     n1 = n0 + Nt - 1 ;
     
-    TFRtot = [TFRtot(:,1:(end-Lo)) TFRxx(:,(end-LL-Lo):(end-LL))] ; % whole SST
+    TFRtot = [TFRtot TFRxx(:,end)] ; % whole SST (non real-time)
     k = k+1 ;
     
     if VideoWriting
@@ -105,6 +107,8 @@ while n1<Ntot
     end
     
 end
+
+TFRtot = [TFRtot TFRxx(:,(end-LL+1):end)] ;
 
 xlabel('Time (s)'); ylabel('Frequency (Hz)');
 

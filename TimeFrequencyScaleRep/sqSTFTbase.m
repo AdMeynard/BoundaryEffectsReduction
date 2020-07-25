@@ -75,8 +75,8 @@ for tidx = 1:tLen
 	tf0 = zeros(N, 1) ; tf1 = zeros(N, 1) ;
     tf0(indices) = x(ti+tau).*conj( h(Lh+1+tau)) /norm_h;
     tf1(indices) = x(ti+tau).*conj(Dh(Lh+1+tau)) /norm_h;
-    tf0 = fft(tf0) ; %tf0 = tf0(1:N/2) ;
-    tf1 = fft(tf1) ; %tf1 = tf1(1:N/2) ;
+    tf0 = fft(tf0) ;
+    tf1 = fft(tf1) ;
 
 		% get the first order omega
 	omega = zeros(size(tf1)) ;

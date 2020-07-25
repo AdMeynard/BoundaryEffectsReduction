@@ -1,7 +1,7 @@
-function [tfr, tfrrs, tfrtic] = rsSTFTbase(x, lowFreq, highFreq, alpha, tDS, h, Dh, Causality)
-% RSSTFTBASE Reassigment of the STFT
+function [tfr, tfrrs, tfrtic] = rsSTFTbase_RT(x, lowFreq, highFreq, alpha, tDS, LL, h, Dh, Causality)
+% RSSTFTBASE_RT Reassigment of the STFT
 % Usage: 
-% 	[tfr, tfrrs, tfrtic] = rsSTFTbase(x, lowFreq, highFreq, alpha, tDS, h, Dh, Causality)
+% 	[tfr, tfrrs, tfrtic] = rsSTFTbase_RT(x, lowFreq, highFreq, alpha, tDS, LL, h, Dh, Causality)
 %
 % Input:
 %	x     : analysed signal.
@@ -56,15 +56,15 @@ Dt = 1 ;
 
 
 %% Run STFT and reassignment rule
-tfr = zeros(fLen, tLen) ;
-tfrrs = zeros(fLen, tLen); 
+tfr = zeros(fLen, LL+1) ;
+tfrrs = zeros(fLen, LL+1); 
 tfrtic = linspace(lowFreq, highFreq, fLen)' ;
 
 Ex = mean(abs(x(min(t):max(t))).^2);
 Threshold = 1.0e-8*Ex;  % originally it was 1e-6*Ex
 
-
-for tidx = 1:tLen
+j = 1 ;
+for tidx = (tLen-2*LL):(tLen-LL)
 
     ti = t((tidx-1)*tDS+1); 
     tau = -min([round(N/2)-1,Lh,ti-1]):min([round(N/2)-1,Lh,xrow-ti]);
@@ -91,11 +91,11 @@ for tidx = 1:tLen
         if abs(tfr(jcol)) > Threshold
 
 			% to keep the causality, use max(tidxhat,tidx-Lh) instead of max(tidxhat,1)
-            tidxhat = tidx + omegaT(jcol);
+            tidxhat = j + omegaT(jcol);
 			if Causality
-            	tidxhat = min(max(max(tidxhat, tidx-Lh), 1), tLen);
+            	tidxhat = min(max(max(tidxhat, j-Lh), 1), LL);
 			else
-            	tidxhat = min(max(tidxhat, 1), tLen);
+            	tidxhat = min(max(tidxhat, 1), LL);
 			end
 
    	    	jcolhat = jcol - omega(jcol) ;
@@ -107,7 +107,8 @@ for tidx = 1:tLen
         end
     end
 
-	tfr(:, tidx) = tf0(Lidx:Hidx) ;
+	tfr(:, j) = tf0(Lidx:Hidx) ;
+    j = j + 1 ;
 
 end
 

@@ -144,6 +144,7 @@ Then, except for the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$
 \end{algorithm}
 
 \subsection{Step 2: Extended Time-Frequency Representation}
+\label{sse:extension.TFR}
  
 Let $\ccF:\RR^{N}\to\CC^{F\times N}$ generically denotes the TF representation of interest to us, which could be, for instance, STFT, CWT, SST, or RS. Here, $F$ typically denotes the size of the discretization along the frequency axis. Due to the boundary effects, the representation $\ccF(\bx_N)$ shows undesired patterns when approaching its edges. To alleviate the boundary effects, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF^{\mathrm{ext}}:\RR^{N}\to\CC^{F\times N}$ of $\bx_N$ is given for all $\nu\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
 \begin{equation}
