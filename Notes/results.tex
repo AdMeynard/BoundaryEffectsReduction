@@ -153,11 +153,11 @@ We first consider a thoracic movement signal recorded by the piezo-electrical se
 
 From that long signal, we build a dataset of $379$ non\-overlapping signals of 60 seconds, \ie~$N=6000$. For each segment, we apply the forecasting methods introduced in section~\ref{ssse:res.ahm}, including the {\sf SigExt} method detailed in Algorithm~\ref{alg:extension}. We forecast $7$-second-long extensions on each segment of the signal, corresponding to $L =700$. Thus, in order to catch the dynamical behavior, the size of the training signal $M$ is chosen so that $M=\lfloor 1.5L\rfloor$. As a result of section~\ref{ssse:res.sine}, we take: $K=\lfloor2.5M\rfloor$. The extensions obtained on one of these subsignals are shown in Fig.~\ref{fig:tho}. The resulting MSEs of different methods are given in Table~\ref{tab:THO}. The TBATS extension method is not implemented, as its excessive computing time makes it impossible to implement it on $6000$ segments within a reasonable period of time.
 %
-Note that the MSE of {\sf SigExt} is higher than the MSE of the other methods. This is caused by the presence of few segments contaminated by artifacts so that it is unpredictable via a too simple dynamical model like~\eqref{eq:dyn.model}. The left of Fig.~\ref{fig:THO.failure} illustrates one of those cases, where {\sf SigExt} fails to catch the fast varying dynamic of the instantaneous amplitude to satisfactorily forecast the signal. The EDMD and Symmetric extensions are more robust to those situations, as shown in this example, and in Table~\ref{tab:THO}. Nevertheless, {\sf SigExt} provides a sufficiently relevant extension to give TF representations sparingly affected by boundary effects. On the right of Fig.~\ref{fig:THO.failure}, we display a comparison between the right boundary of SST of the same segment of signal (top-right), and its boundary-free SST obtained after the {\sf SigExt} forecasting (bottom-right). The extension of the instantaneous frequency visible on the right side of the image illustrates the reduction of boundary effects produced despite an inaccurate signal forecasting.
+Note that the MSE of {\sf SigExt} is higher than the MSE of EDMD or the symmetric extension. This is caused by the presence of few segments contaminated by artifacts so that it is unpredictable via a too simple dynamical model like~\eqref{eq:dyn.model}. The left of Fig.~\ref{fig:THO.failure} illustrates one of those cases, where {\sf SigExt} fails to catch the fast varying dynamic of the instantaneous amplitude to satisfactorily forecast the signal. The EDMD and symmetric extensions are more robust to those situations, as shown in this example, and in Table~\ref{tab:THO}. Nevertheless, {\sf SigExt} provides a sufficiently relevant extension to give TF representations sparingly affected by boundary effects. On the right of Fig.~\ref{fig:THO.failure}, we display a comparison between the right boundary of SST of the same segment of signal (top-right), and its boundary-free SST obtained after the {\sf SigExt} forecasting (bottom-right). The extension of the instantaneous frequency visible on the right side of the image illustrates the reduction of boundary effects produced despite an inaccurate signal forecasting.
 
 We then apply {\sf BoundEffRed} for diverse TF representations: STFT, SST, RS, as well as \textit{Concentration of Frequency and Time} (ConceFT), a generalized multitaper SST-based representation introduced in~\cite{Daubechies16conceft}.  We mention that unlike other representations, the standard RS is not causal and rigorously requires knowing the STFT on the whole time-frequency plane before making any reassignment. To enable real-time implementation of RS, we use here a real-time version of RS proposed in~\cite{Lin17conceft}.
 
-We set the extension length $L$ accordingly to the window length used by the TF analysis tool. For instance, the window length used to evaluate the STFT is of $1500$ samples. To prevent the STFT from being sensitive to the boundaries, we set $L=750$. In this way, the evaluation of the spectral content of the signal near its boundary is not limited by a lack of information all along the window support. From now on, all results are given for $L$ equal to the half of the width of the window used in the TF transform.
+We set the extension length $L$ accordingly to the window length used by the TF analysis tool. For instance, the window length used to evaluate the STFT is of $1400$ samples. To prevent the STFT from being sensitive to the boundaries, we set $L=700$. In this way, the evaluation of the spectral content of the signal near its boundary is not limited by a lack of information all along the window support. From now on, all results are given for $L$ equal to the half of the width of the window used in the TF transform.
 %
 In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.perf} by evaluating the whole TF representations (including boundaries). Even though {\sf SigExt} performs moderately well in the sense of MSE, the boundary effects are dramatically reduced on the TF representations, and the performance is in the same order of that given by EDMD or GPR. 
 
@@ -171,13 +171,13 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
    \cline{3-6}
       & & STFT & SST & RS & ConceFT \\
    \hhline{|=#=#=|=|=|=|}
-   {\sf SigExt} & $0.046$ & $0.698$ &  $0.705$ & $0.694$ & $0.776$ \\
+   {\sf SigExt} & $0.292$ & $0.370$ &  $0.408$ & $0.866$ & $0.423$ \\
    \hline
-   Symmetric & $0.039$ & $0.984$ & $1.280$ & $9.063$ & $1.295$ \\
+   Symmetric & $0.044$ & $1.162$ & $1.173$ & $1.022$ & $1.144$ \\
    \hline
-   EDMD & $0.022$ & $0.635$ &  $0.757$ & $0.701$ & $0.793$ \\
+   EDMD & $0.026$ & $0.359$ &  $0.422$ & $0.828$ & $0.449$ \\
    \hline
-   GPR & $0.045$ & $0.793$ &  $0.817$ & $0.727$ & $0.876$ \\ 
+   GPR & $0.331$ & $0.391$ &  $0.411$ & $0.897$ & $0.430$ \\ 
    \hline
 \end{tabular}
 \label{tab:THO}
