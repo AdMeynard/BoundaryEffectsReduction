@@ -73,7 +73,7 @@ In a general framework, forecasting means estimating the function $f$ from the o
 \bY = \bA\bX\ ,
 \label{eq:dyn.model}
 \end{equation}
-where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in the study of dynamical systems, the {\em linearization} of a nonlinear phenomenon, when the system is sufficiently regular. Notice that this linearized dynamical model can be written equivalently in function of the subsignals $\bx_k$, as:
+where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in the study of dynamical systems, the {\em linearization of a nonlinear system}, when the system is sufficiently regular. Notice that this linearized dynamical model can be written equivalently in function of the subsignals $\bx_k$, as:
 \begin{equation}
 \bx_{k+1} = \bA\bx_{k},\ ,\forall k\in\{0,\dots,K-1\}\ .
 \end{equation}
@@ -121,7 +121,7 @@ This expression clearly shows that the matrix $\tilde\bA$ takes the following fo
 Then, except for the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$, the matrix $\bA$ is fully determined by the dynamical model.
 \end{remark}
 
-\paragraph{Signal Extension} Since we are building a real-time algorithm, we consider that only the right ``side'' of the signal has to be extended, the left ``side'' being fixed since it only concerns the past values of the signal. We therefore construct the extended signal $\tilde\bx\in\RR^{N+L}$ concatenating the observed signal $\bx$, and the forward forecasting $\tilde\bx_{\mathrm{fw}}\in\RR^L$. We summarize the extension step in Algorithm~\ref{alg:extension}. Notice that we could, if necessary, handle the backward estimation using the same strategy as described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
+\paragraph{Signal Extension} Since we are building a real-time algorithm, we consider that only the right ``side'' of the signal has to be extended, the left ``side'' being fixed since it only concerns the past values of the signal. We therefore construct the extended signal $\tilde\bx\in\RR^{N+L}$ concatenating the observed signal $\bx$, and the forward forecasting $\tilde\bx_{\mathrm{fw}}\in\RR^L$. We summarize the extension step in Algorithm~\ref{alg:extension}. %We mention that we could, if necessary, handle the backward estimation using the same strategy as described above, but applying it to the reverse signal $\bx^{\rm r} = \begin{pmatrix} \bx[N-1] & \cdots & \bx[0] \end{pmatrix}^T$.
 
 \begin{algorithm}
 \caption{Signal extension. $\tilde\bx = \mbox{\sf SigExt}(\bx,M,K,L)$}
@@ -146,12 +146,12 @@ Then, except for the row vector $\balpha = \left(\alpha_1 \cdots\alpha_M\right)$
 \subsection{Step 2: Extended Time-Frequency Representation}
 \label{sse:extension.TFR}
  
-Let $\ccF:\RR^{N}\to\CC^{F\times N}$ generically denotes the TF representation of interest to us, which could be, for instance, STFT, CWT, SST, or RS. Here, $F$ typically denotes the size of the discretization along the frequency axis. Due to the boundary effects, the representation $\ccF(\bx_N)$ shows undesired patterns when approaching its edges. To alleviate the boundary effects, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF^{\mathrm{ext}}:\RR^{N}\to\CC^{F\times N}$ of $\bx_N$ is given for all $\nu\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
+Let $\ccF:\RR^{N}\to\CC^{F\times N}$ generically denotes the TF representation of interest to us, which could be, for instance, STFT, CWT, SST, or RS. Here, $F$ typically denotes the size of the discretization along the frequency axis. Due to the boundary effects, the representation $\ccF(\bx_N)$ shows undesired patterns near its edges. To alleviate the boundary effects, we apply the representation to the estimated extended signal $\tilde\bx$. This strategy moves the boundary effects out of the time interval $I=[0, \frac{N-1}{\fs}]$. Finally, the boundary-effects insensitive representation $\ccF^{\mathrm{ext}}:\RR^{N}\to\CC^{F\times N}$ of $\bx_N$ is given for all $\nu\in\{0,\cdots,F-1\}$, $n\in\{0,\cdots,N-1\}$ by:
 \begin{equation}
 \ccF^{\mathrm{ext}}(\bx_N)[\nu,n] = \ccF(\tilde \bx_{N+L})[\nu,n]\ .
 \label{eq:restriction}
 \end{equation}
-This amounts to restricting the representation $\ccF(\tilde \bx_{N+L})$ to the current measurement interval of $\bx_N$. For the sake of simplicity, we denote the restriction operator by $\cR$, where $\cR:\CC^{F\times (N+L)}\to\CC^{F\times N}$. Consequently, we have:
+This amounts to restricting the representation $\ccF(\tilde \bx_{N+L})$ to the current measurement interval of $\bx_N$. For the sake of simplicity, we denote the {\em restriction operator} by $\cR$, where $\cR:\CC^{F\times (N+L)}\to\CC^{F\times N}$. Consequently, we have:
 \begin{equation}
 \ccF^{\mathrm{ext}}(\bx_N) = \cR\left( \ccF(\tilde \bx_{N+L}) \right) \ .
 \label{eq:bound.free.TFR}
@@ -159,7 +159,3 @@ This amounts to restricting the representation $\ccF(\tilde \bx_{N+L})$ to the c
 We call $\ccF^{\mathrm{ext}}$ the {\em boundary-free TF representation}.
 
 $\bF_\bx^{(N)}\in\CC^{F\times N}$ is the estimation of the boundary-free TF representation at iteration $N$ in Algorithm~\ref{alg:boundary}. For numerical purposes, and to make the real-time implementation achievable, we do not perform a full re-estimation of $\ccF^{\mathrm{ext}}$ at iteration $N+1$. Instead, the additional knowledge provided by $\bx[N+1]$ only influences the values of the last $L_{\mathrm{win}}$ columns of $\ccF^{\mathrm{ext}}(\bx_{N+1})$, where $L_{\mathrm{win}}$ denotes the window half-length used by the TF representation. Thus, $\bF_\bx^{(N+1)}$ is obtained by the concatenation of the first $N-L_{\mathrm{win}}+ 1$ columns of $\bF_\bx^{(N)}$ with the last $L_{\mathrm{win}}$ columns of $\ccF^{\mathrm{ext}}(\bx_{N+1})$.
-
-\begin{remark}
-Unlike other representations, RS is not causal and rigorously requires knowing the STFT on the whole time-frequency plane before making any reassignment. Nevertheless, in~\cite{Lin17conceft}, the authors propose a causal RS that only requires the future values of the STFT within a limited time horizon (typically less than $L$). We use this version in the paper to enable real-time implementation of RS.
-\end{remark}

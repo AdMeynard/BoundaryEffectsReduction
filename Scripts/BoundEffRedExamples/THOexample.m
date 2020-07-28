@@ -41,6 +41,10 @@ tic;
 xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method); 
 GPRtime = toc;
 
+dataTBATS = table2array( readtable('../../Results/THO_TBATS.csv') ) ;
+xxTBATS = [zeros(L,1); x; dataTBATS(:,2)] ;
+
+
 %% Plot
 t = linspace(0, (N-1)/fs, N) ;
 tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
@@ -50,24 +54,31 @@ xxZP = [ zeros(L,1); x; zeros(L,1) ] ; % zero padding
 
 figure;
 
-subplot(3,1,1)
+subplot(4,1,1)
 plot(tt,xxLSE,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
 ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
 xticks([]);
 legend({'{\sf SigExt} extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
 set(gca,'fontsize',18);
 
-subplot(3,1,2)
+subplot(4,1,2)
 plot(tt,xxEDMD,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
 ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
 xticks([]);
 legend({'EDMD extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
 set(gca,'fontsize',18);
 
-subplot(3,1,3)
+subplot(4,1,3)
 plot(tt,xxGPR,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+xticks([]);
 legend({'GPR extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',18);
+
+subplot(4,1,4)
+plot(tt,xxTBATS,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
+legend({'TBATS extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
 set(gca,'fontsize',18);
 
 
@@ -133,7 +144,7 @@ fprintf('| Extension Method | Computing time (sec.) | Index D |\n')
 fprintf('|------------------|-----------------------|---------|\n')
 fprintf('|  Zero-padding    |         %.2f          |  %.3f  |\n', 0, 1)
 fprintf('|     SigExt       |         %.2f          |  %.3f  |\n', LSEtime, otdLSE/otdZP)
-fprintf('|  EDMD extension  |         %.2f          |  %.3f  |\n', EDMDtime, otdEDMD/otdZP)
-fprintf('|  GPR extension   |        %.2f          |  %.3ef  |\n', GPRtime, otdGPR/otdZP)
+fprintf('|  EDMD extension  |        %.2f          |  %.3f  |\n', EDMDtime, otdEDMD/otdZP)
+fprintf('|  GPR extension   |       %.2f          |  %.3f  |\n', GPRtime, otdGPR/otdZP)
 fprintf('|__________________|_______________________|_________|\n')
 

@@ -29,11 +29,11 @@ where $\bepsilon$ is the forecasting error. When $n\in I=\{0,\dots,N-1\}$, this 
 \begin{enumerate}
 \item 
 The mean, or estimation bias, is such that: 
-\begin{align*}
+\begin{align}
 \bmu[n]&\defeq\EE\{\bepsilon[n]\} 
-=\EE\{\tilde\bx[n]\} - \bz[n]\ .
-\end{align*}
-Given the forecasting strategy, we have $\bmu[n]=0$ when $n\in I$ and: 
+=\EE\{\tilde\bx[n]\} - \bz[n]\ .\label{eq:defn:bias0}
+\end{align}
+Given the forecasting strategy, we have $\bmu[n]=0$ when $n\in I$ and
 \begin{equation}
 \bmu[n]= \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(n-N+1)}\bw_{K}\} - \bz[n]
 \label{eq:bias0}
@@ -78,15 +78,15 @@ Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\
 \end{equation}
 where $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$, $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, $\bz_k$ is the $k$-th subsignal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}, and $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that $\bD[m,m'] = \delta_{m+1,m'}$.
 
-Let $\bh^{(\ell)}$ be the error vector given by:
+Let $\bh^{(\ell)}$ be the error vector given by
 \begin{equation*}
-\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}\ .
+\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}\, .
 \end{equation*}
-Then, the random vector $\bh^{(\ell)}$ converges in law to a zero-mean Gaussian random vector when $K\to\infty$, and we have:
+Then, the random vector $\bh^{(\ell)}$ converges in law to a zero-mean Gaussian random vector when $K\to\infty$; that is,
 \begin{equation}
 \sqrt{K}\,\bh^{(\ell)}  \xrightarrow[K\to\infty]{\cD} \cN\left(\bzero,\bGamma^{(\ell,\ell)}\right)\ ,
 \end{equation}
-with $\bGamma^{(\ell,\ell)}={\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)}$, where $\bGamma_0\in\RR^{M(M+1)\times M(M+1)}$ is a covariance matrix and $\bF^{(\ell)}\in\RR^{M(M+1)\times M}$ is a Jacobian matrix. The expressions of $\bGamma^{(\ell,\ell)}$ does not depend on $K$ or $\sigma$. 
+with $\bGamma^{(\ell,\ell)}:={\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)}$, where $\bGamma_0\in\RR^{M(M+1)\times M(M+1)}$ is a covariance matrix and $\bF^{(\ell)}\in\RR^{M(M+1)\times M}$ is a Jacobian matrix, and $\bGamma^{(\ell,\ell)}$ does not depend on $\sigma$. 
 % such that:
 %{\color{red}
 %\begin{align*}
@@ -108,24 +108,26 @@ K\,\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\} \xrightarrow[K\to\infty]{} 
 
 \begin{theorem}
 \label{th:error}
-Let $\bx\in\RR^N$ be a discrete-time random signal following model~\eqref{eq:model.noise}. Let $\tilde\bx$ denotes its forecasting, obtained using the extension Algorithm~\ref{alg:extension}. Let $n\geq N$ be a sample index. Then, the first-order moment of the forecasting error $\epsilon[n]$ in~\eqref{eq:forecasting.error} is approximated by:
+Let $\bx\in\RR^N$ be a discrete-time random signal following model~\eqref{eq:model.noise}. Let $\tilde\bx$ denotes its forecasting, obtained using the extension Algorithm~\ref{alg:extension}. Let $n\geq N$ be a sample index. Then, the first-order moment of the forecasting error $\epsilon[n]$ in~\eqref{eq:forecasting.error} defined in \eqref{eq:defn:bias0} satisfies
 \begin{equation}
-\bmu[n] \underset{K\to\infty}{\sim} o(\sigma^2)
+\frac{1}{\sigma}\bmu[n] = o(1)
 \label{eq:mean.error}
 \end{equation}
-Its second-order moment $\bgamma[n,n']$ verify the following approximation equations:
+when $K\to\infty$.
+Its second-order moment $\bgamma[n,n']$ satisfies the following approximation equations:
 \begin{enumerate}[label=(\roman*)]
 \item if $n'\in I=\{0,\ldots,N-1\}$:
 \begin{equation}
-\bgamma[n,n']\underset{K\to\infty}{\sim} \sigma^2\balpha_0^{(n-N-1)}[n'-(N-M)]\1_{(n'\geq N-M)}
+\bgamma[n,n']\to \sigma^2\balpha_0^{(n-N-1)}[n'-(N-M)]\1_{(n'\geq N-M)}
 \label{eq:cov.error.1}
 \end{equation}
+when $K\to\infty$;
 \item if $n'\geq N$:
 \begin{equation}
-\hspace{-15pt}\bgamma[n,n']\!\underset{K\to\infty}{\sim}\!\frac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K \!+\! \dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\!\right)\! + \sigma^2\!\left\langle\balpha_0^{(\ell)}\!, \balpha_0^{(\lambda)}\right\rangle ,
+\hspace{-15pt}\bgamma[n,n']\!\to\!\frac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K \!+\! \dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\!\right)\! + \sigma^2\!\left\langle\balpha_0^{(\ell)}\!, \balpha_0^{(\lambda)}\right\rangle ,
 \label{eq:cov.error.2}
 \end{equation}
-where $\ell=n-N+1$ and $\lambda=n'-N+1$.
+when $K\to\infty$, where $\ell=n-N+1$ and $\lambda=n'-N+1$.
 \end{enumerate}
 \end{theorem}
 
@@ -135,20 +137,30 @@ See the Supplementary Material. The proof is mainly based on the results provide
 
 Ideally, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean noise whose variance is of the order of $\sigma^2$. Theorem~\ref{th:error} shows that the forecasting error is asymptotically unbiased. Concerning the covariance of the forecasting error, although equations~\eqref{eq:cov.error.1} and~\eqref{eq:cov.error.2} are not easily readable, one can evaluate the dependence of the variance in function of the tuning parameters, that are adjusted by the user. Let us focus on the forecasting error variance $\gamma[n,n]$ when $n\geq N$. First, as expected, the variance increases linearly with the noise variance $\sigma^2$. Second, it asymptotically depends linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Third, the dependency on the subsignals lengths $M$ and the forecasting index $\ell=n-N+1$ is hidden in the expression of the covariance matrix $\bGamma^{(\ell,\ell)}$. We discuss this dependency in more detail in section~\ref{ssse:res.sine}.
 
-\begin{remark}[Adaptive Harmonic Model]\label{RemarkAHM}
-One can extend the previous result to the case where the instantaneous frequencies and amplitudes of the components of the deterministic part of the observed signal are slowly varying. We therefore handle the \textit{AM-FM model} which, in its is continuous-time version, takes the following form:
-\begin{equation}
-z(t) = \sum_{j=1}^J a_j(t)\cos(2\pi\phi_j(t))\ ,
-\end{equation}
-where $a_j$ and $\phi'_j$ describe how large and fast the signal oscillate. 
-Clearly, \eqref{eq:sum.sine} is a special case satisfying the AM-FM model. It is also clear that the forecasting error caused by the {\sf SigExt} algorithm is additionally sensitive to the speed of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$. 
-%
+\subsection{Adaptive Harmonic Model}\label{RemarkAHM}
 
-In many practical signals, the amplitude and frequency do not change fast. It is thus reasonable to further restrict the regularity and variations of the instantaneous amplitudes and frequencies of these AM-FM functions so that the signal can be ``locally'' well approximated by a harmonic function in \eqref{eq:sum.sine}. When these functions satisfy the adaptive harmonic model (AHM) (see~\cite{Chen14nonparametric,Daubechies16conceft} for mathematical details) and $K$ is not too large, the signal can be well approximated by \eqref{eq:sum.sine}. Hence, Theorem \ref{th:error} can still be applied to approximate the error. How to determine the optimal $K$ based on the signal is out of the scope of this paper and will be explored in future work.
-\end{remark}
+One can extend the previous result to the case where the instantaneous frequencies and amplitudes of the components of the deterministic part of the observed signal are {\em slowly varying}. It is an \textit{AM-FM model} that, in its is continuous-time version, takes the following form
+\begin{equation}
+z(t) = \sum_{j=1}^J a_j(t)\cos(2\pi\phi_j(t))\,,
+\end{equation}
+where $a_j(t)$ and $\phi'_j(t)$ describe how large and fast the signal oscillate at time $t$. 
+Clearly, \eqref{eq:sum.sine} is a special case satisfying the AM-FM model when the $a_j$ and $\phi'_j$ are both constants. 
+%
+In many practical signals, the amplitude and frequency do not change fast. It is thus reasonable to further restrict the regularity and variations of the instantaneous amplitudes and frequencies of these AM-FM functions. When the speeds of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$ are small, the signal can be ``locally'' well approximated by a harmonic function in \eqref{eq:sum.sine}; that is, 
+%
+locally at time $t_0$, $z(t)$ can be well approximated by $z_0(t) := \sum_{j=1}^J a_j(t_0)\cos(2\pi(\phi_j(t_0)-t_0\phi'_j(t_0)+\phi'_j(t_0)t))$ by the Taylor expansion. An AM-FM function satisfying the slow variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$ is referred to the adaptive harmonic model (AHM) (see~\cite{Chen14nonparametric,Daubechies16conceft} for mathematical details).
+It is thus clear that the forecasting error caused by the {\sf SigExt} algorithm additionally depends on the speed of variation of the instantaneous amplitudes $a_j$ and frequencies $\phi'_j$. 
+%
+For the forecasting purpose, it is thus clear that when $K$ is not too large, the signal can be well approximated by \eqref{eq:sum.sine}. Hence, Theorem \ref{th:error} can still be applied to approximate the error. However, how to determine the optimal $K$ based on the signal depends on the application and is out of the scope of this paper. It will be explored in future work for specific application problems.
+%\end{remark}
 
 
 \subsection{Performance of the Boundary Effects Reduction}
 \label{sse:perf.BoundEffRed}
-Since it is beyond the scope of the present paper, we do not provide here a generic proof of the reduction of the boundary effects on any TF representation. Instead, let us discuss the particular case of SST. Since SST is designed to analyze signals satisfying the AHM, as is discussed in Remark \ref{RemarkAHM}, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. Recall Theorem 3 in~\cite{Chen14nonparametric}, which states that when the additive noise is stationary and remains small, the SST of the observed signal remains close to the ideal SST of an AM-FM signal, throughout the TF plane. In our case, whereas the additive noise is nonstationary, the dependence only appears in the extended part of the signal. Thus, the proof of Theorem 3 in~\cite{Chen14nonparametric} can be generalized to explain the robustness of SST to the noise. We refer the reader to~\cite{Chen14nonparametric} for precise quantification of the error made in the TF plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. Therefore, in our case, this means that boundary effects are strongly reduced since the forecasting error does not impact SST. An immediate application is that the instantaneous frequencies can now be well estimated continuously up to the edges of the TF plane.
-Although we do not provide a theoretical justification, we verify experimentally that Algorithm~\ref{alg:boundary} is efficient for a large number of representations in the following section~\ref{se:results}.
+While we do not provide a generic proof of the boundary effect reduction on {\em any} TF analysis tools, we discuss a particular case of SST. Since SST is designed to analyze signals satisfying the AHM, as is discussed in Remark \ref{RemarkAHM}, Theorem~\ref{th:error} ensures that the forecasting error $\bepsilon$ defined in~\eqref{eq:forecasting.error} is controlled and bounded in terms of mean and covariance. Recall Theorem 3 in~\cite{Chen14nonparametric}, which states that when the additive noise is stationary and maybe modulated by a smooth function with a small fluctuation, the SST of the observed signal remains close to the SST of the clean signal, throughout the TF plane. 
+%
+We refer the reader to~\cite{Chen14nonparametric} for a precise quantification of the error made in the TF plane, which depends notably on the covariance of the additive noise and on the speed of variation of the amplitudes and instantaneous frequencies composing the signal. 
+%
+In our case, while the noise of the historical data is stationary, the forecasting error depends on the historical noise, and hence the overall ``noise'' is non-stationary. However, the dependence only appears in the extended part of the signal. We claim that the proof of Theorem 3 in~\cite{Chen14nonparametric} can be generalized to explain the robustness of SST to the noise, and a systematic proof will be reported in our future theoretical work. While we do not provide a theoretical justification, we verify experimentally that Algorithm~\ref{alg:boundary} is efficient for a large number of representations in the following section~\ref{se:results}. 
+%
+Therefore, in our case, this means that the boundary effect is strongly reduced since the impact of the forecasting error does SST is limited. An immediate application is that the instantaneous frequencies can now be well estimated continuously up to the edges of the TF plane, and a real-time acquisition of the instantaneous frequency and amplitude information is possible.

@@ -82,8 +82,8 @@ set(gca,'fontsize',18);
 %% SST and STFT
 basicTF.hop = 10;
 basicTF.win = 1501;
-fmin = 0 ;
-fmax = 0.01 ;
+fmin = 0/fs ;
+fmax = 4/fs ;
 df = 1e-5 ;
 
 % On the original signal

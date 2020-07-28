@@ -1,7 +1,55 @@
 For the reproducibility purpose, the MATLAB code and datasets used to produce the numerical results in this section are available online at \url{https://github.com/AdMeynard/BoundaryEffectsReduction}.
 
-\subsection{Evaluation of the Forecasting Performance}
-In that section, we first evaluate the quality of the forecasting step and compare it to the theoretical results provided by Theorem~\ref{th:error}. The level of the forecasting error depends on at least two parameters:
+
+\subsection{Extension methods for comparison}
+To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of Algorithm~\ref{alg:boundary} with a simple extension obtained by pointwise symmetrization~\cite{Kharitonenko02wavelet}. We also evaluate the performance of reference forecasting algorithms that could be used for extending such signals. These methods are:
+\begin{itemize}
+\item The EDMD has been developed by Williams \etal~\cite{Williams15data}. The proposed algorithm is a way to obtain an approximation of the so-called Koopman operator of the observed system, which theoretically allows catching dynamic of nonlinear systems~\cite{Korda18linear}.
+\item The GPR~\cite{Rasmussen06gaussian} is a method relying on a probabilistic dynamical model. That one is based on the Gaussian process structure, and therefore offers more flexibility in the type of dynamic that could be modeled than the linear model~\eqref{eq:dyn.model}.
+\item The TBATS method~\cite{DeLivera11forecasting} is based on a classical decomposition of times series into a trend, seasonal and ARMA components, with a specific dynamic for the seasonal component. This model demands the estimation of numerous parameters and, by implication, may be slow. 
+\end{itemize}
+
+
+\subsection{Evaluation metrics}
+
+The first evaluation metric is quantifying the forecasting quality (\ie~not depending on $\ell$) in the time domain. We evaluate the Experimental Mean Square Error $\mathrm{MSE_{xp}}(\tilde\bx)$ of the forward forecast extended signals, namely,
+\begin{align}
+\label{eq:mse}
+\mathrm{MSE_{\xp}}(\tilde\bx) &= \dfrac1{L}\|\tilde\bx -\bx^\mathrm{ext}\|^2 \\[-1mm]
+\nonumber
+&=\! \dfrac1{L}\sum_{\ell=1}^L \bmu_{\xp}[N\!-\!1\!+\!\ell]^2 \!+\! \bgamma_{\xp}[N\!-\!1\!+\!\ell,N\!-\!1\!+\!\ell] .
+\end{align}
+where $\bx^\mathrm{ext}$ is the {\em ground-truth extended} signal; that is, $\bx^\mathrm{ext} := \begin{pmatrix}\bx[-L] & \cdots & \bx[N-1+L] \end{pmatrix}$. Then, as long as the bias $\bmu[N-1+\ell]$ and the variance $\bgamma[N-1+\ell,N-1+\ell]$ of the forecasting estimator remain small for all $\ell$, the MSE takes small values either.
+
+
+
+The second evaluation metric is evaluating the quality of the boundary effect reduction directly on the TF representation. We compare the obtained TF representation to the optimal TF representation $\ccF_N^\mathrm{opt}(\bx)$, defined as the restriction of the representation of the ground-truth extended signal $\bx^\mathrm{ext}$; that is, we have
+\begin{equation}
+\ccF^\mathrm{opt}(\bx_N) = \cR\left( \ccF(\bx^\mathrm{ext}) \right) \, ,
+\label{eq:opt.TFR}
+\end{equation} 
+where $\mathcal{R}$ is defined in \eqref{eq:bound.free.TFR}.
+To compare different techniques, we use a criterion proposed in~\cite{Daubechies16conceft} that quantifies the optimal transport (OT) distance between a given TF representation and the optimal one. In general, the OT distance is a quantity that measures how different two probability density functions are. Denote a TF representation as $\ccQ$. For $t$ fixed, we consider the probability density function defined by $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$; that is, normalizing the spectral information at time $t$. At each time $t$, the OT distance $d_{t}$ between two TF representations $\ccQ$ and $\ccF^\mathrm{opt}$ at time $t$ is defined by
+\begin{equation*}
+d_{t}(\ccQ,\ccF^\mathrm{opt}) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF^\mathrm{opt}}^t(\xi)\right|\dd\xi\ ,
+\end{equation*}
+where $P_{\ccQ}^t(\xi)=\int_{-\infty}^\xi p_{\ccQ}^t(\nu)\dd\nu$ and $\tilde P_{\ccF^\mathrm{opt}}^t(\xi)=\int_{-\infty}^\xi\tilde p_{\ccF^\mathrm{opt}}^t(\nu)\dd\nu$. In other words, the OT distance between $\ccQ$ and $\ccF^\mathrm{opt}$ at time $t$ is given by the $L^1$ norm of the associated cumulative density function.  %
+Note that $d_{t}(\ccQ,\ccF^\mathrm{opt})$ quantifies the proximity between the estimated and actual TF representations at time $t$. With the OT distance, we define the {\em performance index} $D(\ccQ,\ccF)$ for the reduction of boundary effects of a given TF representation $\ccQ$ over another TF representation $\ccF$ by
+%\begin{equation}
+%D(\ccQ) = \dfrac1{|I|}\bigintssss_I\ \frac{d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)}{d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)}\ \dd t\ .
+%\label{eq:index.perf}
+%\end{equation}
+\begin{equation}
+D(\ccQ,\ccF) = \dfrac{\displaystyle\int_I d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)\dd t}{\displaystyle\int_I d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)\dd t}\ .
+\label{eq:index.perf}
+\end{equation}
+In other words, $D(\ccQ,\ccF)$ is the ratio between its averaged OTD to the optimal TF representation $\ccF^\mathrm{opt}$ (see~\eqref{eq:opt.TFR}) and the averaged OTD of the original TF representation $\ccF$ to $\ccF^\mathrm{opt}$.
+%
+Thus, $D(\ccQ)<1$ means a reduction of the boundary effects. Let us evaluate the quality of the boundary effects reduction on biomedical signals.
+
+
+\subsection{Simulated signals}
+We first evaluate the quality of the forecasting step and compare it to the theoretical results provided by Theorem~\ref{th:error}. The level of the forecasting error depends on at least two parameters:
 \begin{itemize}
 \item The noise variance $\sigma^2$.
 \item The size of the training dataset $K$. 
@@ -12,9 +60,9 @@ In subsections~\ref{ssse:res.sine} and~\ref{ssse:res.ahm}, we study the influenc
 \label{ssse:res.sine}
 We proved that the linear dynamic model is sufficient to catch the dynamical behavior of signals taking the form~\eqref{eq:sum.sine}. In order to validate this theoretical result, we apply the forecasting Algorithm~\ref{alg:extension} to a large number of realizations of the random vector $\bx$ of size $N=10^4$, following model~\eqref{eq:model.noise}, and such that the deterministic component $\bz$ takes the form:
 \[
-\bz[n]\! =\!\cos\!\left(2\pi p_1 \dfrac{n}{M} \right)\! +\! R\cos\!\left(2\pi p_2 \dfrac{n}{M} \right),\quad \!\forall n\!\in\!\{1,\ldots,N\},
+\bz[n]\! =\!\cos\!\left(2\pi p_1 \dfrac{n}{M} \right)\! +\! A\cos\!\left(2\pi p_2 \dfrac{n}{M} \right),\quad \!\!\forall n\!\in\!\{1,\ldots,N\},
 \]
-with $M=150$, $p_1=10$, $p_2=33$ and $R=1.4$. Besides, the additive noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$.
+with $M=150$, $p_1=10$, $p_2=33$ and $A=1.4$. Besides, the additive noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$.
 
 \paragraph{Influence of the Noise Variance $\sigma^2$} Here, the size of the training dataset is set to $K=450$. Then, the forecasting algorithm is run on $1000$ realizations on the discrete signal $\bx$ for three different values of $\sigma$, logarithmically equispaced from $10^{-3}$ to $10^{-1}$. For each of these values, we determine the experimental bias, denoted as $\mu_{\xp}[N-1+\ell]$, and experimental variance, denoted as $\gamma_{\xp}[N-1+\ell,N-1+\ell]$, in function of the forecasting sample index $\ell$ (going from $1$ to $L=100$).
 
@@ -51,7 +99,7 @@ This study neglects the analysis of the influence of the parameter $M$, whose in
 
 \subsubsection{Adaptive Harmonic Model}
 \label{ssse:res.ahm}
-We now consider a signal satisfying the AHM so that the instantaneous frequencies and amplitudes of its components vary from time to time. The deterministic component $\bz$ of the random vector $\bx$, constructed following the model~\eqref{eq:model.noise}, takes the following form, for all $n\in\{1,\ldots,N\}$:
+Consider a signal satisfying the AHM so that the instantaneous frequencies and amplitudes of its components vary over time. The deterministic component $\bz$ of the random vector $\bx$, constructed following the model~\eqref{eq:model.noise}, takes the following form, for all $n\in\{1,\ldots,N\}$:
 \[
 \bx[n] = \cos\left(2\pi \phi_1[n] \right) + R[n]\cos\left(2\pi \phi_2[n] \right) \ ,
 \] 
@@ -64,23 +112,9 @@ and the instantaneous phases are such that:
 \phi_1[n] &= \frac{p_1}{M}\left( n + \frac{0.01}{2\pi}\cos\left(2\pi\frac{n}{N}\right) \right) \\[-1mm]
 \phi_2[n] & = p_2\frac{n}{M} + \frac{20}{2N\fs}n^2
 \end{align*}
-Besides, the noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$, and we take: $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
+Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
 
-To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of Algorithm~\ref{alg:boundary} with a simple extension obtained by pointwise symmetrization~\cite{Kharitonenko02wavelet}. We also evaluate the performance of reference forecasting algorithms that could be used for extending such signals. These methods are:
-\begin{itemize}
-\item The EDMD has been developed by Williams \etal~\cite{Williams15data}. The proposed algorithm is a way to obtain an approximation of the so-called Koopman operator of the observed system, which theoretically allows catching dynamic of nonlinear systems~\cite{Korda18linear}.
-\item The GPR~\cite{Rasmussen06gaussian} is a method relying on a probabilistic dynamical model. That one is based on the Gaussian process structure, and therefore offers more flexibility in the type of dynamic that could be modeled than the linear model~\eqref{eq:dyn.model}.
-\item The TBATS method~\cite{DeLivera11forecasting} is based on a classical decomposition of times series into a trend, seasonal and ARMA components, with a specific dynamic for the seasonal component. This model demands the estimation of numerous parameters and, by implication, may be slow. 
-\end{itemize}
-
-To quantify the global quality (\ie~not depending on $\ell$) of the forecasting approaches, we evaluate the Experimental Mean Square Error $\mathrm{MSE_{xp}}(\tilde\bx)$ of the forward forecast extended signals, namely:
-\begin{align}
-\label{eq:mse}
-\mathrm{MSE_{\xp}}(\tilde\bx) &= \dfrac1{L}\|\tilde\bx -\bx^\mathrm{ext}\|^2 \\[-1mm]
-\nonumber
-&=\! \dfrac1{L}\sum_{\ell=1}^L \bmu_{\xp}[N\!-\!1\!+\!\ell]^2 \!+\! \bgamma_{\xp}[N\!-\!1\!+\!\ell,N\!-\!1\!+\!\ell] .
-\end{align}
-where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mathrm{ext} = \begin{pmatrix}\bx[-L] & \cdots & \bx[N-1+L] \end{pmatrix}$. Then, as long as the bias $\bmu[N-1+\ell]$ and the variance $\bgamma[N-1+\ell,N-1+\ell]$ of the forecasting estimator remain small for all $\ell$, the MSE takes small values either. The numerical results when $L=1000$ are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, are able to give slightly better forecasts, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
+Corresponding results are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 
 \begin{table}
 \centering
@@ -105,43 +139,28 @@ where $\bx^\mathrm{ext}$ is the ground-truth extended signal, that is: $\bx^\mat
 \end{table} 
 
 
-\subsection{Quality of the Reduction of Boundary Effects}
-
-\subsubsection{Metrics}
-The quality of the boundary effects reduction is evaluated directly on the TF representation. To that aim, we compare the obtained representation to the optimal representation $\ccF_N^\mathrm{opt}(\bx)$, defined as the restriction of the representation of the ground-truth extended signal $\bx^\mathrm{ext}$. Therefore, we have:
-\begin{equation}
-\ccF^\mathrm{opt}(\bx_N) = \cR\left( \ccF(\bx^\mathrm{ext}) \right) \ .
-\label{eq:opt.TFR}
-\end{equation} 
-
-In the aim of comparing the different techniques, we use a criterion, proposed in~\cite{Daubechies16conceft}, that quantifies the distance between a given TF representation and the optimal one. It is built in analogy with the optimal transport distance, which quantify the distance between two probability density functions. Let us generically denote a TF representation $\ccQ$. Then, for $t$ fixed, we consider the following probability density function: $p_\ccQ^t(\xi) = \left. |\ccQ(\xi,t)|^2 \middle/ \int_\RR |\ccQ(\nu,t)|^2\dd\nu \right.$. At each instant $t$, we then determine the optimal transport distance $d_{t}$ between the two densities. It is given by the $L^1$ norm of the difference between the associated distribution functions. In other words, we have:
-\begin{equation*}
-d_{t}(\ccQ,\ccF_0) = \int_\RR\left|\tilde P_{\ccQ}^t(\xi)-  P_{\ccF_0}^t(\xi)\right|\dd\xi\ ,
-\end{equation*}
-where $P_{\ccQ}^t(\xi)=\int_{-\infty}^\xi p_{\ccQ}^t(\nu)\dd\nu$ and $\tilde P_{\ccF_0}^t(\xi)=\int_{-\infty}^\xi\tilde p_{\ccF_0}^t(\nu)\dd\nu$. The \textit{Optimal Transport Distance (OTD)} quantifies the proximity between the estimated and actual instantaneous frequencies while favoring the sparsity of the estimated TF representation. That is why, the performance index $D(\ccQ)$ for the reduction of boundary effects of a given TF representation $\ccQ$ is given by the ratio between its averaged OTD to the optimal TF representation $\ccF^\mathrm{opt}$ (see~\eqref{eq:opt.TFR}) and the averaged OTD of the original TF representation $\ccF$ to $\ccF^\mathrm{opt}$, that is:
-%\begin{equation}
-%D(\ccQ) = \dfrac1{|I|}\bigintssss_I\ \frac{d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)}{d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)}\ \dd t\ .
-%\label{eq:index.perf}
-%\end{equation}
-\begin{equation}
-D(\ccQ) = \dfrac{\displaystyle\int_I d_{t}\left(\ccQ,\ccF^\mathrm{opt}\right)\dd t}{\displaystyle\int_I d_{t}\left(\ccF,\ccF^\mathrm{opt}\right)\dd t}\ .
-\label{eq:index.perf}
-\end{equation}
-Thus, $D(\ccQ)<1$ means a reduction of the boundary effects. Let us evaluate the quality of the boundary effects reduction on biomedical signals.
+\subsection{Real physiological signals}
 
 
-\subsubsection{Respiratory Signal}
-We first consider a respiratory signal of 6 hours 20 minutes. This signal, a small portion of which is displayed in Fig.~\ref{fig:tho}, is sampled at $\fs=100$~Hz.
+\subsubsection{Respiratory signal}
+We first consider a thoracic movement signal recorded by the piezo-electrical sensor of length 6 hours and 20 minutes. The signal is sampled at $\fs=100$~Hz. A small portion of this signal is displayed in Fig.~\ref{fig:tho}.
 
 \begin{figure}
 \includegraphics[width=.48\textwidth]{THOforecast.eps}
-\caption{Extended THO signal (blue) obtained by the {\sf SigExt} forecasting (top), the EDMD forecasting (middle), and the GPR forecasting (bottom), superimposed with the ground truth signal (red dash).}
+\caption{Extended respiratory signal (blue) obtained by the {\sf SigExt} forecasting (first panel), the EDMD forecasting (second panel), the GPR forecasting (third panel), and the TBATS forecasting (fourth panel), superimposed with the ground truth signal (red-dashed line).}
 \label{fig:tho}
 \end{figure}
 
-From that long signal, we build a dataset of $379$ non\-overlapping signals of 60 seconds, \ie~$N=6000$. On each of these pieces of signal, we implement the forecasting method introduced in section~\ref{ssse:res.ahm}, including the {\sf SigExt} method detailed in Algorithm~\ref{alg:extension}. However, the TBATS extension method is not implemented here because of its excessive computing time. We forecast $7$-second-long extensions on each segment of the signal, corresponding to $L =700$. Thus, in order to catch slowly varying dynamical behaviors, the size of the training signal $M$ is chosen so that $M=\lfloor 1.5L\rfloor$. As a result of section~\ref{ssse:res.sine}, we take: $K=\lfloor2.5M\rfloor$. The resulting MSE~\eqref{eq:mse} averaged with respect to the simulations are given in Table~\ref{tab:THO}. The MSE of {\sf SigExt} is higher than the MSE of the other methods. This is mainly caused by the presence of a few segments of the whole signal involving complicated behaviors, that are unpredictable via a too simple dynamical model like~\eqref{eq:dyn.model}. The left of Fig.~\ref{fig:THO.failure} illustrates one of those cases, where {\sf SigExt} fails to catch the fast varying dynamic of the instantaneous amplitude to satisfactorily forecast the signal. The EDMD and Symmetric extensions are more robust to those situations, as shown in this example, and in Table~\ref{tab:THO}. Nevertheless, {\sf SigExt} provides a sufficiently relevant extension to give TF representations sparingly affected by boundary effects. On the right of Fig.~\ref{fig:THO.failure}, we display a comparison between the right boundary of SST of the same segment of signal (top-right), and its boundary-free SST obtained after the {\sf SigExt} forecasting (bottom-right). The extension of the instantaneous frequency visible on the right side of the image illustrates the reduction of boundary effects produced despite an inaccurate signal forecasting.
+From that long signal, we build a dataset of $379$ non\-overlapping signals of 60 seconds, \ie~$N=6000$. For each segment, we apply the forecasting methods introduced in section~\ref{ssse:res.ahm}, including the {\sf SigExt} method detailed in Algorithm~\ref{alg:extension}. We forecast $7$-second-long extensions on each segment of the signal, corresponding to $L =700$. Thus, in order to catch the dynamical behavior, the size of the training signal $M$ is chosen so that $M=\lfloor 1.5L\rfloor$. As a result of section~\ref{ssse:res.sine}, we take: $K=\lfloor2.5M\rfloor$. The extensions obtained on one of these subsignals are shown in Fig.~\ref{fig:tho}. The resulting MSEs of different methods are given in Table~\ref{tab:THO}. The TBATS extension method is not implemented, as its excessive computing time makes it impossible to implement it on $6000$ segments within a reasonable period of time.
+%
+Note that the MSE of {\sf SigExt} is higher than the MSE of the other methods. This is caused by the presence of few segments contaminated by artifacts so that it is unpredictable via a too simple dynamical model like~\eqref{eq:dyn.model}. The left of Fig.~\ref{fig:THO.failure} illustrates one of those cases, where {\sf SigExt} fails to catch the fast varying dynamic of the instantaneous amplitude to satisfactorily forecast the signal. The EDMD and Symmetric extensions are more robust to those situations, as shown in this example, and in Table~\ref{tab:THO}. Nevertheless, {\sf SigExt} provides a sufficiently relevant extension to give TF representations sparingly affected by boundary effects. On the right of Fig.~\ref{fig:THO.failure}, we display a comparison between the right boundary of SST of the same segment of signal (top-right), and its boundary-free SST obtained after the {\sf SigExt} forecasting (bottom-right). The extension of the instantaneous frequency visible on the right side of the image illustrates the reduction of boundary effects produced despite an inaccurate signal forecasting.
 
-We then apply {\sf BoundEffRed} for diverse TF representations: STFT, SST, RS, as well as \textit{Concentration of Frequency and Time} (ConceFT), a generalized multitaper SST-based representation introduced in~\cite{Daubechies16conceft}. In this application and throughout the document, we use a Gaussian window as the analysis window, regardless of the representation involved. In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.perf}, evaluated the whole TF representations (including boundaries). Even though {\sf SigExt} performs somehow moderately, the boundary effects are dramatically reduced on the TF representations, in the same order of magnitude than with the forecastings given by EDMD or GPR. Notice that the extension length $L$ has been set accordingly to the window length used by the TF analysis tool. For instance, the window length used to evaluate the STFT is of $1500$ samples. To prevent the STFT from being sensitive to the boundaries, we set $L=750$. In this way, the evaluation of the spectral content of the signal near its boundaries is not limited by a lack of information all along the window support. From now on, all results are given for $L$ equal to the half of the width of the window used in the TF transform.
+We then apply {\sf BoundEffRed} for diverse TF representations: STFT, SST, RS, as well as \textit{Concentration of Frequency and Time} (ConceFT), a generalized multitaper SST-based representation introduced in~\cite{Daubechies16conceft}.  We mention that unlike other representations, the standard RS is not causal and rigorously requires knowing the STFT on the whole time-frequency plane before making any reassignment. To enable real-time implementation of RS, we use here a real-time version of RS proposed in~\cite{Lin17conceft}.
+
+We set the extension length $L$ accordingly to the window length used by the TF analysis tool. For instance, the window length used to evaluate the STFT is of $1500$ samples. To prevent the STFT from being sensitive to the boundaries, we set $L=750$. In this way, the evaluation of the spectral content of the signal near its boundary is not limited by a lack of information all along the window support. From now on, all results are given for $L$ equal to the half of the width of the window used in the TF transform.
+%
+In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.perf} by evaluating the whole TF representations (including boundaries). Even though {\sf SigExt} performs moderately well in the sense of MSE, the boundary effects are dramatically reduced on the TF representations, and the performance is in the same order of that given by EDMD or GPR. 
+
 
 \begin{table}
 \centering
@@ -182,7 +201,7 @@ We perform a study similar to the previous one on a $640$-second-long photopleth
 \label{fig:ppg}
 \end{figure}
 
-We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} to each of them. Table~\ref{tab:otd.ppg} shows the performance index $D$ of the boundary-free TF representations, averaged over the signals. For all the TF representations considered, the results show that {\sf SigExt} reduces boundary effects about as efficiently as the extensions given by EDMD or GPR. Incidentally, the bottom-right panel of Fig.~\ref{fig:ex.intro} shows that the SST resulting from {\sf BoundEffRed} applied to the portion of PPG displayed in Fig.~\ref{fig:ppg} produces a significant improvement in the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished. Real-time tracking of the instantaneous frequencies contained in the measured signal is therefore greatly facilitated.
+We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} to each of them. Table~\ref{tab:otd.ppg} shows the performance index $D$ of the boundary-free TF representations, averaged over the signals. For all the TF representations considered, the results show that {\sf SigExt} reduces boundary effects about as efficiently as the extensions given by EDMD or GPR. For a visual inspection, the TF representation of SST resulting from the {\sf BoundEffRed} strategy is shown in the bottom-right panel of Fig.~\ref{fig:ex.intro}, where SST is applied to the portion of PPG displayed in Fig.~\ref{fig:ppg}. It produces a significant improvement in the quality of the SST near boundaries. Indeed, the blurring visible when zooming on the right boundary of the SST has almost vanished. Real-time tracking of the instantaneous frequencies contained in the measured signal is therefore greatly facilitated.
 
 \begin{table}
 \centering
@@ -205,7 +224,7 @@ We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} to
 \label{tab:otd.ppg}
 \end{table}
 
-To evaluate the influence of the noise level on the performance of {\sf BoundEffRed}, we artificially add Gaussian noise to the measured PPG signal. It is thus an additional noise to the measurement noise actually contained in the signal. Fig.~\ref{fig:otd.noise} shows the averaged performance index of {\sf BoundEffRed} for different values of the Signal-to-Noise Ratio (SNR). Whatever the representation considered, {\sf BoundEffRed} is relatively robust to noise, as long as the SNR remains above $10$~dB. Below this level, the reduction of boundary effects gradually deteriorates.
+To further evaluate the influence of the noise level on the performance of {\sf BoundEffRed}, we artificially add Gaussian noise to the measured PPG signal. It is thus an additional noise to the measurement noise actually contained in the signal. Fig.~\ref{fig:otd.noise} shows the averaged performance index of {\sf BoundEffRed} for different values of the Signal-to-Noise Ratio (SNR). Whatever the representation considered, {\sf BoundEffRed} is relatively robust to noise, as long as the SNR remains above $10$~dB. Below this level, the reduction of boundary effects gradually deteriorates.
 
 \begin{figure}
 \centering
@@ -218,8 +237,8 @@ To evaluate the influence of the noise level on the performance of {\sf BoundEff
 \subsection{Real-Time Implementation}
 We simulate the real-time implementation of the SST from {\sf BoundEffRed} applied to the PPG described in section~\ref{ssse:ppg}, subsampled by a factor of $2$. The test is performed on a 2-Core Intel Core i5 CPU running at $1.7$~GHz and $7.7$~GB of RAM. 
 
-For this signal, sampled at $\fs=65.5$~Hz, the suitable window is $8$ seconds long. Therefore, the extension must be over $4$ seconds, \ie~$L=250$. The forecasting step in each iteration of {\sf BoundEffRed} then takes no more than $t_{\mathrm{forecast}}=46$~ms. As indicated in section~\ref{sse:extension.TFR}, the update of the SST requires the calculation of $\lceil L/H \rceil$ new columns of the SST, where $H$ denotes the hop size. In this example, the frequency dimension of the SST being $512$, the computational time of one column is $t_{\mathrm{SST}}=2.08$~ms, on average. Thus, acceptable values of $H$ for real-time implementation verify:
+For this signal, sampled at $\fs=65.5$~Hz, the suitable window is $8$ seconds long. Therefore, the extension must be over $4$ seconds, \ie~$L=250$. The forecasting step in each iteration of {\sf BoundEffRed} then takes no more than $t_{\mathrm{forecast}}=46$~ms. As indicated in section~\ref{sse:extension.TFR}, the update of the SST requires the calculation of $\lceil L/H \rceil$ new columns of the SST, where $H$ denotes the hop size. In this example, the frequency dimension of the SST being $512$, the computational time of one column is $t_{\mathrm{SST}}=2.08$~ms, on average. A general rule to determine the acceptable values of $H$ for real-time implementation is verifying that the computational time to update the boundary-free TF representation is smaller than the lag between $H$ samples; that is,
 \[
 t_{\mathrm{forecast}} + \left\lceil \frac{L}H \right\rceil t_{\mathrm{SST}} < \frac{H}\fs\ . 
 \]
-In our example, taking $H\geq 4$~samples is sufficient, which is a reasonable latency. A video clip illustrating this is available in the GitHub repository. 
+In our example, taking $H\geq 4$~samples is sufficient, which is a sufficiently reasonable latency to allow smooth monitoring of the real-time SST.  A video clip illustrating this is available on GitHub, at \url{https://github.com/AdMeynard/BoundaryEffectsReduction/tree/master/Animations}. 
