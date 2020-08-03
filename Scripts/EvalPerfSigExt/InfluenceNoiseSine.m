@@ -49,7 +49,7 @@ end
 zK = x0(end-extM+1 : HOP: end).' ;
 
 %% Forecasting
-method.name = 'lseV' ;
+method.name = 'SigExt' ;
 nbXP = 3 ; % number of noise levels
 nbXPP = 3000 ; % number of XP / noise level
 Sigma = logspace(-3,-1,nbXP) ;

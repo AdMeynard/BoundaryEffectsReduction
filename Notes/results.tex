@@ -1,7 +1,7 @@
 For the reproducibility purpose, the MATLAB code and datasets used to produce the numerical results in this section are available online at \url{https://github.com/AdMeynard/BoundaryEffectsReduction}.
 
 
-\subsection{Extension methods for comparison}
+\subsection{Extension Methods for Comparison}
 To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of Algorithm~\ref{alg:boundary} with a simple extension obtained by pointwise symmetrization~\cite{Kharitonenko02wavelet}. We also evaluate the performance of reference forecasting algorithms that could be used for extending such signals. These methods are:
 \begin{itemize}
 \item The EDMD has been developed by Williams \etal~\cite{Williams15data}. The proposed algorithm is a way to obtain an approximation of the so-called Koopman operator of the observed system, which theoretically allows catching dynamic of nonlinear systems~\cite{Korda18linear}.
@@ -10,7 +10,7 @@ To highlight the fact that the linear dynamical model is sufficient to catch mos
 \end{itemize}
 
 
-\subsection{Evaluation metrics}
+\subsection{Evaluation Metrics}
 
 The first evaluation metric is quantifying the forecasting quality (\ie~not depending on $\ell$) in the time domain. We evaluate the Experimental Mean Square Error $\mathrm{MSE_{xp}}(\tilde\bx)$ of the forward forecast extended signals, namely,
 \begin{align}
@@ -48,7 +48,7 @@ In other words, $D(\ccQ,\ccF)$ is the ratio between its averaged OTD to the opti
 Thus, $D(\ccQ)<1$ means a reduction of the boundary effects. Let us evaluate the quality of the boundary effects reduction on biomedical signals.
 
 
-\subsection{Simulated signals}
+\subsection{Simulated Signals}
 We first evaluate the quality of the forecasting step and compare it to the theoretical results provided by Theorem~\ref{th:error}. The level of the forecasting error depends on at least two parameters:
 \begin{itemize}
 \item The noise variance $\sigma^2$.
@@ -139,10 +139,10 @@ Corresponding results are given in Table~\ref{tab:mse.sine}. They show that the 
 \end{table} 
 
 
-\subsection{Real physiological signals}
+\subsection{Real Physiological Signals}
 
 
-\subsubsection{Respiratory signal}
+\subsubsection{Respiratory Signal}
 We first consider a thoracic movement signal recorded by the piezo-electrical sensor of length 6 hours and 20 minutes. The signal is sampled at $\fs=100$~Hz. A small portion of this signal is displayed in Fig.~\ref{fig:tho}.
 
 \begin{figure}
@@ -237,8 +237,8 @@ To further evaluate the influence of the noise level on the performance of {\sf 
 \subsection{Real-Time Implementation}
 We simulate the real-time implementation of the SST from {\sf BoundEffRed} applied to the PPG described in section~\ref{ssse:ppg}, subsampled by a factor of $2$. The test is performed on a 2-Core Intel Core i5 CPU running at $1.7$~GHz and $7.7$~GB of RAM. 
 
-For this signal, sampled at $\fs=65.5$~Hz, the suitable window is $8$ seconds long. Therefore, the extension must be over $4$ seconds, \ie~$L=250$. The forecasting step in each iteration of {\sf BoundEffRed} then takes no more than $t_{\mathrm{forecast}}=46$~ms. As indicated in section~\ref{sse:extension.TFR}, the update of the SST requires the calculation of $\lceil L/H \rceil$ new columns of the SST, where $H$ denotes the hop size. In this example, the frequency dimension of the SST being $512$, the computational time of one column is $t_{\mathrm{SST}}=2.08$~ms, on average. A general rule to determine the acceptable values of $H$ for real-time implementation is verifying that the computational time to update the boundary-free TF representation is smaller than the lag between $H$ samples; that is,
+For this signal, sampled at $\fs=65.5$~Hz, the suitable window is $8$ seconds long. Therefore, the extension must be over $4$ seconds, \ie~$L=250$. The forecasting step in each iteration of {\sf BoundEffRed} then takes no more than $t_{\mathrm{forecast}}=46$~ms. Denote by $H\geq 1$ the hop size in samples, that is the number of samples between successive columns of the SST. Besides, since the support of the analysis window covers $2L$ samples, the update of the SST requires the calculation of $\lceil 2L/H \rceil$ new columns of the SST. In this example, the frequency dimension of the SST being $512$, the computational time of one column is $t_{\mathrm{SST}}=2.08$~ms, on average. A general rule to determine the acceptable values of $H$ for real-time implementation is verifying that the computational time to update the boundary-free TF representation is smaller than the lag between $H$ samples; that is,
 \[
 t_{\mathrm{forecast}} + \left\lceil \frac{L}H \right\rceil t_{\mathrm{SST}} < \frac{H}\fs\ . 
 \]
-In our example, taking $H\geq 4$~samples is sufficient, which is a sufficiently reasonable latency to allow smooth monitoring of the real-time SST.  A video clip illustrating this is available on GitHub, at \url{https://github.com/AdMeynard/BoundaryEffectsReduction/tree/master/Animations}. 
+In our example, taking $H\geq 8$~samples is sufficient to ensure the feasibility of real-time implementation. This value is reasonable because it allows a maximum overlap of $98.4\%$ of the window length. SST variations are therefore perceived gradually. Combined with the low latency of the algorithm, this allows for smooth monitoring of the real-time SST. A video clip illustrating this is available on GitHub, at \url{https://github.com/AdMeynard/BoundaryEffectsReduction/tree/master/Animations}. 
