@@ -22,7 +22,7 @@
 
 \input{../mydefs}
 
-\title{Supplementary material for ``An Efficient Forecasting Approach for the Real-Time Reduction of Boundary Effects in Time-Frequency Representations''}
+\title{Supplementary material for ``An Efficient Forecasting Approach to Reduce Boundary Effects in Real-Time Time-Frequency Analysis''}
 
 \author{Adrien~Meynard, %~\IEEEmembership{Member,~IEEE,}
         Hau-Tieng~Wu
@@ -98,28 +98,32 @@ The multivariate version of the delta method is applicable to $\bh^{(\ell)}$ und
 \item\label{delta.1} $f^{(\ell)}$ is differentiable at the origin;
 \item\label{delta.2} $\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)$ where $\bGamma_0$ is a covariance matrix.
 \end{enumerate}
-Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules.  The detailed calculation of the derivation is not given here for the sake of conciseness. Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
+When these conditions are satisfied, the delta method gives the asymptotic behavior of $\bh^{(\ell)}=f^{(\ell)}(\bg)$, that is
+\begin{equation}
+\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
+\label{eq:delta}
+\end{equation}
+where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
+\[
+\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
+\]
+
+Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules. {\color{red}Detail it}
+
+Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
 \[
 \bg = \sigma\bg_1 + \sigma^2\bg_2\ ,
 \]
 where $\bg_1$ and $\bg_2$ are defined by
 \begin{align*}
 \bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right)\quad\mbox{where}\quad \tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}\,, \\
-\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\tilde\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
+\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
 \end{align*}
-First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Combining these two results leads to
+First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Hence, we have 
 \[
 \sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
 \]
-where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$.
-Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied; the result is as follows:
-\begin{align*}
-\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
-\end{align*}
-where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
-\[
-\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
-\]
+where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$. Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied, and result~\eqref{eq:delta} is valid.
 
 \section{Proof of Theorem~1}
 \label{ap:th.error}
@@ -251,7 +255,7 @@ In addition, we remark that
 \[
 \balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\}=\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}\ .
 \]
-Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn}, we thus have
+Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn} vanishes when $K\to\infty$. We thus have
 \begin{align*}
 \bgamma[n,n'] &= \sigma^2\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}+ o(\sigma^2)
 \end{align*}
@@ -288,11 +292,11 @@ when $K\to \infty$.}
 
 
 \section{Application to an Electrocardiogram}
-We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (top panel), or EDMD (middle panel), or GPR (bottom panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
+We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (first panel), or EDMD (second panel), GPR (third panel), or TBATS (fourth panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{ECGforecast.eps}
-\caption{Extended ECG (blue) obtained by the {\sf SigExt} forecasting (top), the EDMD forecasting (middle), and the GPR forecasting (bottom), superimposed with the ground truth signal (red).}
+\caption{Extended ECG (blue) obtained by the {\sf SigExt} forecasting (first panel), the EDMD forecasting (second panel), the GPR forecasting (third panel), and the TBATS forecasting (fourth panel), superimposed with the ground truth signal (dashed red).}
 \label{fig:ecg}
 \end{figure}
 

@@ -114,25 +114,25 @@ and the instantaneous phases are such that:
 \end{align*}
 Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
 
-Corresponding results are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
+The forecasting methods are applied to $1000$ realizations of the above-described signal. The mean and the standard deviation (SD) of the resulting MSEs are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 
 \begin{table}
 \centering
 \caption{AHM Signal: Performance of the Extension Methods}
 \begin{tabular}{|c||c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE averaged on $50$ realizations}  & \multirow{2}{80pt}{\centering Averaged computing time (seconds)} \\
+   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE (mean $\pm$ SD)}  & \multirow{2}{80pt}{\centering Averaged computing time (seconds)} \\
     &  & \\
    \hhline{|=#=|=|}
-   {\sf SigExt} & $1.458$ & $1.069$ \\
+   {\sf SigExt} & $1.028 \pm  0.404$ & $1.069$ \\
    \hline
-   Symmetric & $8.735$ & $0.001$ \\
+   Symmetric & $4.368 \pm  0.001$ & $0.001$ \\
    \hline
-   EDMD & $2.313$ &$11.10$\\
+   EDMD & $1.156  \pm  0.003$ &$11.10$\\
    \hline
-   GPR & $1.441$ &$244.7$ \\
+   GPR & $1.025  \pm  0.403$ &$244.7$ \\
    \hline
-   TBATS & $1.501$ & $633.6$ \\
+   TBATS & $1.501 \pm  1.354$ & $633.6$ \\
    \hline
 \end{tabular}
 \label{tab:mse.sine}

@@ -42,7 +42,7 @@ x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 sigman = 1e-2 ;
 
 %% Forecasting
-nbXP = 50 ;
+nbXP = 1000 ;
 
 for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;

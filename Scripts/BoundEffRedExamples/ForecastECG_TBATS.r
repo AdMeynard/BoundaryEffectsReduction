@@ -43,4 +43,4 @@ plot(tt,xx0,type="l", col="blue", lty=2)
 lines(tt,xxTBATS,type="l", col="red", lty=1)
 lines(t,x,type="l", col="blue", lty=1)
 
-write.csv(xextOpt,'../../Results/THO_TBATS.csv')
+write.csv(xextOpt,'../../Results/ECG_TBATS.csv')
