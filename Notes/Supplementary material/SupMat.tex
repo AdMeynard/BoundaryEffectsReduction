@@ -233,7 +233,7 @@ Thus,
 &+ \sum_{\lambda=0}^{\ell-1}\be_M^T\bA_0^{\lambda}\left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\bA_0^{\ell-1-\lambda} + \sum_{\lambda=0}^{\ell-2}\sum_{p=0}^{\ell-2-\lambda}\be_M^T\bA_0^{\lambda}\left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right\vert_{\bg=\bzero}\bA_0^p\left.\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\vert_{\bg=\bzero}\bA_0^{\ell-\lambda-2-p}\ .
 \label{eq:d2f}
 \end{align}
-Besides,
+Besides, the second-order derivative of the matrix $\tilde\bA$ is given by
 \begin{align*}
 \dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']} &= \left\{
 \begin{array}{lc}
@@ -247,7 +247,7 @@ Besides,
 \end{array} 
 \right.
 \end{align*}
-Thus,
+Thus, the second-order derivative of the matrix $\tilde\bA$ at the origin is such that
 \begin{align*}
 \left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=\bzero} &= \left\{
 \begin{array}{ll}
@@ -264,7 +264,7 @@ Then,
 \nonumber
 \left\| \left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=0}\right\|_\infty &\leq \left\{
 \begin{array}{ll}
-\|{\bS^{(0)}}^{-1}\|_\infty^2 &\mbox{if}\quad a_r=1\quad\mbox{or}\quad a_{r'}=1 \\
+\|{\bS^{(0)}}^{-1}\|_\infty^2 &\mbox{if}\quad a_r=1\quad\mbox{or}\quad a_{r'}=1\,, \\
 2\left(1+\|\bA_0\|_\infty\right)\|{\bS^{(0)}}^{-1}\|_\infty^2 &\mbox{else} \\
 \end{array}
 \right.\\
