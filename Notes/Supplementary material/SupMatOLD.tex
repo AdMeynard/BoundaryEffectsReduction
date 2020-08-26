@@ -1,0 +1,326 @@
+\documentclass[journal,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{bbm}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage{type1cm,eso-pic,color}
+\usepackage{mathrsfs} 
+\usepackage{mathpazo}
+\usepackage[scaled=.95]{helvet}
+\usepackage{courier}
+\usepackage{xspace}
+\usepackage{etoolbox}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multirow}
+\usepackage{dsfont}
+\usepackage{hhline}
+\usepackage{graphicx}
+
+\usepackage{xr}
+\externaldocument[I-]{../BoundEffRed2}
+
+
+\input{../mydefs}
+
+\title{Supplementary material for ``An Efficient Forecasting Approach to Reduce Boundary Effects in Real-Time Time-Frequency Analysis''}
+
+\author{Adrien~Meynard, %~\IEEEmembership{Member,~IEEE,}
+        Hau-Tieng~Wu
+\thanks{A. Meynard and H.-T. Wu are with the Department
+of Mathematics, Duke University, Durham,
+NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
+
+\newtheorem{remark}{Remark}
+
+\setcounter{equation}{27}
+\setcounter{figure}{7}
+\setcounter{table}{3}
+
+\begin{document}
+\maketitle
+
+
+\section{Proof of Lemma~1}
+\label{ap:lm.error}
+
+%\subsection{Notations}
+Recall the model~\eqref{I-eq:model.noise}. Based on the definition of matrices $\bX$ and $\bY$, we have:
+\begin{align}
+\dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
+\dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq S^{(1)}}+ \bE^{(1)} \ ,
+\end{align}
+where $\bE^{(a)} := \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$,
+\[
+\bE_1^{(a)}[m,m'] = \dfrac1K\sum_{k=0}^{K-1} \bz[N_0+m+a+k]\bw[N_0+m'+k] + \bw[N_0+m+a+k]\bz[N_0+m'+k]\ ,
+\]
+and
+\[
+\bE_2^{(a)}[m,m'] =  \dfrac1K\sum_{k=0}^{K-1} \bw[N_0+m+a+k]\bw[N_0+m'+k] - \delta_{(m+a)m'}\ ,
+\]
+with $a\in\{0,1\}$.
+We call $\bE^{(0)}$ and $\bE^{(1)}$ {\em error matrices} because:
+\begin{align*}
+\EE\{\bE^{(0)}\} &= \EE\{\bE_1^{(0)}\} = \EE\{\bE_2^{(0)}\} = \bzero \\
+\EE\{\bE^{(1)}\} &= \EE\{\bE_1^{(1)}\} = \EE\{\bE_2^{(1)}\} = \bzero\ .
+\end{align*}
+Thus, 
+\begin{align*}
+\bA_0 :=\bS^{(1)}{\bS^{(0)}}^\inv\,,\quad\tilde\bA := (\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\,.
+\end{align*}
+As a result, for $\ell\in \mathbb{N}$, 
+\begin{align}
+\nonumber
+\bh^{(\ell)} &= \balpha^{(\ell)} - \balpha^{(\ell)}_0 \\
+\nonumber
+&= \be_M^T\left(\tilde\bA^\ell-\bA_0^\ell\right) \\
+&= \be_M^T\left(\left((\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\right)^\ell- \bA_0^\ell\right)\ .
+\label{eq:error.vec}
+\end{align}
+
+%\subsection{Study of $\bh^{(\ell)}$}
+The randomness of $\bh^{(\ell)}$ completely comes from the error matrices. Besides, notice that the first $M-1$ rows in $\bE^{(1)}$ equal to the last $M-1$ rows of $\bE^{(0)}$. We gather all sources of randomness into an vector $\bg\in\RR^{M(M+1)}$, containing $M$ rows defined as
+\[
+\bg = \vec\left(
+\begin{bmatrix}
+\bE^{(0)} \\
+\be_M^T\bE^{(1)}
+\end{bmatrix}
+\right)\,,
+\]
+where "$\vec$" denotes the vectorization operator, concatenating the columns of a given matrix on top of one another. Then, we can write $\bh^{(\ell)}$ as $\bh^{(\ell)}=f^{(\ell)}(\bg)$ where $f^{(\ell)}$ is a deterministic function such that:
+\begin{align*}
+f^{(\ell)} : \RR^{M(M+1)} &\to \RR^{M} \\
+ \bg &\mapsto \bh^{(\ell)}\ . \\
+\end{align*}
+
+The multivariate version of the delta method is applicable to $\bh^{(\ell)}$ under the following conditions:
+\begin{enumerate}[(i)]
+\item\label{delta.1} $f^{(\ell)}$ is differentiable at the origin;
+\item\label{delta.2} $\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)$ where $\bGamma_0$ is a covariance matrix.
+\end{enumerate}
+When these conditions are satisfied, the delta method gives the asymptotic behavior of $\bh^{(\ell)}=f^{(\ell)}(\bg)$, that is
+\begin{equation}
+\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
+\label{eq:delta}
+\end{equation}
+where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
+\[
+\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
+\]
+
+Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules. {\color{red}Detail it}
+
+Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
+\[
+\bg = \sigma\bg_1 + \sigma^2\bg_2\ ,
+\]
+where $\bg_1$ and $\bg_2$ are defined by
+\begin{align*}
+\bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right)\quad\mbox{where}\quad \tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}\,, \\
+\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
+\end{align*}
+First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Hence, we have 
+\[
+\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
+\]
+where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$. Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied, and result~\eqref{eq:delta} is valid.
+
+\section{Proof of Theorem~1}
+\label{ap:th.error}
+
+\subsection{Expression of the Bias $\bmu$.}
+By definition of the measurement noise, $\bmu[n]=0$ when $n\in I$. Outside the measurement interval $I$, denote by $\ell$ the index such that $n=N-1+\ell$. Then, given that $\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}$, we have
+\begin{align}
+\nonumber
+\bmu[n] &=  \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\} - \bz[n]\\
+& = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]\ .
+\label{eq:bias.dec}
+\end{align}
+Let us first evaluate the expression of $\balpha_0^{(\ell)}\bz_K$. We have
+\begin{align}
+\nonumber
+\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)+\varphi_j\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)+\varphi_{j'}\right) \\
+\nonumber
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}{2K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)\\
+\nonumber
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\Bigg( \dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \dfrac{\Omega_j^2}{2K}\underbrace{\sum_{k=0}^{K-1}\cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)}_{=0\ \mathrm{because}\ \frac{f_j}\fs=\frac{p'_j}K } \Bigg)\\
+&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
+\label{eq:S1}
+\end{align}
+Thus, $\bS^{(0)}$ is a circulant matrix and is therefore diagonalizable in the Fourier basis:
+\[
+\bS^{(0)} = \bU\bLambda^{(0)}\bU^*\ ,
+\]
+where $\bU[m,m']=\frac1{\sqrt{M}}e^{-2\ii\pi mm'/M}$ and $\bLambda^{(0)} = \mathrm{diag}(\lambda_0^{(0)},\dots,\lambda_{M-1}^{(0)})$ with
+\begin{align*}
+\lambda_m^{(0)} &= \sigma^2 + \sum_{j=1}^J\dfrac{\Omega_j^2}2\sum_{q=0}^{M-1} \cos\left(2\pi\frac{f_j}{\fs} q\right) e^{-2\ii\pi qm/M} \\
+&= \sigma^2 + \dfrac{M}{4}\sum_{j=1}^J\Omega_j^2(\delta_{m,p_j} + \delta_{m,M-p_j})\ .
+\end{align*}
+Therefore,
+\begin{align*}
+{\bS^{(0)}}^\inv  &= \bU{\bLambda^{(0)}}^\inv\bU^*\,,
+\end{align*}
+which leads to
+\begin{equation}
+{\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\sum_{j=1}^J\dfrac{\Omega_j^2}{2\sigma^2(\sigma^2+\Omega_j^2M/4)}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,.
+\label{eq:S0.inv}
+\end{equation}
+Consequently, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv}, we have
+\begin{align}
+\nonumber
+\bA_0[m,m']  &= \sum_{q=0}^{M-1} {\bS^{(1)}}[m,q]{\bS^{(0)}}^\inv[q,m'] \\
+&= \delta_{m+1,m'} + \sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
+\label{eq:A0.sine}
+\end{align}
+Thus $\balpha_0^{(1)}$, the last row of $\bA_0$, is written as
+\begin{align*}
+\balpha_0^{(1)}[m]  &=\sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m}{M}\right) \\
+&= \dfrac{2}{M}\sum_{j=1}^J\cos\left(2\pi p_j\frac{m}{M}\right) + o(\sigma)\ .
+\end{align*}
+Besides, from equation~\eqref{eq:A0.sine}, we have
+\begin{align*}
+\bA_0\bz_{K} &= 
+\begin{pmatrix}
+\bz[N-M+1] \\
+\vdots \\
+\bz[N-1] \\
+\balpha_0^{(1)}\bz_K
+\end{pmatrix}\,.
+\end{align*}
+By induction, we have
+\begin{align*}
+\tilde\bA_0^{\ell}\bz_{K} &= 
+\begin{pmatrix}
+\bz[N-M+\ell] \\
+\vdots \\
+\bz[N-1] \\
+\balpha_0^{(1)}\bz_K \\
+\vdots \\
+\balpha_0^{(\ell)}\bz_K
+\end{pmatrix}
+\, .
+\end{align*}
+Then,
+\begin{align}
+\nonumber
+\balpha_0^{(\ell)}\bz_{K} &= \balpha_0^{(1)}\tilde\bA_0^{\ell-1}\bz_{K} \\
+&=\sum_{m=0}^{M-\ell}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]+\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\balpha_0^{(m-M+\ell)}\bz_K\,.
+\label{eq:seq}
+\end{align}
+But,
+\begin{align*}
+\balpha_0^{(1)}\bz_{K} &=\sum_{m=0}^{M-1}\balpha_0^{(1)}[m]\bz[N-M+m] \\
+&=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}+\varphi_{j'}\right)}_{=\delta_{j,j'}\frac{M}2\cos\left(2\pi p_j\frac{N}M +\varphi_{j}\right)} + o(\sigma) \\
+&= \sum_{j=1}^J\Omega_j\cos\left(2\pi p_j\dfrac{N}{M}+\varphi_j\right) + o(\sigma) \\
+&= \bz[N] + o(\sigma)
+\end{align*}
+By induction from~\eqref{eq:seq}, we have
+\begin{equation}
+\label{eq:alpha0z.sine}
+\balpha_0^{(\ell)}\bz_{K} = \bz[N-1+\ell] + o(\sigma)\ .
+\end{equation}
+Then,  inserting result~\eqref{eq:alpha0z.sine} into equation~\eqref{eq:bias.dec} gives
+\begin{equation*}
+\bmu[N-1+\ell] = \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} + o(\sigma)\ .
+\end{equation*}
+Besides, from Lemma~1, we have the following result:
+\begin{equation*}
+\EE\{\bh^{(\ell)}\} \underset{K\to\infty}{\longrightarrow} 0\ .
+\end{equation*}
+{\color{red}[if it is possible to get the convergence rate, like $\EE\{\bh^{(\ell)}\}=O(1/K)$, that would be great!]}
+Moreover, applying delta method to $\left(\bg\ \bw[n']\right)^T$, $\forall n'\in I$, one can show that we have the asymptotic result
+\begin{equation}
+\EE\{\bw[n']\bh^{(\ell)}\} \underset{K\to\infty}{\longrightarrow} 0\,.
+\label{eq:cov.ap}
+\end{equation}
+Consequently, $\EE\{\bh^{(\ell)}\bw_{K}\} \underset{K\to\infty}{\longrightarrow} 0$, and
+\begin{equation}
+\frac{1}{\sigma}\bmu[N-1+\ell] = o(1)
+\label{eq:bias.ap}
+\end{equation}
+when $K\to\infty$.
+
+
+\subsection{Expression of the Covariance $\bgamma$.}
+Take $n>N$, and denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
+ 
+\paragraph{When $n'\in I$}
+From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian when $K\to \infty$. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing {\color{red}[there is a gap here. Note that when $K$ is finite, it is approximated by Gaussian but not Gaussian. The discrepancy should be made clear.]}. Then, inserting result~\eqref{eq:bias.ap} into equation~\eqref{I-eq:bias0}, we obtain:
+\begin{equation}
+\bgamma[n,n'] = \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\} + o(\sigma^2) 
+\label{eq:gamma.nn}
+\end{equation}
+when $K\to \infty$.
+In addition, we remark that
+\[
+\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\}=\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}\ .
+\]
+Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn} vanishes when $K\to\infty$. We thus have
+\begin{align*}
+\bgamma[n,n'] &= \sigma^2\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}+ o(\sigma^2)
+\end{align*}
+when $K\to\infty$.
+
+
+\paragraph{When $n'\geq N$}
+Inserting equation~\eqref{eq:bias.ap} into result~\eqref{I-eq:cov01}, we obtain
+\begin{align*}  
+\bgamma[n,n'] = &\,\bz_K^T\EE\left\{{\balpha^{(\ell)}}^T\balpha^{(\lambda)}\right\}\bz_K + \sigma\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\}\bz_K+ \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K \\
+& +\sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}-\bz[n]\bz[n']+o(\sigma^2) \\
+= &\,\bz_K^T\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\}\bz_K + \balpha_0^{(\ell)}\sigma\EE\{\bw_K\bh^{(\lambda)}\}\bz_K + \sigma\EE\{\bh^{(\ell)}\bw_K\}\bz[n']  \\
+&+ \sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\}\bz_K+ \sigma\EE\{\bh^{(\lambda)}\bw_K\}\bz[n] + \sigma\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K \\
+& + \sigma\EE\{\bh^{(\lambda)}\bw_K\bh^{(\ell)}\}\bz_K+\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\lambda)}\bw_K\}+\sigma^2\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} \\
+&+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)\ .
+\end{align*}
+From Lemma~1, we have that $\bh^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. {\color{red}[The same gap here.]} {\color{blue}Considering this property and equation~\eqref{eq:cov.ap} gives
+\begin{align*}
+\bgamma[n,n'] = &\,\dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K + \sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)
+\end{align*}
+when $K\to\infty$. The Isserlis' theorem also gives the following result {\color{red}[the same gap here.]}
+\begin{align*}
+\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} &= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\bh^{(\lambda)}[m']\bw_K[m']\} \\
+&= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\}\EE\{\bh^{(\lambda)}[m']\bw_K[m']\} + \EE\{\bh^{(\ell)}[m]\bw_K[m']\}\EE\{\bh^{(\lambda)}[m']\bw_K[m]\} \\
+&\hspace{35pt} + \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m']\}\underbrace{\EE\{\bw_K[m]\bw_K[m']\}}_{=\delta_{m,m'}} \\
+&= \sum_{m=0}^{M-1} \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m]\} = \dfrac1K\Tr\left(\bGamma^{(\ell,\lambda)}\right)
+\end{align*}
+when $K\to \infty$.
+We thus conclude that
+\begin{align*}  
+\bgamma[n,n'] &= \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + o(\sigma^2)
+\end{align*}
+when $K\to \infty$.}
+
+
+\section{Application to an Electrocardiogram}
+We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (first panel), or EDMD (second panel), GPR (third panel), or TBATS (fourth panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{ECGforecast.eps}
+\caption{Extended ECG (blue) obtained by the {\sf SigExt} forecasting (first panel), the EDMD forecasting (second panel), the GPR forecasting (third panel), and the TBATS forecasting (fourth panel), superimposed with the ground truth signal (dashed red).}
+\label{fig:ecg}
+\end{figure}
+
+Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundary-free TF representations, over the $N$ subsignals evaluated, according to the extension method. As a result of the fair quality of the forecasts, the reduction of boundary effects is less significant than for PPG signal. Nevertheles, the results show that {\sf BoundEffRed} has the same efficiency when the {\sf SigExt} extension, the EDMD extension or the GPR extension is chosen. Indeed, t-tests performed under the null hypothesis that the mean are equals, with a $5\%$ significance level, show no statistical significant difference between {\sf SigExt} and EDMD or GPR, regardless of the representation considered. This justifies the choice of {\sf SigExt} for real-time implementation.
+
+\begin{table}
+\centering
+\caption{ECG: Performance of the Boundary-Free TF Representations According to the Extension Method}
+\begin{tabular}{|c||c|c|c|c|}
+  \hline
+   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Median performance index $D$} \\
+   \cline{2-5}
+      & STFT & SST & ConceFT & RS\\
+   \hhline{|=#=|=|=|=|}
+   {\sf SigExt} & $0.584$ & $0.630$ & $0.462$ & $0.642$ \\
+   \hline
+   Symmetric & $1.199$ & $1.354$ & $1.427$ & $0.943$ \\
+   \hline
+   EDMD & $0.538$ & $0.558$ & $0.496$ & $0.714$ \\
+   \hline
+   GPR & $0.639$ & $0.588$ & $0.485$ & $0.616$ \\
+   \hline
+\end{tabular}
+\label{tab:otd.ecg}
+\end{table}
+
+\end{document}

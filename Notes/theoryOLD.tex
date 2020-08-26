@@ -19,7 +19,6 @@ In addition, the observed signal is assumed to be corrupted by an additive Gauss
 \end{equation}
 where $\bz$ follows model~\eqref{eq:sum.sine}, $\bw$ is a Gaussian white noise, whose variance is normalized to one. Thus, $\sigma^2$ denotes the variance of the additive noise $\sigma\bw$.
 
-
 \subsection{Forecasting Error}
 On the forecasting interval, we decompose the estimated signal $\tilde\bx$ as follows:
 \begin{equation}
@@ -50,10 +49,12 @@ The covariance is given by:
 Thus by definition of the noise, we have $\bgamma[n,n'] =\sigma^2\delta_{n,n'}$ when $(n,n')\in I^2$. When $n\geq N$, let us denote $\ell=n-N+1$. Then, we have two cases.
 \begin{enumerate}[label=(\roman*)]
 \item If $n'\in I$:
-\begin{equation}
-\bgamma[n,n'] = \sigma\EE\{\bw[n']\balpha^{(\ell)}\}\bz_K + \sigma^2\EE\{\bw[n']\balpha^{(\ell)}\bw_K\}\ .
+\begin{align}
+\nonumber
+\bgamma[n,n'] &= \sigma\EE\{\bw[n']\balpha^{(\ell)}\}\bz_K + \sigma^2\EE\{\bw[n']\balpha^{(\ell)}\bw_K\} \\
+&\hspace{15pt} -\bz[n]\bmu[n'] - \bmu[n]\bmu[n']\ .
 \label{eq:cov00}
-\end{equation}
+\end{align}
 \item If $n'=N-1+\lambda\geq N$:
 \begin{align}
 \nonumber
@@ -67,45 +68,74 @@ Thus by definition of the noise, we have $\bgamma[n,n'] =\sigma^2\delta_{n,n'}$ 
 Besides, we recall that $\bgamma[n,n']=\bgamma[n',n]$.
 \end{enumerate}
 
-In Theorem~\ref{th:error}, we specify the asymptotic behavior of the forecasting bias and covariance when the dataset size $K$ is great.
+Expressions~\eqref{eq:bias0},~\eqref{eq:cov00}, and~\eqref{eq:cov01} show that these quantities depend on the behavior of the forecasting random vector $\balpha^{(\ell)}$. In Lemma~\ref{lm:error}, we specify the asymptotic behavior of the forecasting vector $\balpha^{(\ell)}$ when the dataset size $K$ is great.
+\begin{lemma}
+\label{lm:error}
+Let $\bx$ be a random vector defined by~\eqref{eq:model.noise}. Let $\balpha^{(\ell)}$ be the associated forecasting vector for the estimation of $\bx[N-1+\ell]$, given by~\eqref{eq:alpha.l} and obtained from the least square estimation~\eqref{eq:lse}. Let $\balpha_0^{(\ell)}$ be the last row of the matrix $\bA_0^\ell$, where $\bA_0$ is defined by:
+\begin{equation}
+\bA_0 = \left(\dfrac1K\bZ'\bZ^T+\sigma^2\bD\right)\left(\dfrac1K\bZ\bZ^T+\sigma^2\bI\right)^{\inv}\ ,
+\label{eq:lse.0}
+\end{equation}
+where $\bZ=\begin{pmatrix} \bz_0 & \cdots & \bz_{K-1}\end{pmatrix}$, $\bZ'=\begin{pmatrix} \bz_1 & \cdots & \bz_{K}\end{pmatrix}$, $\bz_k$ is the $k$-th subsignal extracted from $\bz$ in the same way as $\bx_k$ is defined from $\bx$ in~\eqref{eq:xk}, and $\bD\in\RR^{M\times M}$ is the Toeplitz matrix such that $\bD[m,m'] = \delta_{m+1,m'}$.
+
+Let $\bh^{(\ell)}$ be the error vector given by
+\begin{equation*}
+\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}\, .
+\end{equation*}
+Then, the random vector $\bh^{(\ell)}$ converges in law to a zero-mean Gaussian random vector when $K\to\infty$; that is,
+\begin{equation}
+\sqrt{K}\,\bh^{(\ell)}  \xrightarrow[K\to\infty]{\cD} \cN\left(\bzero,\bGamma^{(\ell,\ell)}\right)\ ,
+\end{equation}
+with $\bGamma^{(\ell,\ell)}:={\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)}$, where $\bGamma_0\in\RR^{M(M+1)\times M(M+1)}$ is a covariance matrix and $\bF^{(\ell)}\in\RR^{M(M+1)\times M}$ is a Jacobian matrix, and $\bGamma^{(\ell,\ell)}$ does not depend on $\sigma$. 
+% such that:
+%{\color{red}
+%\begin{align*}
+%\bGamma_0[mM+n,pM+q] &= 2\sigma^2\sum_{j=1}^J\Omega_j^2\cos\left(2\pi\frac{f_j}{\fs}(m-n)\right)\\
+%& \hspace{26pt} \times\cos\left(2\pi\frac{f_j}{\fs}(p-q)\right) + o(\sigma^2) \\
+%\bF^{(\ell)}[] &= \ . 
+%\end{align*}
+%}
+\end{lemma}
+
+\begin{proof}
+See the Supplementary Material. The proof is based on the multivariate delta method (see paragraph 7.2 in~\cite{Alho05statistical}), which gives an asymptotic approximation of a random vector by a Gaussian random vector.
+\end{proof}
+
+Consequently, the covariance between $\sqrt{K}\bh^{(\ell)}$ and $\sqrt{K}\bh^{(\lambda)}$ remains bounded, \ie:
+\begin{equation*}
+K\,\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\} \xrightarrow[K\to\infty]{} \bGamma^{(\ell,\lambda)} = {\bF^{(\ell)}}^T\bGamma_0\bF^{(\lambda)}\ .
+\end{equation*}
+
 \begin{theorem}
 \label{th:error}
 Let $\bx\in\RR^N$ be a discrete-time random signal following model~\eqref{eq:model.noise}. Let $\tilde\bx$ denotes its forecasting, obtained using the extension Algorithm~\ref{alg:extension}. Let $n\geq N$ be a sample index. Then, the first-order moment of the forecasting error $\epsilon[n]$ in~\eqref{eq:forecasting.error} defined in \eqref{eq:defn:bias0} satisfies
 \begin{equation}
-\left|\bmu[n]\right| \leq a^{(n)}_0\sigma^2 + \dfrac1K \left( \dfrac{a^{(n)}_1}{\sigma^2} + a^{(n)}_2 \right) + o\left( \dfrac1K \right)
+\frac{1}{\sigma}\bmu[n] = o(1)
 \label{eq:mean.error}
 \end{equation}
-as $K\to\infty$, where $a^{(n)}_0$, $a^{(n)}_1$, and $a^{(n)}_2$ are positive numbers, independent of $K$ and $\sigma$.
+when $K\to\infty$.
 Its second-order moment $\bgamma[n,n']$ satisfies the following approximation equations:
 \begin{enumerate}[label=(\roman*)]
 \item if $n'\in I=\{0,\ldots,N-1\}$:
 \begin{equation}
-\left|\bgamma[n,n']\right|\leq b^{(n,n')}_0\sigma^2 + \!\dfrac1K\! \left( b^{(n,n')}_1\! + b^{(n,n')}_2\sigma^2 \! \right) + o\!\left( \!\dfrac1K \!\right),
+\bgamma[n,n']\to \sigma^2\balpha_0^{(n-N-1)}[n'-(N-M)]\1_{(n'\geq N-M)}
 \label{eq:cov.error.1}
 \end{equation}
-as $K\to\infty$, where $b^{(n,n')}_0$, $b^{(n,n')}_1$, and $b^{(n,n')}_2$ are positive numbers, independent of $K$ and $\sigma$;
+when $K\to\infty$;
 \item if $n'\geq N$:
-\begin{align}
-\nonumber
-\left|\bgamma[n,n']\right| &\leq c^{(n,n')}_0\sigma^2 \\
-&\hspace{10pt} + \!\dfrac1K\! \left(\! \dfrac{c^{(n,n')}_1}{\sigma^2} + c^{(n,n')}_2 + c^{(n,n')}_3\sigma^2 \right) + o\!\left( \!\dfrac1K \!\right)
+\begin{equation}
+\hspace{-15pt}\bgamma[n,n'] = \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K + \dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + \sigma^2\left\langle\balpha_0^{(\ell)}\!, \balpha_0^{(\lambda)}\right\rangle ,
 \label{eq:cov.error.2}
-\end{align}
-as $K\to\infty$, where $x^{(n,n')}_0$, $c^{(n,n')}_1$, $c^{(n,n')}_2$ and $c^{(n,n')}_3$ are positive numbers, independent of $K$ and $\sigma$.
+\end{equation}
+when $K\to\infty$, where $\ell\!=n-N+1$ and $\lambda\!=n'-N+1$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-See the Supplementary Material. The proof is mainly based on Taylor expansions of the forecasting error. Nonoptimal values of $a^{(n)}_0$, $a^{(n)}_1$,\dots, $b^{(n,n')}_0$,\dots, $c^{(n,n')}_3$ are also provided in the proof. 
+See the Supplementary Material. The proof is mainly based on the results provided by Lemma~\ref{lm:error}, combined with the Isserlis' theorem~\cite{Isserlis16formula}, which provides a formula for the computation of higher-order moments of Gaussian random variables.
 \end{proof}
-%The Isserlis' theorem~\cite{Isserlis16formula}, which provides a formula for the computation of higher-order moments of Gaussian random variables.
 
-The foracasting bias and covariance asymptotically depend linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Ideally when $K\to\infty$, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean white noise whose variance is of the order of $\sigma^2$. However, Theorem~\ref{th:error} shows that the estimator may remain asymptotically biased (the first term in the bound of equation~\eqref{eq:mean.error} being independent of $K$). Nonetheless, we will see in the numerical discussion, in section~\ref{ssse:res.sine}, that the bias is negligible when $K \to\infty$. Concerning the covariance of the forecasting error, the expected asymptotic behavior is verified. Indeed, when $K \to\infty$, the variance of the forecasting estimator the variance increases at most linearly with the noise variance $\sigma^2$, since is bounded by $b_0\sigma^2$.
-
-Assume now that $K$ is sufficiently great and fixed. The noise influences the quality of the forecasting estimator in two ways. On one hand, when the noise variance $\sigma^2$ is great, the bias and the variance of the estimator potentially increase linearly with $\sigma^2$. This reflects the classical behavior of an estimator of a signal degraded by additive noise. On the other hand, due to terms in $1/\sigma^2$, when the noise variance $\sigma^2$ is small, the bias and the variance of the forecasting estimator are no longer controlled via equations~\eqref{eq:mean.error}, and~\eqref{eq:cov.error.2}. This illustrates the necessary presence of noise to obtain a accurate prediction. Indeed, if $\sigma$ is too small, the matrix $\bX\bX^T$ is ill-conditioned and its inversion in~\eqref{eq:lse} is sensitive. The forecasting is then of poor quality. Noise therefore appears as a regularization term to ensure the invertibility of $\bX\bX^T$.
-
-
-The dependencies of the forecasting quality on the subsignals lengths $M$ and the forecasting index $\ell=n-N+1$ are hidden in the expression of the parameters $a^{(n)}_0$, $a^{(n)}_1$,\dots, $b^{(n,n')}_0$,\dots, $c^{(n,n')}_3$. The numerical results, discussed in section~\ref{ssse:res.sine}, allow us to better evaluate these dependencies.
+Ideally, the forecasting error would behave like the measurement noise $\sigma\bw$, \ie~a zero-mean noise whose variance is of the order of $\sigma^2$. Theorem~\ref{th:error} shows that the forecasting error is asymptotically unbiased. Concerning the covariance of the forecasting error, although equations~\eqref{eq:cov.error.1} and~\eqref{eq:cov.error.2} are not easily readable, one can evaluate the dependence of the variance in function of the tuning parameters, that are adjusted by the user. Let us focus on the forecasting error variance $\gamma[n,n]$ when $n\geq N$. First, as expected, the variance increases linearly with the noise variance $\sigma^2$. Second, it asymptotically depends linearly on the ratio $\frac{1}{K}$. This shows the need to use a sufficiently large dataset to obtain an accurate forecast. Third, the dependency on the subsignals lengths $M$ and the forecasting index $\ell=n-N+1$ is hidden in the expression of the covariance matrix $\bGamma^{(\ell,\ell)}$. We discuss this dependency in more detail in section~\ref{ssse:res.sine}.
 
 \subsection{Adaptive Harmonic Model}\label{RemarkAHM}
 

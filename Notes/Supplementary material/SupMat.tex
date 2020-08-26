@@ -40,10 +40,10 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 \maketitle
 
 
-\section{Proof of Lemma~1}
-\label{ap:lm.error}
+\section{Proof of Theorem~1}
+\label{ap:th.error}
 
-%\subsection{Notations}
+\subsection{Preliminaries}
 Recall the model~\eqref{I-eq:model.noise}. Based on the definition of matrices $\bX$ and $\bY$, we have:
 \begin{align}
 \dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
@@ -79,64 +79,236 @@ As a result, for $\ell\in \mathbb{N}$,
 
 %\subsection{Study of $\bh^{(\ell)}$}
 The randomness of $\bh^{(\ell)}$ completely comes from the error matrices. Besides, notice that the first $M-1$ rows in $\bE^{(1)}$ equal to the last $M-1$ rows of $\bE^{(0)}$. We gather all sources of randomness into an vector $\bg\in\RR^{M(M+1)}$, containing $M$ rows defined as
-\[
+\begin{equation}
 \bg = \vec\left(
 \begin{bmatrix}
 \bE^{(0)} \\
 \be_M^T\bE^{(1)}
 \end{bmatrix}
 \right)\,,
-\]
+\label{eq:vec}
+\end{equation}
 where "$\vec$" denotes the vectorization operator, concatenating the columns of a given matrix on top of one another. Then, we can write $\bh^{(\ell)}$ as $\bh^{(\ell)}=f^{(\ell)}(\bg)$ where $f^{(\ell)}$ is a deterministic function such that:
 \begin{align*}
 f^{(\ell)} : \RR^{M(M+1)} &\to \RR^{M} \\
- \bg &\mapsto \bh^{(\ell)}\ . \\
+ \bg &\mapsto \bh^{(\ell)}\ .
 \end{align*}
 
-The multivariate version of the delta method is applicable to $\bh^{(\ell)}$ under the following conditions:
-\begin{enumerate}[(i)]
-\item\label{delta.1} $f^{(\ell)}$ is differentiable at the origin;
-\item\label{delta.2} $\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)$ where $\bGamma_0$ is a covariance matrix.
-\end{enumerate}
-When these conditions are satisfied, the delta method gives the asymptotic behavior of $\bh^{(\ell)}=f^{(\ell)}(\bg)$, that is
-\begin{equation}
-\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
-\label{eq:delta}
-\end{equation}
-where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
-\[
-\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
-\]
 
-Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules. {\color{red}Detail it}
-
-Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
-\[
-\bg = \sigma\bg_1 + \sigma^2\bg_2\ ,
-\]
-where $\bg_1$ and $\bg_2$ are defined by
+\subsubsection{Study of $\bg$}
+In the following, for all $r\in\{0,\ldots,M(M+1)-1\}$ we note $\bg[r] = \sigma\bg_1[r] + \sigma^2\bg_2[r]$, where 
 \begin{align*}
-\bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right)\quad\mbox{where}\quad \tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}\,, \\
-\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
+\bg_1[r] &= \bE_1^{(a_r)}[m_r,m'_r] \\
+\bg_2[r] &= \bE_2^{(a_r)}[m_r,m'_r] \ ,
 \end{align*}
-First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Hence, we have 
-\[
-\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
-\]
-where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$. Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied, and result~\eqref{eq:delta} is valid.
+and $m_r,m'_r, a_r$ are the corresponding coordinates of the matrices associated with $r$ through the vectorization operation~\eqref{eq:vec}. That is why, order-two moments of this random vector is split as follows:
+\begin{equation}
+\bE\{\bg[r]\bg[r']\} = \sigma^2\bE\{\bg_1[r]\bg_1[r']\} + \sigma^3\bE\{\bg_1[r]\bg_2[r']\} + \sigma^3\bE\{\bg_2[r]\bg_1[r']\} + \sigma^4\bE\{\bg_1[r]\bg_1[r']\}\ .
+\label{eq:gg}
+\end{equation}
+Then,
+\begin{align}
+\nonumber
+\left|\bE\{\bg_1[r]\bg_1[r']\}\right| & = \bigg|\dfrac1{K^2}\EE\bigg\{\sum_{k,k'=0}^{K-1} \bz_k[m_r+a_r]\bz_{k'}[m_{r'}+a_{r'}]\bw_k[m'_r]\bw_{k'}[m'_{r'}] + \bz_k[m'_r]\bz_{k'}[m_{r'}+a_{r'}]\bw_k[m_r+a_r]\bw_{k'}[m'_{r'}] \\
+\nonumber
+&+ \bz_k[m_r+a_r]\bz_{k'}[m'_{r'}]\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}] + \bz_k[m'_r]\bz_{k'}[m'_{r'}]\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\bigg\} \bigg| \\
+\nonumber
+& \leq \dfrac1{K^2}\left(\sum_{j=1}^J \Omega_j\right)^2 \sum_{k,k'=0}^{K-1} \EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\} + \EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m'_{r'}]\right\} + \EE\left\{\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}]\right\}  \\
+\nonumber
+&\hspace{110pt}  + \EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\right\} \\
+\nonumber
+&\leq \dfrac1{K^2}\left(\sum_{j=1}^J \Omega_j\right)^2 \sum_{k=0}^{K-1} 4 \\
+&\leq \dfrac{C_\bz^2}{K}\ ,
+\label{eq:g1g1}
+\end{align}
+where $C_\bz = 2\left(\sum_{j=1}^J \Omega_j\right)$. Besides, since odd-order moments of a zero-mean multivariate Gaussian random vector are zero, we have:
+\begin{align}
+\nonumber
+\bE\{\bg_1[r]\bg_2[r']\} & = \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \bz_k[m_r+a_r]\EE\left\{\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} + \bz_k[m'_r]\EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\}\\
+\nonumber
+&\hspace{30pt} - \delta_{m_{r'}+a_{r'},m'_{r'}}\bE\{\bg_1[r]\} \\
+& = 0\ ,
+\label{eq:g1g2}
+\end{align}
+Similarly,
+\begin{equation}
+\bE\{\bg_2[r]\bg_1[r']\} = 0\ .
+\label{eq:g2g1}
+\end{equation}
+Besides,
+\begin{align}
+\nonumber
+\left|\bE\{\bg_2[r]\bg_2[r']\}\right| &= \dfrac1{K^2}\bigg|\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\bE\{\bg_2[r']\} - \delta_{m_{r'}+a_{r'},m'_{r'}}\bE\{\bg_2[r]\}\\
+\nonumber
+&\hspace{30pt} + \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \bigg| \\
+\nonumber
+&= \dfrac1{K^2} \bigg| \sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\right\}\EE\left\{\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \\
+\nonumber
+&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1}\EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m'_{r'}]\right\} \\
+\nonumber
+&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m'_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\} \bigg| \\
+\nonumber
+& \leq \dfrac1{K^2} \sum_{k=0}^{K-1} 2 \\
+& \leq \dfrac2{K}\ .
+\label{eq:g2g2}
+\end{align}
+Thus, combining results~\eqref{eq:g1g1},~\eqref{eq:g1g2},~\eqref{eq:g2g1} and~\eqref{eq:g2g2} into expression~\eqref{eq:gg} gives the following bound:
+\begin{equation}
+\left|\bE\{\bg[r]\bg[r']\}\right| \leq \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right)\ .
+\label{eq:gg.bound}
+\end{equation}
+In the same way, we show that higher-order moments behave as $o\left( \dfrac1K \right)$.
 
-\section{Proof of Theorem~1}
-\label{ap:th.error}
+
+\subsubsection{Study of $f^{(\ell)}$}
+In this section, we provide bounds of the first and second-order derivatives of $f^{(\ell)}$ at the origin.
+
+Concerning the first-order derivative, from~\eqref{eq:error.vec}, we have:
+\begin{align*}
+\dfrac{\partial f^{(\ell)}}{\partial \bg[r]} &= \be_M^T\dfrac{\partial \tilde\bA^{\ell}}{\partial \bg[r]} \\
+&= \sum_{\lambda=0}^{\ell-1} \be_M^T\tilde\bA^\lambda\dfrac{\partial \tilde\bA}{\partial \bg[r]}\tilde\bA^{\ell-1-\lambda}\ .
+\end{align*}
+Thus,
+\begin{equation}
+\nonumber
+\left.\dfrac{\partial f^{(\ell)}}{\partial \bg[r]}\right|_{\bg=\bzero} = \sum_{\lambda=0}^{\ell-1} \be_M^T\bA_0^\lambda\left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\bA_0^{\ell-1-\lambda}\ .
+\label{eq:df}
+\end{equation}
+Furthermore,
+\begin{align*}
+\dfrac{\partial \tilde\bA}{\partial \bg[r]} &= \dfrac{\partial \bE^{(1)}}{\partial \bg[r]}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1} +  \left(\bS^{(1)}+\bE^{(1)}\right)\dfrac{\partial \left( \bS^{(0)}+\bE^{(0)}\right)^{-1}}{\partial \bg[r]} \\
+&= \left\{
+\begin{array}{ll}
+\bJ_{m_r,m'_r}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1} & \mbox{if}\quad a_r=1, \\
+\left( (1-\delta_{m_r,0})\bJ_{m_r-1,m'_r} +\left(\bS^{(1)}+\bE^{(1)}\right)\left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_r,m'_r} \right) \left( \bS^{(0)}+\bE^{(0)}\right)^{-1} & \mbox{else,}
+\end{array}
+\right.
+\end{align*}
+where $\bJ_{m_r,m'_r}\in\RR^{M\times M}$ is the matrix such that $\bJ_{m_r,m'_r}[m,m'] = \delta_{m,m_r}\delta_{m',m'_r}$.
+Thus,
+\begin{align*}
+\left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=0} &= \left\{
+\begin{array}{ll}
+\bJ_{m_r,m'_r}{\bS^{(0)}}^{-1} & \mbox{if}\quad a_r=1, \\
+\left((1-\delta_{m_r,0})\bJ_{m_r-1,m'_r} +\bA_0\bJ_{m_r,m'_r}\right){\bS^{(0)}}^{-1} & \mbox{else.}
+\end{array}
+\right.
+\end{align*}
+Let $\|\cdot\|_\infty$ denotes the uniform norm of a vector or a matrix, \ie $\|\bM\|_\infty = \max_{n,n'} \bM[n,m']$. Then,
+\begin{equation*}
+\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=0}\right\|_\infty \leq \left(1+\|\bA_0\|_\infty\right)\|{\bS^{(0)}}^{-1}\|_\infty\ .
+\end{equation*}
+Given equation~\eqref{eq:A0.sine}, we have 
+\begin{equation}
+\|\bA_0\|_\infty\leq \max\left(1,\frac{2J}{M}\right)\ ;
+\label{eq:A0}
+\end{equation}
+and from~\eqref{eq:S0.inv}, we have that $\|{\bS^{(0)}}^{-1}\|_\infty\leq \dfrac1{\sigma^2}\left(1+\frac{2J}{M}\right)$. Then,
+\begin{equation}
+\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=0}\right\|_\infty \leq \dfrac{C_{\bz,M}}{\sigma^2}\ ,
+\label{eq:dA}
+\end{equation}
+where $C_{\bz,M}=\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)$. Besides given expression~\eqref{eq:df}, for all $r\in\{0,\ldots,M(M+1)-1\}$, we have:
+\begin{align*}
+\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| &\leq d_{1,M,\ell} \|\bA_0\|_\infty^{\ell-1}\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right\|_\infty\ .
+\end{align*}
+where $d_{1,M,\ell}$ is only depending on $M$ and $\ell$.
+Therefore, given bounds~\eqref{eq:A0} and~\eqref{eq:dA}, we have:
+\begin{equation}
+\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{1,\bz,M,\ell}}{\sigma^2}\ ,
+\label{eq:df.bound}
+\end{equation}
+where $d_{1,\bz,M,\ell}=d_{1,M,\ell}\left(1+\frac{2J}{M}\right)\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell}$. 
+
+Concerning the second-order derivative, we have:
+\begin{align*}
+\dfrac{\partial^2 f^{(\ell)}}{\partial \bg[r]\partial \bg[r']} &= \sum_{\lambda=0}^{\ell-1} \be_M^T\dfrac{\partial\tilde\bA^\lambda}{\partial \bg[r']}\dfrac{\partial \tilde\bA}{\partial \bg[r]}\tilde\bA^{\ell-1-\lambda} + \be_M^T\tilde\bA^\lambda\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\tilde\bA^{\ell-1-\lambda} + \be_M^T\tilde\bA^\lambda\dfrac{\partial \tilde\bA}{\partial \bg[r]}\dfrac{\partial\tilde\bA^{\ell-1-\lambda}}{\partial \bg[r']} \\
+&= \sum_{\lambda=1}^{\ell-1}\sum_{p=0}^{\lambda-1} \be_M^T\tilde\bA^p\dfrac{\partial\tilde\bA}{\partial \bg[r']}\tilde\bA^{\lambda-1-p}\dfrac{\partial \tilde\bA}{\partial \bg[r]}\tilde\bA^{\ell-1-\lambda} + \sum_{\lambda=0}^{\ell-1}\be_M^T\tilde\bA^l\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\tilde\bA^{\ell-1-\lambda} \\ 
+&+ \sum_{\lambda=0}^{\ell-2}\sum_{p=0}^{\ell-\lambda-2}\be_M^T\tilde\bA^\lambda\dfrac{\partial \tilde\bA}{\partial \bg[r]}\tilde\bA^p\dfrac{\partial\tilde\bA}{\partial \bg[r']}\tilde\bA^{\ell-\lambda-2-p}\ . \\
+\end{align*}
+Thus,
+\begin{align}
+\nonumber
+\left.\dfrac{\partial^2 f^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero} &= \sum_{\lambda=1}^{\ell-1}\sum_{p=0}^{\lambda-1} \be_M^T\bA_0^{p}\left.\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\vert_{\bg=\bzero}\bA_0^{\lambda-1-p}\left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right\vert_{\bg=\bzero}\bA_0^{\ell-1-\lambda} \\
+&+ \sum_{\lambda=0}^{\ell-1}\be_M^T\bA_0^{\lambda}\left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\bA_0^{\ell-1-\lambda} + \sum_{\lambda=0}^{\ell-2}\sum_{p=0}^{\ell-2-\lambda}\be_M^T\bA_0^{\lambda}\left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right\vert_{\bg=\bzero}\bA_0^p\left.\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\vert_{\bg=\bzero}\bA_0^{\ell-\lambda-2-p}\ .
+\label{eq:d2f}
+\end{align}
+Besides,
+\begin{align*}
+\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']} &= \left\{
+\begin{array}{lc}
+0 &\mbox{if}\quad a_r=1\quad\mbox{and}\quad {a_r'}=1, \\
+\bJ_{m_{r},m'_{r}}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1} \bJ_{m_{r'},m'_{r'}} \left( \bS^{(0)}+\bE^{(0)}\right)^{-1} & \mbox{if}\quad a_r=1\quad\mbox{and}\quad {a_r'}=0, \\
+\bJ_{m'_r,m'_{r'}}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_r,m'_r}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1} & \mbox{if}\quad a_r=0\quad\mbox{and}\quad {a_r'}=1, \\
+\left( (1-\delta_{m_r,0})\bJ_{m_r-1,m'_r} +\left(\bS^{(1)}+\bE^{(1)}\right)\left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_r,m'_r} \right) & \\
+\hspace{20pt}\times \left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_{r'},m'_{r'}}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1} & \\
++ \left( (1-\delta_{m_{r'},0})\bJ_{m_{r'}-1,m'_{r'}} + \left(\bS^{(1)}+\bE^{(1)}\right)\left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_{r'},m'_{r'}} \right) & \\
+\hspace{20pt}\times \left( \bS^{(0)}+\bE^{(0)}\right)^{-1}\bJ_{m_{r},m'_{r}}\left( \bS^{(0)}+\bE^{(0)}\right)^{-1}  & \mbox{else.}
+\end{array} 
+\right.
+\end{align*}
+Thus,
+\begin{align*}
+\left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=\bzero} &= \left\{
+\begin{array}{ll}
+0 &\mbox{if}\quad a_r=1\quad\mbox{and}\quad a_{r'}=1, \\
+\bJ_{m_r,m'_r}{\bS^{(0)}}^{-1} \bJ_{m_{r'},m'_{r'}} { \bS^{(0)}}^{-1} & \mbox{if}\quad a_r=1\quad\mbox{and}\quad a_{r'}=0, \\
+\bJ_{m_{r'},m'_{r'}}{\bS^{(0)}}^{-1} \bJ_{m_{r},m'_{r}} { \bS^{(0)}}^{-1} & \mbox{if}\quad a_r=0\quad\mbox{and}\quad a_{r'}=1, \\
+\left( (1-\delta_{m_r,0})\bJ_{m_r-1,m'_r} +\bA_0\bJ_{m_r,m'_r} \right){\bS^{(0)}}^{-1}\bJ_{m_{r'},m'_{r'}}{ \bS^{(0)}}^{-1} & \\
++ \left( (1-\delta_{m_{r'},0})\bJ_{m_{r'}-1,m'_{r'}} +\bA_0\bJ_{m_{r'},m'_{r'}} \right){\bS^{(0)}}^{-1}\bJ_{m_{r},m'_{r}}{ \bS^{(0)}}^{-1} & \mbox{else.}
+\end{array} 
+\right.
+\end{align*}
+Then,
+\begin{align}
+\nonumber
+\left\| \left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=0}\right\|_\infty &\leq \left\{
+\begin{array}{ll}
+\|{\bS^{(0)}}^{-1}\|_\infty^2 &\mbox{if}\quad a_r=1\quad\mbox{or}\quad a_{r'}=1 \\
+2\left(1+\|\bA_0\|_\infty\right)\|{\bS^{(0)}}^{-1}\|_\infty^2 &\mbox{else} \\
+\end{array}
+\right.\\
+&\leq 2\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\dfrac1{\sigma^4}\ .
+\label{eq:d2A}
+\end{align}
+Returning to equation~\eqref{eq:d2f}, for all $r,r'\in\{0,\ldots,M(M+1)-1\}$ and $m\in\{0,\ldots, M-1\}$, we have:
+\begin{align*}
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| &\leq d_{2,M,\ell} \|\bA_0\|_\infty^{\ell-2}\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right\|_\infty\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\|_\infty + d'_{2,M,\ell}\|\bA_0\|_\infty^{\ell-1}\left\|\dfrac{\partial^2\tilde\bA}{\partial \bg[r]\bg[r']}\right\|_\infty \ ,
+\end{align*}
+where $d_{2,M,\ell}$ and $d'_{2,M,\ell}$ are only depending on $M$ and $\ell$.
+Besides, given results~\eqref{eq:dA} and~\eqref{eq:d2A}, we have:
+\begin{equation}
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\ ,
+\label{eq:d2f.bound}
+\end{equation}
+where 
+\begin{align*}
+d_{2,\bz,M,\ell} &= d_{2,M,\ell}C_{\bz,M}^2\max\left(1,\frac{2J}{M}\right)^{\ell-2} + d'_{2,M,\ell}\max\left(1,\frac{2J}{M}\right)^{\ell-1}2\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\ .
+\end{align*}
 
 \subsection{Expression of the Bias $\bmu$.}
+
 By definition of the measurement noise, $\bmu[n]=0$ when $n\in I$. Outside the measurement interval $I$, denote by $\ell$ the index such that $n=N-1+\ell$. Then, given that $\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}$, we have
 \begin{align}
 \nonumber
 \bmu[n] &=  \EE\{\balpha^{(\ell)}\}\bz_{K} + \sigma\EE\{\balpha^{(\ell)}\bw_{K}\} - \bz[n]\\
-& = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell]\ .
+\nonumber
+& = \balpha_0^{(\ell)}\bz_{K} + \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} - \bz[N-1+\ell] \\
+&\defeq \bepsilon_1[\ell] + \bepsilon_2[\ell] + \bepsilon_3[\ell]\ ,
 \label{eq:bias.dec}
 \end{align}
-Let us first evaluate the expression of $\balpha_0^{(\ell)}\bz_K$. We have
+
+where
+\begin{align}
+\label{eq:eps1.def}
+\bepsilon_1[\ell]&=  \balpha_0^{(\ell)}\bz_{K}  - \bz[N-1+\ell] \\
+\label{eq:eps2.def}
+\bepsilon_2[\ell] &=  \EE\{\bh^{(\ell)}\}\bz_{K}  \\
+\label{eq:eps3.def}
+\bepsilon_3[\ell] &=  \sigma\EE\{\bh^{(\ell)}\bw_{K}\}  \ .
+\end{align}
+
+Let us first determine an upper bound on $\left|\bepsilon_1[n]\right|$. We have
 \begin{align}
 \nonumber
 \bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)+\varphi_j\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)+\varphi_{j'}\right) \\
@@ -147,7 +319,7 @@ Let us first evaluate the expression of $\balpha_0^{(\ell)}\bz_K$. We have
 &= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
 \label{eq:S1}
 \end{align}
-Thus, $\bS^{(0)}$ is a circulant matrix and is therefore diagonalizable in the Fourier basis:
+Thus, $\bS^{(0)}$ is a circulant matrix, and is therefore diagonalizable in the Fourier basis:
 \[
 \bS^{(0)} = \bU\bLambda^{(0)}\bU^*\ ,
 \]
@@ -162,22 +334,22 @@ Therefore,
 \end{align*}
 which leads to
 \begin{equation}
-{\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\sum_{j=1}^J\dfrac{\Omega_j^2}{2\sigma^2(\sigma^2+\Omega_j^2M/4)}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,.
+{\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\dfrac{2}{M\sigma^2}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,.
 \label{eq:S0.inv}
 \end{equation}
 Consequently, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv}, we have
 \begin{align}
 \nonumber
 \bA_0[m,m']  &= \sum_{q=0}^{M-1} {\bS^{(1)}}[m,q]{\bS^{(0)}}^\inv[q,m'] \\
-&= \delta_{m+1,m'} + \sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
+&= \delta_{m+1,m'} + \dfrac2M\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
 \label{eq:A0.sine}
 \end{align}
-Thus $\balpha_0^{(1)}$, the last row of $\bA_0$, is written as
-\begin{align*}
-\balpha_0^{(1)}[m]  &=\sum_{j=1}^J\dfrac{2\Omega_j^2}{\Omega_j^2M+4\sigma^2}\cos\left(2\pi p_j\frac{m}{M}\right) \\
-&= \dfrac{2}{M}\sum_{j=1}^J\cos\left(2\pi p_j\frac{m}{M}\right) + o(\sigma)\ .
-\end{align*}
-Besides, from equation~\eqref{eq:A0.sine}, we have
+Since $\balpha_0^{(1)}$ is the last row of $\bA_0$, we have
+\begin{equation}
+\balpha_0^{(1)}[m]  =\dfrac2M \sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\frac{m}{M}\right) \ . 
+\label{eq:alpha01}
+\end{equation}
+Besides, from equation~\eqref{eq:A0.sine}, we also have
 \begin{align*}
 \bA_0\bz_{K} &= 
 \begin{pmatrix}
@@ -187,9 +359,9 @@ Besides, from equation~\eqref{eq:A0.sine}, we have
 \balpha_0^{(1)}\bz_K
 \end{pmatrix}\,.
 \end{align*}
-By induction, we have
+The upward-shift property is thus successively inducted when $\ell$ increases; that is,
 \begin{align*}
-\tilde\bA_0^{\ell}\bz_{K} &= 
+\bA_0^{\ell}\bz_{K} &= 
 \begin{pmatrix}
 \bz[N-M+\ell] \\
 \vdots \\
@@ -200,96 +372,276 @@ By induction, we have
 \end{pmatrix}
 \, .
 \end{align*}
+Then, $\balpha_0^{(\ell)}$, the last row of $\bA_0^\ell$ follows the following recurrence relation:
+\begin{align*}
+\balpha_0^{(\ell)}\bz_{K} &= \balpha_0^{(1)}\tilde\bA_0^{\ell-1}\bz_{K} \\
+&=\sum_{m=0}^{M-\ell}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]+\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\balpha_0^{(m-M+\ell)}\bz_K\,.
+\end{align*}
+Hence,
+\begin{align*}
+\bepsilon_1[\ell] &= \balpha_0^{(\ell)}\bz_{K} - \bz[N-1+\ell] \\
+&=\sum_{m=0}^{M}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]  - \bz[N-1+\ell] +\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\left(\balpha_0^{(m-M+\ell)}\bz_K - \bz[N-M+\ell+m-1]\right) \\
+&=\sum_{m=0}^{M}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]  - \bz[N-1+\ell] +\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\bepsilon_1[m-M+\ell]\,.
+\end{align*}
+Besides, equation~\eqref{eq:alpha01} gives
+\begin{align*}
+\sum_{m=0}^{M}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1] &=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\dfrac1{1+\frac{4\sigma^2}{M\Omega_j^2}}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}+\varphi_{j'}\right)}_{=\delta_{j,j'}\frac{M}2\cos\left(2\pi p_j\frac{N}M +\varphi_{j}\right)} \\
+&= \sum_{j=1}^J\Omega_j\dfrac1{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\dfrac{N}{M}+\varphi_j\right)\ .
+\end{align*}
+Thus:
+\begin{align}
+\nonumber
+\left|\bepsilon_1[\ell]\right| &= \left|\sum_{j=1}^J\Omega_j\left(\dfrac1{1+\frac{4\sigma^2}{M\Omega_j^2}}-1\right)\cos\left(2\pi p_j\dfrac{N}{M}+\varphi_j\right) +\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\bepsilon_1[m-M+\ell]\right| \\
+\nonumber
+&\leq \sum_{j=1}^J\Omega_j\left|\dfrac1{1+\frac{4\sigma^2}{M\Omega_j^2}}-1\right| +\dfrac{2J}{M}\sum_{\lambda=1}^{\ell-1}\left|\bepsilon_1[\lambda]\right| \\
+&\leq \dfrac{4\sigma^2}{M}\sum_{j=1}^J\dfrac1{\Omega_j} +\dfrac{2J}{M}\sum_{\lambda=1}^{\ell-1}\left|\bepsilon_1[\lambda]\right|\ .
+\label{eq:seq}
+\end{align}
+Then, by induction from the inequality~\eqref{eq:seq}, we have
+\begin{equation}
+\left|\bepsilon_1[\ell]\right| \leq \dfrac{4\sigma^2}{M}\left(1+\frac{2J}{M}\right)^{\ell-1}\sum_{j=1}^J\dfrac1{\Omega_j} \defeq c^{(1)}\,\sigma^2\ ,
+\label{eq:eps1}
+\end{equation}
+where $c^{(1)}=\dfrac{4}{M}\left(1+\frac{2J}{M}\right)^{\ell-1}\sum_{j=1}^J\dfrac1{\Omega_j}$. Note that $c^{(1)}$ is not depending on $\sigma$ or $K$.
+
+Let us now determine an upper bound on $\left|\bepsilon_2[\ell]\right|$. Since $\EE\{\bg[r]\}=0$, a second-order Taylor expansion of $\bh^{(\ell)}$ gives
+\begin{equation}
+\EE\{\bh^{(\ell)}[m]\} = \dfrac12\sum_{r,r'=0}^{M(M+1)-1}\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero} \EE\{\bg[r]\bg[r']\} + o\left(\dfrac1K\right)\ .
+\label{eq:Eh}
+\end{equation}
+Thus, given the bounds~\eqref{eq:gg.bound} on $\EE\{\bg[r]\bg[r']\}$ and~\eqref{eq:d2f.bound} on the second derivative of $f_m^{(\ell)}$, we have:
+\begin{align}
+\nonumber
+\left|\bepsilon_2[\ell]\right| &\leq C_\bz\dfrac{M^3(M+1)^2}{4}\left\|\left.\dfrac{\partial^2 f^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right\|_\infty \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)  \\
+&\leq \dfrac1K \left(c^{(2)}_1 + \dfrac{c^{(2)}_2}{\sigma^2} \right) + o\left(\dfrac1K\right)\ ,
+\label{eq:eps2}
+\end{align}
+where
+\begin{align*}
+c^{(2)}_1 &=\dfrac{M^3(M+1)^2}{2}C_\bz d_{2,\bz,M,\ell}\ ,\\
+c^{(2)}_2 &=\dfrac{M^3(M+1)^2}{4}C_\bz^3 d_{2,\bz,M,\ell} \ .
+\end{align*}
+
+Let us now determine an upper bound on $\left|\bepsilon_3[\ell]\right|$. 
+A second-order Taylor expansion of $\bh^{(\ell)}$ gives
+\begin{equation}
+\EE\{\bh^{(\ell)}\bw_K\}  = \sum_{m=0}^{M-1} \sum_{r=0}^{M(M+1)-1}\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero} \EE\{\bg[r]\bw_K[m]\} + o\left(\dfrac1K\right)
+\label{eq:Ehw}
+\end{equation}
+Indeed, the third-order moments $\EE\{\bg[r]\bg[r']\bw_K[m]\}$, behave as $o\left(\dfrac1K\right)$. Besides,
+\begin{equation}
+\EE\{\bg[r]\bw_K[m]\}= \sigma\EE\{\bg_1[r]\bw_K[m]\} + \sigma^2\EE\{\bg_2[r]\bw_K[m]\}\ .
+\label{eq:gw}
+\end{equation}
 Then,
 \begin{align}
 \nonumber
-\balpha_0^{(\ell)}\bz_{K} &= \balpha_0^{(1)}\tilde\bA_0^{\ell-1}\bz_{K} \\
-&=\sum_{m=0}^{M-\ell}\balpha_0^{(1)}[m]\bz[N-M+\ell+m-1]+\sum_{m=M-\ell+1}^{M-1}\balpha_0^{(1)}[m]\balpha_0^{(m-M+\ell)}\bz_K\,.
-\label{eq:seq}
+\left|\bE\{\bg_1[r]\bw_K[m]\}\right| & = \dfrac1{K}\left|\sum_{k=0}^{K-1} \bz_k[m_r+a_r]\EE\left\{\bw_k[m'_r]\bw_{K}[m]\right\} + \bz_k[m'_r]\EE\left\{\bw_k[m_r+a_r]\bw_{K}[m]\right\}\right| \\
+& \leq \dfrac2{K}\left(\sum_{j=1}^J \Omega_j\right) = \dfrac{C_\bz}{K}\ .
+\label{eq:g1w}
 \end{align}
-But,
-\begin{align*}
-\balpha_0^{(1)}\bz_{K} &=\sum_{m=0}^{M-1}\balpha_0^{(1)}[m]\bz[N-M+m] \\
-&=\sum_{j,j'=1}^J\Omega_{j'}\dfrac{2}{M}\underbrace{\sum_{m=0}^{M-1}\cos\left(2\pi p_j\frac{m}{M}\right)\cos\left(2\pi p_{j'}\dfrac{N+m}{M}+\varphi_{j'}\right)}_{=\delta_{j,j'}\frac{M}2\cos\left(2\pi p_j\frac{N}M +\varphi_{j}\right)} + o(\sigma) \\
-&= \sum_{j=1}^J\Omega_j\cos\left(2\pi p_j\dfrac{N}{M}+\varphi_j\right) + o(\sigma) \\
-&= \bz[N] + o(\sigma)
-\end{align*}
-By induction from~\eqref{eq:seq}, we have
+\begin{align}
+\nonumber
+\bE\{\bg_2[r]\bw_K[m]\} & = \dfrac1{K}\sum_{k,=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_K[m]\right\} -\delta_{m_r+a_r,m'_r}\EE\left\{\bw_K[m]\right\}\\
+& = 0\ .
+\label{eq:g2w}
+\end{align}
+Thus, combining results~\eqref{eq:g1w} and~\eqref{eq:g2w} into expression~\eqref{eq:gw} gives the following bound:
 \begin{equation}
-\label{eq:alpha0z.sine}
-\balpha_0^{(\ell)}\bz_{K} = \bz[N-1+\ell] + o(\sigma)\ .
+\left|\bE\{\bg[r]\bw_K[m]\}\right| \leq C_\bz\dfrac{\sigma}K\ .
+\label{eq:gw.bound}
 \end{equation}
-Then,  inserting result~\eqref{eq:alpha0z.sine} into equation~\eqref{eq:bias.dec} gives
-\begin{equation*}
-\bmu[N-1+\ell] = \EE\{\bh^{(\ell)}\}\bz_{K} + \sigma\EE\{\bh^{(\ell)}\bw_{K}\} + o(\sigma)\ .
-\end{equation*}
-Besides, from Lemma~1, we have the following result:
-\begin{equation*}
-\EE\{\bh^{(\ell)}\} \underset{K\to\infty}{\longrightarrow} 0\ .
-\end{equation*}
-{\color{red}[if it is possible to get the convergence rate, like $\EE\{\bh^{(\ell)}\}=O(1/K)$, that would be great!]}
-Moreover, applying delta method to $\left(\bg\ \bw[n']\right)^T$, $\forall n'\in I$, one can show that we have the asymptotic result
+Thus, given the bound~\eqref{eq:df.bound} on the first derivative of $f_m^{(\ell)}$, and from~\eqref{eq:Ehw} we have:
 \begin{equation}
-\EE\{\bw[n']\bh^{(\ell)}\} \underset{K\to\infty}{\longrightarrow} 0\,.
-\label{eq:cov.ap}
+\left|\bepsilon_3[\ell]\right| \leq \sigma M^2(M+1) \dfrac{d_{1,\bz,M,\ell}}{\sigma^2} C_\bz \dfrac{\sigma}{K} \defeq \dfrac{c^{(3)}}{{K}}\ ,
+\label{eq:eps3}
 \end{equation}
-Consequently, $\EE\{\bh^{(\ell)}\bw_{K}\} \underset{K\to\infty}{\longrightarrow} 0$, and
-\begin{equation}
-\frac{1}{\sigma}\bmu[N-1+\ell] = o(1)
-\label{eq:bias.ap}
-\end{equation}
-when $K\to\infty$.
+where $ c^{(3)} = M^2(M+1)d_{1,\bz,M,\ell}C_\bz$.
 
+Thus, combining bounds~\eqref{eq:eps1} on $\bepsilon_1$, ~\eqref{eq:eps2} on $\bepsilon_2$ and ~\eqref{eq:eps3} on $\bepsilon_3$ gives the following bound of the bias:
+\begin{equation}
+\left\vert\bmu[n]\right\vert \leq  c^{(1)}\sigma^2 + \dfrac1K \left( \dfrac{c_2^{(2)}}{\sigma^2}+c_1^{(2)}+c^{(3)} \right)  + o\left(\dfrac1K\right)\ .
+\end{equation}
+
+%\begin{align*}
+%\bh^{(\ell)}[m] &= f_m^{(\ell)}(\bg) \\
+%& = f_m^{(\ell)}(\bzero) + \sum_{r=0}^{M(M-1)}\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero} \bg[r] + \dfrac12\sum_{r,r'=0}^{M(M-1)}\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero} \bg[r]\bg[r'] + o\left(\dfrac1K\right)\ .
+%\end{align*}
 
 \subsection{Expression of the Covariance $\bgamma$.}
-Take $n>N$, and denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
- 
-\paragraph{When $n'\in I$}
-From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian when $K\to \infty$. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing {\color{red}[there is a gap here. Note that when $K$ is finite, it is approximated by Gaussian but not Gaussian. The discrepancy should be made clear.]}. Then, inserting result~\eqref{eq:bias.ap} into equation~\eqref{I-eq:bias0}, we obtain:
+
+Outside the measurement interval $I$, denote by $\ell$ the index such that $n=N-1+\ell$. Then, given that $\bh^{(\ell)} = \balpha^{(\ell)} - \balpha_0^{(\ell)}$, we have
+\begin{align*}
+\bgamma[n,n] &= \left( \balpha_0^{(\ell)}\bz_K\right)^2 + 2\left(\balpha_0^{(\ell)}\bz_K\right)\EE\left\{\bh^{(\ell)}\right\}\bz_K + \EE\left\{\left(\bh^{(\ell)}\bz_K\right)^2\right\} + 2\sigma\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K + 2\sigma\balpha_0^{(\ell)}\bz_K \EE\{\bh^{(\ell)}\bw_K\} \\
+& + 2\sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\ell)}\}\bz_K +\sigma^2\left\|\balpha_0^{(\ell)}\right\|^2 +\sigma^2\EE\left\{\left(\bh^{(\ell)}\bw_K\right)^2\right\}  + 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} -\bz[n]^2 - 2\bz[n]\bmu[n]- \bmu[n]^2 \\
+&= \sigma^2\left\|\balpha_0^{(\ell)}\right\|^2-\left( \bz[n] - \balpha_0^{(\ell)}\bz_K+\bz[n]\right)^2 + \EE\left\{\left(\bh^{(\ell)}\bz_K\right)^2\right\} + 2\sigma\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K+ 2\sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\ell)}\}\bz_K \\
+&+\sigma^2\EE\left\{\left(\bh^{(\ell)}\bw_K\right)^2\right\}  + 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\}\\
+&\defeq \eta_1[n] + \eta_2[n] + \eta_3[n] + \eta_4[n] + \eta_5[n] + \eta_6[n] + \eta_7[n]\ , 
+\end{align*}
+where
+\begin{align*}
+\eta_1[n] &= \sigma^2\left\|\balpha_0^{(\ell)}\right\|^2 \,, & \eta_2[n] &= -\left( \bz[n] - \balpha_0^{(\ell)}\bz_K+\bz[n]\right)^2 \,,
+& \eta_3[n] &= \EE\left\{\left(\bh^{(\ell)}\bz_K\right)^2\right\}\,, \\
+\eta_4[n] &= 2\sigma\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K\,,
+& \eta_5[n] &= \sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\ell)}\}\bz_K\,,
+& \eta_6[n] &= \sigma^2\EE\left\{\left(\bh^{(\ell)}\bw_K\right)^2\right\}\,, \\
+\eta_7[n] &= 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} \ .\\ 
+\end{align*}
+Let us now determine an upper bound on each of these terms. 
+
+First, since $\|\balpha_0^{(\ell}\|^2\leq M\|\balpha_0^{(\ell)}\|_\infty^2\leq M\|\bA_0^{\ell}\|_\infty^2$, we have:
+\begin{align}
+\nonumber
+\eta_1[n] &\leq \sigma^2M\left\|\bA_0^{\ell}\right\|_\infty^2 \\
+\nonumber
+&\leq\sigma^2M^{\ell}\left\|\bA_0\right\|^{2\ell}_\infty \\
+&\leq \sigma^2 M^{\ell}\max\left(1,\left(\frac{2J}{M}\right)^{2\ell}\right)\ .
+\label{eq:sum1}
+\end{align}
+
+Second, by definition of $\epsilon_2$ and $\epsilon_3$ (see expressions~\eqref{eq:eps2.def} and~\eqref{eq:eps3.def}), $\eta_2$ takes the following form:
 \begin{equation}
-\bgamma[n,n'] = \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\} + o(\sigma^2) 
-\label{eq:gamma.nn}
+\eta_2[n] = \left(\bepsilon_2[n]+\bepsilon_3[n]\right)^2 = o\left(\dfrac1K\right)\ .
+\label{eq:sum2}
 \end{equation}
-when $K\to \infty$.
-In addition, we remark that
-\[
-\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\}=\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}\ .
-\]
-Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn} vanishes when $K\to\infty$. We thus have
+
+Third, second-order Taylor expansions of $\bh^{(\ell)}$ give:
+\begin{align}
+\nonumber
+\eta_3[n] &\leq
+\dfrac{C_\bz^2}{4}\sum_{m,m'=0}^{M-1}\left|\EE\left\{\bh^{(\ell)}[m]\bh^{(\ell)}[m']\right\}\right| \\
+\nonumber
+&\leq \dfrac{C_\bz^2}{4} \sum_{r,r'=0}^{M(M+1)-1}\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\left.\dfrac{\partial f_{m'}^{(\ell)}}{\partial \bg[r']}\right\vert_{\bg=\bzero} \EE\{\bg[r]\bg[r']\}\right| + o\left(\dfrac1K\right) \\
+\nonumber
+&\leq \dfrac{C_\bz^2 M^2(M+1)^2}{4}  \dfrac{d_{1,\bz,M,\ell}^2}{\sigma^4}\dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right) \\
+&\leq \dfrac{C_\bz^2 M^2(M+1)^2d_{1,\bz,M,\ell}^2}{4K} \left( \dfrac{C_\bz^2}{\sigma^2} + 2\right)  + o\left(\dfrac1K\right)\ .
+\label{eq:sum3}
+\end{align}
+
+Fourth,
 \begin{align*}
-\bgamma[n,n'] &= \sigma^2\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}+ o(\sigma^2)
+\left|\eta_4[n]\right| & \leq \sigma C_\bz\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1}\left|\EE\{\bh^{(\ell)}[m]\bw_K[m']\} \right|
 \end{align*}
-when $K\to\infty$.
+But,
+\begin{align}
+\nonumber
+\left|\EE\{\bh^{(\ell)}[m]\bw_K[m']\} \right|  &\leq \sum_{r=0}^{M(M+1)-1}\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \left|\EE\{\bg[r]\bw_K[m']\}\right| + o\left(\dfrac1K\right) \\
+&\leq M(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} C_\bz\dfrac{\sigma}{K} + o\left(\dfrac1K\right)
+\label{eq:Ehwm}
+\end{align}
+Thus,
+\begin{equation}
+\left|\eta_4[n]\right| \leq M^\ell(M+1)C_\bz^2 d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\right)\right)^\ell\dfrac{1}{K} + o\left(\dfrac1K\right)\ .
+\label{eq:sum4}
+\end{equation}
+
+Fifth and sixth, second-order Taylor expansions of $\bh^{(\ell)}$ give
+\begin{align}
+\label{eq:sum5}
+\eta_5[n] &= o\left(\dfrac1K\right) \\
+\label{eq:sum6}
+\eta_6[n] &= o\left(\dfrac1K\right)\ .
+\end{align}
+
+Seventh,
+\begin{align*}
+\left|\eta_7[n] \right| &\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1} \left| \EE\{\bh^{(\ell)}[m]\bw_K[m]\bw_K[m']\} \right| \\
+&\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1} \sum_{r=0}^{M(M+1)-1}\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \left| \EE\{\bg^{(\ell)}[r]\bw_K[m]\bw_K[m']\} \right| + o\left( \dfrac1K\right)\ .
+\end{align*}
+But,
+\begin{align*}
+\EE\{\bg^{(\ell)}[r]\bw_K[m]\bw_K[m']\} = \sigma\EE\{\bg_1^{(\ell)}[r]\bw_K[m]\bw_K[m']\} + \sigma^2\EE\{\bg_2^{(\ell)}[r]\bw_K[m]\bw_K[m']\}\ .
+\end{align*}
+As before, since $\EE\{\bg_1^{(\ell)}[r]\bw_K[m]\bw_K[m']\}$ is a third-order moment of a multivariate zero-mean Gaussian vector, it vanishes. And,
+\begin{align*}
+\left|\EE\{\bg_2^{(\ell)}[r]\bw_K[m]\bw_K[m']\}\right| &= \dfrac1K\sum_{k,=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_K[m]\bw_K[m']\right\} - \delta_{m_r+a_r,m'_r} \EE\left\{\bw_K[m]\bw_K[m']\right\} \\
+&\leq \dfrac4K\ .
+\end{align*}
+Thus,
+\begin{align}
+\nonumber
+\left| \eta_7[n] \right| &\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty M^3(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} \dfrac{4\sigma^2}K + o\left( \dfrac1K\right)\\
+&\leq 8 M^{\ell+2}(M+1)d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\right)\right)^\ell\dfrac{\sigma^2}{K} + o\left( \dfrac1K\right)\ .
+\label{eq:sum7}
+\end{align}
+
+To conclude, we combine the expressions~\eqref{eq:sum1},~\eqref{eq:sum2},~\eqref{eq:sum3},~\eqref{eq:sum4},~\eqref{eq:sum5},~\eqref{eq:sum6}, and~\eqref{eq:sum7} to determine an upper bound on the variance $\gamma[n,n]$. It follows:
+\begin{align*}
+\gamma[n,n] &\leq c_0^{(n)}\sigma^2 + \dfrac{1}{K} \left( \dfrac{c_1^{(n)}}{\sigma^2} + c_2^{(n)} + c_3^{(n)}\sigma^2\right) + o\left(\dfrac1K\right)\ ,
+\end{align*}
+where
+\begin{align*}
+c_0^{(n)} & =  M^{\ell}\max\left(1,\left(\frac{2J}{M}\right)^{2\ell}\right) \\
+c_1^{(n)} & = \dfrac14C_\bz^4 M^2(M+1)^2d_{1,\bz,M,\ell}^2  \\
+c_2^{(n)} & = \dfrac12C_\bz^2 M^2(M+1)^2d_{1,\bz,M,\ell}^2 + M^\ell(M+1)C_\bz^2 d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\right)\right)^\ell\\
+c_3^{(n)} & =  8 M^{\ell+2}(M+1)d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\right)\right)^\ell\ .
+\end{align*}
 
 
-\paragraph{When $n'\geq N$}
-Inserting equation~\eqref{eq:bias.ap} into result~\eqref{I-eq:cov01}, we obtain
-\begin{align*}  
-\bgamma[n,n'] = &\,\bz_K^T\EE\left\{{\balpha^{(\ell)}}^T\balpha^{(\lambda)}\right\}\bz_K + \sigma\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\}\bz_K+ \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K \\
-& +\sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}-\bz[n]\bz[n']+o(\sigma^2) \\
-= &\,\bz_K^T\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\}\bz_K + \balpha_0^{(\ell)}\sigma\EE\{\bw_K\bh^{(\lambda)}\}\bz_K + \sigma\EE\{\bh^{(\ell)}\bw_K\}\bz[n']  \\
-&+ \sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\}\bz_K+ \sigma\EE\{\bh^{(\lambda)}\bw_K\}\bz[n] + \sigma\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K \\
-& + \sigma\EE\{\bh^{(\lambda)}\bw_K\bh^{(\ell)}\}\bz_K+\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\lambda)}\bw_K\}+\sigma^2\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} \\
-&+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)\ .
-\end{align*}
-From Lemma~1, we have that $\bh^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. {\color{red}[The same gap here.]} {\color{blue}Considering this property and equation~\eqref{eq:cov.ap} gives
+\paragraph{If $n'\geq N$.}
+When $n\geq N$ and $n'\geq N$, applying the Cauchy-Schwarz inequality, we obtain the following bound on the covariance $\gamma[n,n]$:
 \begin{align*}
-\bgamma[n,n'] = &\,\dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K + \sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)
+\left|\gamma[n,n]\right| & \leq  \sqrt{\gamma[n,n]\gamma[n',n']} \\
+& \leq  \sqrt{\gamma[n,n]\gamma[n',n']} \\
+& \leq   \sqrt{c_0^{(n)}c_0^{(n')}}\sigma^2\sqrt{1 + \dfrac{1}{K\sigma^2} \left( \dfrac1{c_0^{(n)}}\left( \dfrac{c_1^{(n)}}{\sigma^2} + c_2^{(n)} + c_3^{(n)}\sigma^2\right) + \dfrac1{c_0^{(n')}}\left( \dfrac{c_1^{(n')}}{\sigma^2} + c_2^{(n')} + c_3^{(n')}\sigma^2\right)\right) + o\left(\dfrac1K\right)} \\
+& \leq   \sqrt{c_0^{(n)}c_0^{(n')}}\sigma^2 + \dfrac{1}{2K} \left( \sqrt{\dfrac{c_0^{(n')}}{c_0^{(n)}}}\left( \dfrac{c_1^{(n)}}{\sigma^2} + c_2^{(n)} + c_3^{(n)}\sigma^2\right) + \sqrt{\dfrac{c_0^{(n)}}{c_0^{(n')}}}\left( \dfrac{c_1^{(n')}}{\sigma^2} + c_2^{(n')} + c_3^{(n')}\sigma^2\right)\right) + o\left(\dfrac1K\right) \\
+& \leq  c_0^{(n,n')}\sigma^2 + \dfrac{1}{K} \left( \dfrac{c_1^{(n,n')}}{\sigma^2} + c_2^{(n,n')} + c_3^{(n,n')}\sigma^2\right) + o\left(\dfrac1K\right)\ , \\
 \end{align*}
-when $K\to\infty$. The Isserlis' theorem also gives the following result {\color{red}[the same gap here.]}
+where
 \begin{align*}
-\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} &= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\bh^{(\lambda)}[m']\bw_K[m']\} \\
-&= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\}\EE\{\bh^{(\lambda)}[m']\bw_K[m']\} + \EE\{\bh^{(\ell)}[m]\bw_K[m']\}\EE\{\bh^{(\lambda)}[m']\bw_K[m]\} \\
-&\hspace{35pt} + \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m']\}\underbrace{\EE\{\bw_K[m]\bw_K[m']\}}_{=\delta_{m,m'}} \\
-&= \sum_{m=0}^{M-1} \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m]\} = \dfrac1K\Tr\left(\bGamma^{(\ell,\lambda)}\right)
+c_0^{(n,n')} & =  \sqrt{c_0^{(n)}c_0^{(n')}}\,, \\
+c_p^{(n,n')} & =  \dfrac12\left(c_p^{(n)}\sqrt{\dfrac{c_0^{(n')}}{c_0^{(n)}}} + c_p^{(n')}\sqrt{\dfrac{c_0^{(n)}}{c_0^{(n')}}}\right)\,,\quad\forall p\in\{1,2,3\}\ .\\
 \end{align*}
-when $K\to \infty$.
-We thus conclude that
-\begin{align*}  
-\bgamma[n,n'] &= \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + o(\sigma^2)
-\end{align*}
-when $K\to \infty$.}
 
+\paragraph{If $n'\in I$.}
+When $n\geq N$ and $n'\in I$, equation~\eqref{I-eq:cov00} shows us that:
+\begin{align*}
+\bgamma[n,n']&=\sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\EE\{\bw[n']\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{\bw[n']\bh^{(\ell)}\bw_K\} \\
+& \defeq \beta_1[n,n'] + \beta_2[n,n'] + \beta_3[n,n']\ ,
+\end{align*}
+where
+\begin{align*}
+\beta_1[n,n'] &= \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K \\
+\beta_2[n,n'] &= \sigma^2\EE\{\bw[n']\balpha_0^{(\ell)}\bw_K\} \\
+\beta_3[n,n'] &= \sigma^2\EE\{\bw[n']\bh^{(\ell)}\bw_K\}\ .
+\end{align*}
+Besides, thanks to the bound~\eqref{eq:Ehwm} we have:
+\begin{align}
+\nonumber
+\left|\beta_1[n,n']\right| &\leq \sigma\dfrac{C_\bz}{2}\sum_{m=0}^{M-1}\left|\EE\{\bw[n']\bh^{(\ell)}[m]\}\right|\\
+\nonumber
+&\leq \sigma\dfrac{C_\bz}{2}M^2(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} C_\bz\dfrac{\sigma}{K} + o\left(\dfrac1K\right)\\
+&\leq  M^2(M+1)\dfrac{C_\bz^2 d_{1,\bz,M,\ell}}{2}\dfrac{1}{K} + o\left(\dfrac1K\right)\ .
+\label{eq:beta1}
+\end{align}
+Besides,
+\begin{align}
+\nonumber
+\beta_2[n,n'] &\leq \sigma^2\left\|\balpha_0^{(\ell)}\right\|_\infty\sum_{m=0}^{M-1}\left|\EE\{\bw[n']\bw_K[m]\}\right| \\
+\nonumber
+&\leq \sigma^2\left\|\bA_0^{\ell}\right\|_\infty \\
+&\leq \sigma^2M^{\ell-1}\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell}\ .
+\label{eq:beta2}
+\end{align}
+Besides, identically to the bound~\eqref{eq:sum7} on $\eta_7$, we obtain 
+\begin{align}
+\nonumber
+\beta_3[n,n'] &\leq \sigma^2\sum_{m=0}^{M-1}\left|\EE\{\bw[n']\bh^{(\ell)}[m]\bw_K[m]\}\right|\\
+\nonumber
+&\leq \sigma^2 M^3(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} \dfrac{4\sigma^2}K + o\left(\dfrac1K\right) \\
+&\leq M^3(M+1)d_{1,\bz,M,\ell} \dfrac{4\sigma^2}K + o\left(\dfrac1K\right) \ .
+\label{eq:beta3}
+\end{align}
+Finally, we combine expressions~\eqref{eq:beta1},~\eqref{eq:beta2}, and~\eqref{eq:beta3} to determine an upper bound on the variance $\gamma[n,n']$. It follows:
+\begin{align*}
+\left|\gamma[n,n']\right| &\leq b_0^{(n,n')}\sigma^2 + \dfrac{1}{K} \left( b_1^{(n,n')} + b_2^{(n)}\sigma^2\right) + o\left(\dfrac1K\right)\ ,
+\end{align*}
+where
+\begin{align*}
+b_0^{(n,n')} & =  M^{\ell-1}\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell} \\
+b_1^{(n,n')} & = M^2(M+1)\dfrac{C_\bz^2 d_{1,\bz,M,\ell}}{2} \\
+b_2^{(n,n')} & = 4M^3(M+1)d_{1,\bz,M,\ell}  \ .
+\end{align*}
 
 \section{Application to an Electrocardiogram}
 We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (first panel), or EDMD (second panel), GPR (third panel), or TBATS (fourth panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
@@ -322,5 +674,93 @@ Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundar
 \end{tabular}
 \label{tab:otd.ecg}
 \end{table}
+
+
+%The multivariate version of the delta method is applicable to $\bh^{(\ell)}$ under the following conditions:
+%\begin{enumerate}[(i)]
+%\item\label{delta.1} $f^{(\ell)}$ is differentiable at the origin;
+%\item\label{delta.2} $\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)$ where $\bGamma_0$ is a covariance matrix.
+%\end{enumerate}
+%When these conditions are satisfied, the delta method gives the asymptotic behavior of $\bh^{(\ell)}=f^{(\ell)}(\bg)$, that is
+%\begin{equation}
+%\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
+%\label{eq:delta}
+%\end{equation}
+%where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
+%\[
+%\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
+%\]
+%
+%Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules. {\color{red}Detail it}
+%
+%Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
+%\[
+%\bg = \sigma\bg_1 + \sigma^2\bg_2\ ,
+%\]
+%where $\bg_1$ and $\bg_2$ are defined by
+%\begin{align*}
+%\bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right)\quad\mbox{where}\quad \tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}\,, \\
+%\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
+%\end{align*}
+%First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Hence, we have 
+%\[
+%\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
+%\]
+%where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$. Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied, and result~\eqref{eq:delta} is valid.
+
+
+%Therefore,
+%\begin{align*}
+%\bgamma[n,n] &\leq \sigma^2\left\|\balpha_0^{(\ell)}\right\|^2-\left(\bepsilon_2[n]+\bepsilon_3[n]\right)^2 + \EE\left\{\left(\bh^{(\ell)}\bz_K\right)^2\right\} + 2\sigma\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K+ 2\sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\ell)}\}\bz_K \\
+%&+\sigma^2\EE\left\{\left(\bh^{(\ell)}\bw_K\right)^2\right\}  + 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\}
+%\end{align*}
+
+%Take $n>N$, and denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
+% 
+%\paragraph{When $n'\in I$}
+%From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian when $K\to \infty$. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing {\color{red}[there is a gap here. Note that when $K$ is finite, it is approximated by Gaussian but not Gaussian. The discrepancy should be made clear.]}. Then, inserting result~\eqref{eq:bias.ap} into equation~\eqref{I-eq:bias0}, we obtain:
+%\begin{equation}
+%\bgamma[n,n'] = \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\} + o(\sigma^2) 
+%\label{eq:gamma.nn}
+%\end{equation}
+%when $K\to \infty$.
+%In addition, we remark that
+%\[
+%\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\}=\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}\ .
+%\]
+%Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn} vanishes when $K\to\infty$. We thus have
+%\begin{align*}
+%\bgamma[n,n'] &= \sigma^2\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}+ o(\sigma^2)
+%\end{align*}
+%when $K\to\infty$.
+%
+%
+%\paragraph{When $n'\geq N$}
+%Inserting equation~\eqref{eq:bias.ap} into result~\eqref{I-eq:cov01}, we obtain
+%\begin{align*}  
+%\bgamma[n,n'] = &\,\bz_K^T\EE\left\{{\balpha^{(\ell)}}^T\balpha^{(\lambda)}\right\}\bz_K + \sigma\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\}\bz_K+ \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K \\
+%& +\sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}-\bz[n]\bz[n']+o(\sigma^2) \\
+%= &\,\bz_K^T\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\}\bz_K + \balpha_0^{(\ell)}\sigma\EE\{\bw_K\bh^{(\lambda)}\}\bz_K + \sigma\EE\{\bh^{(\ell)}\bw_K\}\bz[n']  \\
+%&+ \sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\}\bz_K+ \sigma\EE\{\bh^{(\lambda)}\bw_K\}\bz[n] + \sigma\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K \\
+%& + \sigma\EE\{\bh^{(\lambda)}\bw_K\bh^{(\ell)}\}\bz_K+\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\lambda)}\bw_K\}+\sigma^2\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} \\
+%&+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)\ .
+%\end{align*}
+%From Lemma~1, we have that $\bh^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. {\color{red}[The same gap here.]} {\color{blue}Considering this property and equation~\eqref{eq:cov.ap} gives
+%\begin{align*}
+%\bgamma[n,n'] = &\,\dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K + \sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)
+%\end{align*}
+%when $K\to\infty$. The Isserlis' theorem also gives the following result {\color{red}[the same gap here.]}
+%\begin{align*}
+%\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} &= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\bh^{(\lambda)}[m']\bw_K[m']\} \\
+%&= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\}\EE\{\bh^{(\lambda)}[m']\bw_K[m']\} + \EE\{\bh^{(\ell)}[m]\bw_K[m']\}\EE\{\bh^{(\lambda)}[m']\bw_K[m]\} \\
+%&\hspace{35pt} + \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m']\}\underbrace{\EE\{\bw_K[m]\bw_K[m']\}}_{=\delta_{m,m'}} \\
+%&= \sum_{m=0}^{M-1} \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m]\} = \dfrac1K\Tr\left(\bGamma^{(\ell,\lambda)}\right)
+%\end{align*}
+%when $K\to \infty$.
+%We thus conclude that
+%\begin{align*}  
+%\bgamma[n,n'] &= \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + o(\sigma^2)
+%\end{align*}
+%when $K\to \infty$.}
 
 \end{document}
