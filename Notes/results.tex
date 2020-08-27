@@ -65,19 +65,17 @@ We proved that the linear dynamic model is sufficient to catch the dynamical beh
 with $M=150$, $p_1=10$, $p_2=33$ and $A=1.4$. Besides, the additive noise is chosen to be Gaussian: $\bw\sim\cN(\bzero,\bI)$.
 
 
-\paragraph{Influence of the Noise Variance $\sigma^2$} Here, the size of the training dataset is set to $K=450$. Then, the forecasting algorithm is run on $500$ realizations on the discrete signal $\bx$ for $200$ different values of $\sigma$, logarithmically equispaced from $10^{-7}$ to $10^{-1}$. For each of these values, we determine the experimental bias, denoted as $\mu_{\xp}[N-1+\ell]$, and experimental variance, denoted as $\gamma_{\xp}[N-1+\ell,N-1+\ell]$. Fig.~\ref{fig:res.noise.sine} shows the the experimental forecasting variance in function of the noise standard deviation for three different values the forecasting sample index: $\ell=1$, $\ell=10$, and $\ell=100$.
+\paragraph{Influence of the Noise Variance $\sigma^2$} Here, the size of the training dataset is set to $K=450$. Then, the forecasting algorithm is run on $500$ realizations on the discrete signal $\bx$ for $200$ different values of $\sigma$, logarithmically equispaced from $10^{-7}$ to $10^{-1}$. For each of these values, we determine the experimental bias, denoted as $\mu_{\xp}[N-1+\ell]$, and experimental variance, denoted as $\gamma_{\xp}[N-1+\ell,N-1+\ell]$. Fig.~\ref{fig:res.noise.sine} shows the the experimental forecasting variance in function of the noise variance for three different values the forecasting sample index: $\ell=1$, $\ell=10$, and $\ell=100$.
 
 \begin{figure}
 \centering
 %\includegraphics[width=.24\textwidth]{biasNoiseSine.eps}
 \includegraphics[width=.48\textwidth]{VarianceNoiseSine.eps}
-\caption{Evolution of the experimental forecasting variance in function of the noise standard deviation for three different values the forecasting sample index $\ell$.}
+\caption{Evolution of the experimental forecasting variance in function of the noise variance for three different values the forecasting sample index $\ell$.}
 \label{fig:res.noise.sine}
 \end{figure}
 
-{\color{blue}
-Comment Fig. + Comparison with Theorem 1
-}
+First, when the noise is weak, the variance of the forecasting estimator is dramatically high. For instance, in this specific example, the estimator $\tilde\bx[N-1+\ell]$ for $\ell=10$ is inaccurate as soon as the noise variance $\sigma^2$ is lower than $4\times 10^{-14}$ (see the red line in Fig.~\ref{fig:res.noise.sine}). This validates the result of Theorem~\ref{th:error}, highlighting the necessary presence of noise to ensure the numerical stability of the estimator. Furthermore, as soon as $\sigma$ is higher than this critical threshold, the estimator variance increases linearly with $\sigma^2$, as predicted by the bound~\eqref{eq:cov.error.2} provided in Theorem~\ref{th:error}. Note that the parameter $\ell$ has little influence on the quality of the estimator. This is due to the \textit{stationarity} of the studied signal, allowing long-range forecasts without deterioration of the estimator.
 
 \paragraph{Influence of the Training Dataset Size $K$} Here, the noise variance $\sigma$ is set to $\sigma=10^{-2}$. Then, {\sf SigExt} is run on $500$ realizations of the discrete signal $\bx$ for $200$ different values of training dataset size $K$, logarithmically equispaced from $450$ to $2000$. For each of these values, we determine the experimental bias $\mu_{\xp}[N-1+\ell]$ and variance $\gamma_{\xp}[N-1+\ell,N-1+\ell]$. Fig.~\ref{fig:res.size.sine} shows the the experimental forecasting variance in function of the training dataset size for three different values the forecasting sample index: $\ell=1$, $\ell=10$, and $\ell=100$.
 
@@ -88,11 +86,7 @@ Comment Fig. + Comparison with Theorem 1
 \label{fig:res.size.sine}
 \end{figure}
 
-{\color{blue}
-{\color{blue}
-Comment Fig. + Comparison with Theorem 1
-}
-
+As anticipated by Theorem~\ref{th:error}, the variance of the estimator decreases linearly with $\frac1K$ as long as the dataset size is large enough. Indeed, in the log-log plot displayed in Fig.~\ref{fig:res.size.sine}, as soon as $K>700$, each of the three curves representing the forecasting variance tends towards an asymptote of slope $-1$.
 
 %\paragraph{Summary}
 %Both previous experimental results combined with the theoretical asymptotic equation~\eqref{eq:cov.error.2} allow us to describe the influence of the noise variance and the size of the training dataset on the variance of the forecasting noise, empirically summarized as follows:
@@ -100,9 +94,8 @@ Comment Fig. + Comparison with Theorem 1
 %\gamma[N-1+\ell,N-1+\ell] \underset{K\to\infty}{\approx} \dfrac{\sigma^2}{K}g[\ell] .
 %\end{equation} 
 %where $g$ is a bounded positive function. The empirical result is coherent with the theoretical result provided by Theorem~\ref{th:error}.
-}
 
-This study neglects the analysis of the influence of the parameter $M$, whose influence on the value of the experimental variance is numerically not significant as long as $M\ll 2K$ and $\ell<M$. The choice of this parameter is especially crucial when the deterministic component of the signal is no longer stationary. The AHM, discussed below, is an example.
+This study overlooks the analysis of the influence of the parameter $M$, whose influence on the value of the experimental variance is numerically not significant as long as $M\ll 2K$ and $\ell<M$. The choice of this parameter is especially crucial when the deterministic component of the signal is no longer stationary. The AHM, discussed below, is an example.
 
 \subsubsection{Adaptive Harmonic Model}
 \label{ssse:res.ahm}

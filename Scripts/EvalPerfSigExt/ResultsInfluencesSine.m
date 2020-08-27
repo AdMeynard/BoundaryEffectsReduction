@@ -9,17 +9,17 @@ load('../../Results/PerfNoise.mat')
 
 figure;
 % subplot(2,1,1) ;
-loglog(Sigma,abs(BiasXPm(:,1)),Sigma,abs(BiasXPm(:,10)),Sigma,abs(BiasXPm(:,100)),'linewidth',2);
+loglog(Sigma.^2,abs(BiasXPm(:,1)),Sigma.^2,abs(BiasXPm(:,10)),Sigma.^2,abs(BiasXPm(:,100)),'linewidth',2);
 axis tight; ylim([1e-10 1e3]); grid on;
-xlabel('Noise Standard Deviation $\sigma$','interpreter','latex') ; ylabel('Experimental Bias $\mu_{\mathrm{xp}}$','interpreter','latex') ;
+xlabel('Noise Variance $\sigma^2$','interpreter','latex') ; ylabel('Experimental Bias $\mu_{\mathrm{xp}}$','interpreter','latex') ;
 legend({'$\ell=1$','$\ell=10$','$\ell=100$'},'interpreter','latex') ;
 set(gca,'fontsize',18) ;
 
 figure;
 % subplot(2,1,2) ;
-loglog(Sigma,VarXPm(:,1),Sigma,VarXPm(:,10),Sigma,VarXPm(:,100),'linewidth',2);
+loglog(Sigma.^2,VarXPm(:,1),Sigma.^2,VarXPm(:,10),Sigma.^2,VarXPm(:,100),'linewidth',2);
 axis tight; ylim([1e-15 1e3]); grid on;
-xlabel('Noise Standard Deviation $\sigma$','interpreter','latex') ; ylabel('Experimental Variance $\gamma_{\mathrm{xp}}$','interpreter','latex') ;
+xlabel('Noise Variance $\sigma^2$','interpreter','latex') ; ylabel('Experimental Variance $\gamma_{\mathrm{xp}}$','interpreter','latex') ;
 legend({'$\ell=1$','$\ell=10$','$\ell=100$'},'interpreter','latex') ;
 set(gca,'fontsize',18) ;
 
