@@ -3,14 +3,14 @@
 % Email: adrien.meynard@duke.edu
 
 clear all; 
-close all; clc;
+close all; clc; warning off;
 addpath('../../Algorithm/');
 
 %% Parameters
 
 % forecasting parameters
 HOP = 1 ;
-L = 350 ;
+L = 100 ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 3*extM );  % number of points to estimate A / size of datasets
 
@@ -50,9 +50,9 @@ zK = x0(end-extM+1 : HOP: end).' ;
 
 %% Forecasting
 method.name = 'SigExt' ;
-nbXP = 3 ; % number of noise levels
-nbXPP = 3000 ; % number of XP / noise level
-Sigma = logspace(-3,-1,nbXP) ;
+nbXP = 200 ; % number of noise levels
+nbXPP = 500 ; % number of XP / noise level
+Sigma = logspace(-7,-1,nbXP) ;
 
 hopL = 10 ; % hop for forecasting
 lenForcast = length(1:hopL:L) ;
@@ -62,55 +62,19 @@ k = 1 ;
 for k = 1:nbXP
     sigman = Sigma(k) ;
     
-    % Theoretical foreacstion Matrix
-    S0 = (1/extK)*(X0*X0') + sigman^2*eye(extM) ;
-    r = zeros(1,extM) ; r(2) = 1 ;
-    S1 = (1/extK)*(Y0*X0') + sigman^2*toeplitz(zeros(extM,1),r) ;
-    A0 = S1 / S0 ; % ideal least square estimation
-    j = 1;
-    for l = 1:hopL:L
-        A0l{j} = A0^l ;
-        alpha0l(j,:) = A0l{j}(end,:) ;
-        j = j + 1 ;
-    end
-    a2 = sum(alpha0l.^2, 2) ;
-    
     for nb2 = 1:nbXPP
         noise = sigman*randn(N+L,1) ;
-        wK = noise((N-extM+1):N)/sigman ;
         x = x0.' + noise(1:N) ; % signal to be extended
         
-        % Evaluate h
-        X = [] ; Y = [] ;
-        for kk = 1: extK
-            X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
-            Y(:,kk) = x(end-extK-extM+kk+1: HOP: end-extK+kk) ;
-        end
-        A = (Y*X') / (X*X') ; % experimental least square estimation
-        j = 1 ;
-        for l = 1:hopL:L
-            tmp = A^l - A0l{j} ;
-            h = tmp(end,:) ;
-            Covh(:,:,j) = Covh(:,:,j) + h' * h ;
-            Ehw2(j) = Ehw2(j) + (h*wK)^2 ; % !!! TESTS
-            j  = j + 1 ;
-        end
-        
         % forecasting
-        xext = forecasting(x,L,HOP,extK,extM,method).' ; %SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ;
-        MeanXP(nb2,:) = xext - xx0((N+1):end) ;
-        VarXP(nb2,:) = ( xext - xx0((N+1):end) ).^2 ;
+        xext = forecasting(x,L,HOP,extK,extM,method).' ;
+        BiasXP(nb2,:) = xext - xx0((N+1):end) ;
+        MSE_XP(nb2,:) = ( xext - xx0((N+1):end) ).^2 ;
     end
-    MeanXPm(k,:) = mean(MeanXP) ;
-    VarXPm(k,:) = mean(VarXP) ;
     
-    Gammal = extK*Covh/nbXPP ;
-    Ehw2 = Ehw2/nbXPP ;
-    j = 1 ;
-    for l=1:hopL:L
-        VarTH(k,j) = (1/extK) * zK'*Gammal(:,:,j)*zK + sigman^2*a2(j) +  sigman^2*Ehw2(j); %(sigman^2/extK) * trace(Gammal(:,:,l)) ;
-        j  = j +  1;
-    end
+    BiasXPm(k,:) = mean(BiasXP) ;
+    VarXPm(k,:) = mean(MSE_XP) - BiasXPm(k,:).^2 ;
+    
 end
 
-save('../../Results/PerfNoise','MeanXPm','VarXPm','VarTH','extM','Sigma');
+save('../../Results/PerfNoise','BiasXPm','VarXPm','Sigma');
