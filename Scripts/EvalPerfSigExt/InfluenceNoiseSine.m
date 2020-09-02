@@ -39,15 +39,6 @@ end
 xx0 = xx00 + xx01 ; % extended signal
 x0 = xx0(1:N) ; % restriction to the measurement interval
 
-%% Ideal Forecasting vector
-
-X0 = [] ; Y0 = [] ;
-for kk = 1: extK
-    X0(:,kk) = x0(end-extK-extM+kk: HOP: end-extK+kk-1) ;
-    Y0(:,kk) = x0(end-extK-extM+kk+1: HOP: end-extK+kk) ;
-end
-zK = x0(end-extM+1 : HOP: end).' ;
-
 %% Forecasting
 method.name = 'SigExt' ;
 nbXP = 200 ; % number of noise levels

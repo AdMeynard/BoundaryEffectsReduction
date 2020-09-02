@@ -63,11 +63,12 @@ The pseudo-code of the proposed real-time algorithm to reduce boundary effects o
 
 
 
-\paragraph{Dynamical Model and Forecasting} 
-Establishing a dynamical model consists in determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
-\[
+\paragraph{Dynamical Model} 
+Establishing a dynamical model consists of determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
+\begin{equation}
 \bY = f(\bX)\ .
-\]
+\label{eq:generic.model}
+\end{equation}
 In a general framework, forecasting means estimating the function $f$ from the observed values taken by the signal, in order to predict its future values. For instance, the dynamic mode decomposition~\cite{Schmid10dynamic,Williams15data} or other more complicated models \cite{Roberts13Gaussian,DeLivera11forecasting,west2006bayesian,vlachas2018data}, allow this by setting additional constraints on the behavior of $f$. We will see, in section~\ref{se:theoretical}, that considering such a complex dynamic model is not necessary for the study of the oscillatory signals of interest to us. That is why we consider here a naive dynamical model, assuming that we have the following relation:
 \begin{equation}
 \bY = \bA\bX\ ,
@@ -77,8 +78,10 @@ where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in 
 \begin{equation}
 \bx_{k+1} = \bA\bx_{k},\ ,\forall k\in\{0,\dots,K-1\}\ .
 \end{equation}
+From the Takens' embedding perspective~\cite{Takens81detecting}, $\bX$ can be viewed as a lag map. Under the manifold assumption of the intrinsic phase space that hosts the dynamics, $f$ describes the dynamics supported on the manifold space, and $\bA$ approximates the dynamics on the manifold. 
 
 
+\paragraph{Forecasting}
 The forecasting method consists in estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$. We then obtain the forecasting of the signal at time $\frac{N-1+\ell}{\fs}$ by:
 \begin{equation}
 \label{eq:prediction}
