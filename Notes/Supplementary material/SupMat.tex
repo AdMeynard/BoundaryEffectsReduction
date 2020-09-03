@@ -32,7 +32,7 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 
 \newtheorem{remark}{Remark}
 
-\setcounter{equation}{25}
+\setcounter{equation}{26}
 \setcounter{figure}{7}
 \setcounter{table}{3}
 
@@ -174,7 +174,7 @@ Similarly,
 \bE\{\bg_2[r]\bg_1[r']\} = 0\ .
 \label{eq:g2g1}
 \end{equation}
-Besides,
+Besides, using the results of the Isserlis' theorem~\cite{Isserlis16formula} to express fourth-order moments of a Gaussian random vector as a function of its second-order moments, we bound $\left|\bE\{\bg_2[r]\bg_2[r']\}\right|$ as follows:
 \begin{align}
 \nonumber
 \left|\bE\{\bg_2[r]\bg_2[r']\}\right| &= \dfrac1{K^2}\bigg|\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\bE\{\bg_2[r']\} - \delta_{m_{r'}+a_{r'},m'_{r'}}\bE\{\bg_2[r]\}\\
@@ -465,10 +465,6 @@ Thus, combining bounds~\eqref{eq:eps1} on $\bepsilon_1$, ~\eqref{eq:eps2} on $\b
 \left\vert\bmu[n]\right\vert \leq  c^{(1)}\sigma^2 + \dfrac1K \left( \dfrac{c_2^{(2)}}{\sigma^2}+c_1^{(2)}+c^{(3)} \right)  + o\left(\dfrac1K\right)\ .
 \end{equation}
 
-%\begin{align*}
-%\bh^{(\ell)}[m] &= f_m^{(\ell)}(\bg) \\
-%& = f_m^{(\ell)}(\bzero) + \sum_{r=0}^{M(M-1)}\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero} \bg[r] + \dfrac12\sum_{r,r'=0}^{M(M-1)}\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero} \bg[r]\bg[r'] + o\left(\dfrac1K\right)\ .
-%\end{align*}
 
 \subsection{Expression of the Covariance $\bgamma$.}
 
@@ -682,91 +678,7 @@ Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundar
 \end{table}
 
 
-%The multivariate version of the delta method is applicable to $\bh^{(\ell)}$ under the following conditions:
-%\begin{enumerate}[(i)]
-%\item\label{delta.1} $f^{(\ell)}$ is differentiable at the origin;
-%\item\label{delta.2} $\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)$ where $\bGamma_0$ is a covariance matrix.
-%\end{enumerate}
-%When these conditions are satisfied, the delta method gives the asymptotic behavior of $\bh^{(\ell)}=f^{(\ell)}(\bg)$, that is
-%\begin{equation}
-%\sqrt{K}\ \bh^{(\ell)} \xrightarrow[K\to\infty]{\cD} \cN(\bzero,{\bF^{(\ell)}}^T\bGamma_0\bF^{(\ell)})\ ,
-%\label{eq:delta}
-%\end{equation}
-%where $\bF^{(\ell)}$ is the Jacobian matrix of $f^{(\ell)}$ at the origin, that is
-%\[
-%\bF^{(\ell)}[m,m'] = \left.\dfrac{\partial f^{(\ell)}_m}{\partial\bg[m']}\right\vert_{\bg=\bzero}\ .
-%\]
-%
-%Condition~\ref{delta.1} is satisfied. Indeed, the differentiation of $f^{(\ell)}$ can be checked as a composition of standard matrix derivation rules. {\color{red}Detail it}
-%
-%Concerning condition~\ref{delta.2}, by definition of $\bg$, we have:
-%\[
-%\bg = \sigma\bg_1 + \sigma^2\bg_2\ ,
-%\]
-%where $\bg_1$ and $\bg_2$ are defined by
-%\begin{align*}
-%\bg_1 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left( \tilde\bz_k\bw_k^T + \tilde\bw_k\bz_k^T \right)\quad\mbox{where}\quad \tilde\bz_k^T= \begin{pmatrix} \bz_k^T & \bz_{k+1}[M-1] \end{pmatrix}\,, \\
-%\bg_2 &= \dfrac1K\sum_{k=0}^{K-1}\vec\left(\tilde\bw_k\bw_k^T-\bI \right) \quad\mbox{where}\quad \tilde\bw_k^T= \begin{pmatrix} \bw_k^T & \bw_{k+1}[M-1] \end{pmatrix} \,.
-%\end{align*}
-%First, $\bg_1$ is intrinsically a Gaussian random vector since it is a linear combination of Gaussian random vectors. Second, using the central limit theorem under weak dependence, we can show that $\bg_2$ also converges towards a Gaussian random vector as $K\to\infty$. Hence, we have 
-%\[
-%\sqrt{K}\ \bg \xrightarrow[K\to\infty]{\cD} \cN(\bzero,\bGamma_0)\ ,
-%\]
-%where $\bGamma_0$ is the limit covariance matrix so that $\bGamma_0=\lim\limits_{K\to\infty} K\,\EE\{\bg\bg^T\}$. Hence, conditions~\ref{delta.1} and~\ref{delta.1} are satisfied. The delta method can therefore be applied, and result~\eqref{eq:delta} is valid.
-
-
-%Therefore,
-%\begin{align*}
-%\bgamma[n,n] &\leq \sigma^2\left\|\balpha_0^{(\ell)}\right\|^2-\left(\bepsilon_2[n]+\bepsilon_3[n]\right)^2 + \EE\left\{\left(\bh^{(\ell)}\bz_K\right)^2\right\} + 2\sigma\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K+ 2\sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\ell)}\}\bz_K \\
-%&+\sigma^2\EE\left\{\left(\bh^{(\ell)}\bw_K\right)^2\right\}  + 2\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\ell)}\bw_K\}
-%\end{align*}
-
-%Take $n>N$, and denote $n=N-1+\ell$.  To derive the covariance, let us segregate the cases. 
-% 
-%\paragraph{When $n'\in I$}
-%From Lemma~1, we have that $h^{(\ell)}$ is asymptotically Gaussian when $K\to \infty$. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing {\color{red}[there is a gap here. Note that when $K$ is finite, it is approximated by Gaussian but not Gaussian. The discrepancy should be made clear.]}. Then, inserting result~\eqref{eq:bias.ap} into equation~\eqref{I-eq:bias0}, we obtain:
-%\begin{equation}
-%\bgamma[n,n'] = \sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\} + o(\sigma^2) 
-%\label{eq:gamma.nn}
-%\end{equation}
-%when $K\to \infty$.
-%In addition, we remark that
-%\[
-%\balpha_0^{(\ell)}\EE\{\bw_K\bw[n']\}=\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}\ .
-%\]
-%Besides, according to result~\eqref{eq:cov.ap} the first term in~\eqref{eq:gamma.nn} vanishes when $K\to\infty$. We thus have
-%\begin{align*}
-%\bgamma[n,n'] &= \sigma^2\balpha_0^{(\ell)}[n'-(N-M)]\1_{(n'\geq N-M)}+ o(\sigma^2)
-%\end{align*}
-%when $K\to\infty$.
-%
-%
-%\paragraph{When $n'\geq N$}
-%Inserting equation~\eqref{eq:bias.ap} into result~\eqref{I-eq:cov01}, we obtain
-%\begin{align*}  
-%\bgamma[n,n'] = &\,\bz_K^T\EE\left\{{\balpha^{(\ell)}}^T\balpha^{(\lambda)}\right\}\bz_K + \sigma\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\}\bz_K+ \sigma\EE\{\balpha^{(\lambda)}\bw_K\balpha^{(\ell)}\}\bz_K \\
-%& +\sigma^2\EE\{\balpha^{(\ell)}\bw_K\balpha^{(\lambda)}\bw_K\}-\bz[n]\bz[n']+o(\sigma^2) \\
-%= &\,\bz_K^T\EE\left\{{\bh^{(\ell)}}^T\bh^{(\lambda)}\right\}\bz_K + \balpha_0^{(\ell)}\sigma\EE\{\bw_K\bh^{(\lambda)}\}\bz_K + \sigma\EE\{\bh^{(\ell)}\bw_K\}\bz[n']  \\
-%&+ \sigma\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\}\bz_K+ \sigma\EE\{\bh^{(\lambda)}\bw_K\}\bz[n] + \sigma\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\}\bz_K \\
-%& + \sigma\EE\{\bh^{(\lambda)}\bw_K\bh^{(\ell)}\}\bz_K+\sigma^2\balpha_0^{(\ell)}\EE\{\bw_K\bh^{(\lambda)}\bw_K\}+\sigma^2\balpha_0^{(\lambda)}\EE\{\bw_K\bh^{(\ell)}\bw_K\} \\
-%&+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)\ .
-%\end{align*}
-%From Lemma~1, we have that $\bh^{(\ell)}$ is asymptotically Gaussian. Then, as a direct consequence of the Isserlis' theorem, odd-order moments are vanishing. {\color{red}[The same gap here.]} {\color{blue}Considering this property and equation~\eqref{eq:cov.ap} gives
-%\begin{align*}
-%\bgamma[n,n'] = &\,\dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K + \sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\sigma^2\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} + o(\sigma^2)
-%\end{align*}
-%when $K\to\infty$. The Isserlis' theorem also gives the following result {\color{red}[the same gap here.]}
-%\begin{align*}
-%\EE\{\bh^{(\ell)}\bw_K\bh^{(\lambda)}\bw_K\} &= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\bh^{(\lambda)}[m']\bw_K[m']\} \\
-%&= \sum_{m,m'=0}^{M-1}\EE\{\bh^{(\ell)}[m]\bw_K[m]\}\EE\{\bh^{(\lambda)}[m']\bw_K[m']\} + \EE\{\bh^{(\ell)}[m]\bw_K[m']\}\EE\{\bh^{(\lambda)}[m']\bw_K[m]\} \\
-%&\hspace{35pt} + \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m']\}\underbrace{\EE\{\bw_K[m]\bw_K[m']\}}_{=\delta_{m,m'}} \\
-%&= \sum_{m=0}^{M-1} \EE\{\bh^{(\ell)}[m]\bh^{(\lambda)}[m]\} = \dfrac1K\Tr\left(\bGamma^{(\ell,\lambda)}\right)
-%\end{align*}
-%when $K\to \infty$.
-%We thus conclude that
-%\begin{align*}  
-%\bgamma[n,n'] &= \dfrac1K\bz_K^T\bGamma^{(\ell,\lambda)}\bz_K+\sigma^2\left\langle\balpha^{(\ell)},\balpha^{(\lambda)}\right\rangle +\dfrac{\sigma^2}{K}\Tr\left(\bGamma^{(\ell,\lambda)}\right) + o(\sigma^2)
-%\end{align*}
-%when $K\to \infty$.}
+\bibliographystyle{IEEEtran}
+\bibliography{../AM041320}
 
 \end{document}

@@ -2352,4 +2352,37 @@ The article contains an overview over locally stationary processes. At the begin
   pages     = {366--381},
 }
 
+@Article{Strobach97square,
+  author   = {Peter Strobach},
+  title    = {Square hankel SVD subspace tracking algorithms},
+  journal  = {Signal Processing},
+  year     = {1997},
+  volume   = {57},
+  number   = {1},
+  pages    = {1 - 18},
+  issn     = {0165-1684},
+  abstract = {In this paper, we describe two sliding window singular-value decomposition (SVD) subspace tracking algorithms for the serialized (time series) data case. In time series analysis, one often uses a Hankel matrix representation of the data. In sliding window low rank adaptive time-series analysis with overmodeling, we can set both column and row dimensions of this Hankel data matrix equal to the window length. This special case is of particular interest because a square Hankel matrix is symmetrtic and has identical left and right singular subspaces. Thus, we can track the square Hankel SVD using a fast variant of sequential orthogonal iteration. We develop two sliding window square Hankel SVD subspace tracking algorithms for the serialized data case on this basis. These algorithms are studied experimentally in an adaptive filtering context. They have proven particularly useful for enhancement of unknown transients in noise. Further potential application areas are sliding window adaptive frequency estimation and detection for time series data.
+Zusammenfassung
+In diesem Beitrag beschreiben wir zwei adaptive Algorithmen zur sequentiellen Singulärwertdekomposition (SVD) für die Zeitreihenanalyse im gleitenden Fenster. Viele Methoden der Zeitreihenanalyse basieren auf einer Hankelmatrix-darstellung der Daten. Bei der Anwendung von eigendekompositionsbasierten Analysemethoden kann diese Hankel-matrix quadratisch ausgelegt werden, wobei sowohl die Spaltendimension, als auch die Zeilendimension gleich der Länge des Analysefensters gesetzt werden. Die natürliche Symmetrie der quadratischen Hankelmatrix erzwingt damit identische linksseitige und rechtsseitige Orthonormalmatrizen in der zugrundeliegenden SVD. Daher kann bei der Berechnung der SVD einer quadratischen Hankelmatrix das Prinzip der Orthogonaliteration angewandt werden. Nach diesem Prinzip entwickeln wir zwei schnelle Algorithmen zur sequentiellen Berechnung der SVD einer verschieberekursiv aktualisierten Hankelmatrix. Die Wirkungsweise und Anwendung dieser Algorithmen wird am Beispiel eines sequentiellen Unterraum-Adaptivfilters experimentell untersucht. Es zeigt sich, daβ die Algorithmen insbesondere zur Rekonstruktion unbekannter transienter Signale aus rauschbehafteten Messungen gut geeignet sind. Weitere Anwendungsbereiche sind die adaptive Frequenzanalyse und Detektionsverfahren für die Zeitreihenanalyse.
+Résumé
+Dans cet article, nous décrivons deux algorithmes de poursuite de sous-espace par décomposition en valeurs singulières (SVD) à fenêtre glissante pour le cas de données sériées (séries temporelles). En analyse de séries temporelles, on utilise fréquemment une représentation par matrice de Hankel des données. Dans le cas de l'analyse adaptative de séries de rang peu élevé, à fenêtre glissante et avec sur-modélisation, nous pouvons choisir la taille des colonnes et des lignes de cette matrice Hankel des données comme étant égale à la taille de la fenêtre. Ce cas particulier est spécialement intéressant, car une matrice de Hankel carrée est symétrique et ses sous-espaces singuliers droite et gauche sont identiques. Nous pouvons donc suivre la SVD de Hankel carrée en utilisant une variante rapide de l'itération orthogonale séquencielle. Nous développons sur cette base deux algorithmes de poursuite du sous-espace de la SVD de Hankel carrée à fenêtre glissante pour le cas de données sériées. Ces algorithmes sont étudiés expérimentalement dans le},
+  doi      = {https://doi.org/10.1016/S0165-1684(96)00182-X},
+  url      = {http://www.sciencedirect.com/science/article/pii/S016516849600182X},
+}
+
+@Article{Badeau04sliding,
+  author   = {Badeau, Roland and Richard, Ga{\"{e}}l and David, Bertrand},
+  title    = {Sliding window adaptive SVD algorithms},
+  journal  = {IEEE Transactions on Signal Processing},
+  year     = {2004},
+  volume   = {52},
+  number   = {1},
+  pages    = {1-10},
+  month    = {Jan},
+  issn     = {1941-0476},
+  abstract = {The singular value decomposition (SVD) is an important tool for subspace estimation. In adaptive signal processing, we are especially interested in tracking the SVD of a recursively updated data matrix. This paper introduces a new tracking technique that is designed for rectangular sliding window data matrices. This approach, which is derived from the classical bi-orthogonal iteration SVD algorithm, shows excellent performance in the context of frequency estimation. It proves to be very robust to abrupt signal changes, due to the use of a sliding window. Finally, an ultra-fast tracking algorithm with comparable performance is proposed.},
+  doi      = {10.1109/TSP.2003.820069},
+  keywords = {singular value decomposition;frequency estimation;adaptive signal processing;iterative methods;singular value decomposition;subspace estimation;adaptive signal processing;data matrix;tracking technique;rectangular sliding window;biorthogonal iteration singular value decomposition algorithm;frequency estimation;Signal processing algorithms;Matrix decomposition;Covariance matrix;Singular value decomposition;Adaptive signal processing;Signal analysis;Jacobian matrices;Frequency estimation;Robustness;Adaptive filters},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
