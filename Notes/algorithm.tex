@@ -6,13 +6,13 @@ We start with the notation. Let $x:\RR\to\RR$ denote a continuous-time signal. I
 \bx[n] = x\left(\frac{n}{\fs}\right)\ ,\quad \forall n\in\{0,\ldots,N-1\}\ , 
 \]
 where $\fs$ denotes the sampling frequency. 
-Let $M$ and $K$ be two integers such that $M<N$ and $K+M<N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the subsignal $\bx_k\in\RR^M$ given by:
+Let $M$ and $K$ be two positive integers such that $M<K$ and $K+M\leq N$. Then, for all $k\in\{0,\ldots,K-1\}$, we extract from $\bx\in\RR^N$ the subsignal $\bx_k\in\RR^M$ given by:
 \begin{equation}
 \bx_k = 
 \begin{pmatrix}
-\bx[N-K+(k-1)-(M-1)] \\
+\bx[N-K-M+k] \\
 \vdots \\
-\bx[N-K+(k-1)]
+\bx[N-K+k-1]
 \end{pmatrix}\ .
 \label{eq:xk}
 \end{equation} 

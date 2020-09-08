@@ -19,6 +19,8 @@
 \usepackage{xr}
 \externaldocument[I-]{../BoundEffRed2}
 
+\newtheorem{lemma}{Lemma}
+
 
 \input{../mydefs}
 
@@ -46,9 +48,26 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 \subsection{Preliminaries}
 
 \subsubsection{Notations}
+Considering $\bz\in\RR^N$ the deterministic signal defined in~\eqref{I-eq:sum.sine}, we denote by $\bz_k\in\RR^M$ the subsignal such that
+\[
+\bz_k[m] = \bz[N-K-M+k+m]\,,\quad \forall m\in\{0,\ldots,M-1\}\,,\ k\in\{0,\ldots,K\}\ .
+\]
+Define $\bZ\in\RR^{M \times K}$ and $\bZ'\in\RR^{M \times K}$, the matrices such that
+\begin{align*}
+\bZ &\defeq \begin{pmatrix}
+\bz_0 & \cdots & \bz_{K-1}
+\end{pmatrix}\\ 
+\bZ' &\defeq \begin{pmatrix}
+\bz_1 & \cdots & \bz_{K}
+\end{pmatrix}\,.
+\end{align*}
+Let $\bD\in\RR^{M\times M}$ be the matrix defined by $\bD[m,m']=\delta_{m+1,m'}$.
+
 Recall the model~\eqref{I-eq:model.noise}. Based on the definition of matrices $\bX$ and $\bY$, we have:
 \begin{align}
+\label{eq:XX.T}
 \dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
+\label{eq:YX.T}
 \dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq S^{(1)}}+ \bE^{(1)} \ ,
 \end{align}
 where $\bE^{(a)} := \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$,
@@ -69,7 +88,12 @@ Thus, the matrix $\tilde\bA$, defined in equation~\eqref{I-eq:lse}, is expressed
 \begin{equation*}
 \tilde\bA = (\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\,.
 \end{equation*}
-Let $\bA_0$ denote the deterministic matrix such that $\bA_0 \defeq \bS^{(1)}{\bS^{(0)}}^\inv$. We denote by $\balpha^{(\ell)}_0$ the last row of $\bA_0^\ell$. As a result, for $\ell\in \mathbb{N}^*$, the error vector $\bh^{(\ell)}$ defined by $\bh^{(\ell)}\defeq \balpha^{(\ell)} - \balpha^{(\ell)}_0$ satisfy the equation
+Define $\bA_0$ the deterministic matrix such that
+\begin{equation}
+\bA_0 \defeq \bS^{(1)}{\bS^{(0)}}^\inv\,.
+\label{eq:A0}
+\end{equation}
+We denote by $\balpha^{(\ell)}_0$ the last row of $\bA_0^\ell$. As a result, for $\ell\in \mathbb{N}^*$, the error vector $\bh^{(\ell)}$ defined by $\bh^{(\ell)}\defeq \balpha^{(\ell)} - \balpha^{(\ell)}_0$ satisfy the equation
 \begin{align}
 \nonumber
 \bh^{(\ell)} &= \be_M^T\left(\tilde\bA^\ell-\bA_0^\ell\right) \\
@@ -88,14 +112,38 @@ The randomness of $\bh^{(\ell)}$ completely comes from the error matrices. Besid
 \label{eq:vec}
 \end{equation}
 where "$\vec$" denotes the vectorization operator, that concatenates the columns of a given matrix on top of one another. Then, we can write $\bh^{(\ell)}$ as $\bh^{(\ell)}=f^{(\ell)}(\bg)$ where $f^{(\ell)}$ is a deterministic function such that:
-\begin{align*}
+\begin{align}
+\nonumber
 f^{(\ell)} : \RR^{M(M+1)} &\to \RR^{M} \\
  \bg &\mapsto \bh^{(\ell)}\ .
-\end{align*}
+\label{eq:f.ell}
+\end{align}
 
-In the following paragraphs, we provide some useful results to prove Theorem 1.
+In the following paragraph, we provide some useful lemmas to prove Theorem 1.
 
-\subsubsection{Expression of $\bA_0$}
+\subsubsection{Lemmas}
+
+\begin{lemma}[Expressions of $\bA_0$ and ${\bS^{(0)}}^{-1}$]
+Let $\bS^{(0)}$ be the $M\times M$ matrices defined in~\eqref{eq:XX.T}. Let $\bA_0$ the $M\times M$ matrices defined in~\eqref{eq:A0}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the matrix $\bS^{(0)}$ is given by
+\begin{equation}
+{\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\dfrac{2}{M\sigma^2}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,,
+\label{eq:S0.inv}
+\end{equation}
+and the matrix $\bA_0$ is given by
+\begin{align}
+\bA_0[m,m']  &= \delta_{m+1,m'} + \dfrac2M\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
+\label{eq:A0.sine}
+\end{align}
+Let $\|\cdot\|_{\max}$ denote the maximum norm of a matrix, \ie~$\|\bM\|_{\max} = \max_{n,n'} \left|\bM[n,n']\right|$. Then,
+\begin{align}
+\label{eq:S0.inv.bound}
+\left\|{\bS^{(0)}}^\inv\right\|_{\max} &\leq \dfrac1{\sigma^2}\left(1+\frac{2J}{M}\right)\,, \\
+\left\|\bA_0\right\|_{\max} &\leq \max\left(1,\frac{2J}{M}\right)\ .
+\label{eq:A0.bound}
+\end{align}
+\end{lemma}
+
+\begin{proof}
 It follows from the signal model~\eqref{I-eq:sum.sine} that matrices $\bS^{(0)}$ and $\bS^{(1)}$ take the following form:
 \begin{align}
 \nonumber
@@ -121,46 +169,90 @@ Therefore,
 {\bS^{(0)}}^\inv  &= \bU{\bLambda^{(0)}}^\inv\bU^*\,,
 \end{align*}
 which leads to
-\begin{equation}
+\begin{equation*}
 {\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\dfrac{2}{M\sigma^2}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,.
-\label{eq:S0.inv}
-\end{equation}
-Consequently, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv}, we have
-\begin{align}
-\nonumber
+\end{equation*}
+Directly, we have:
+\begin{align*}
+\left|{\bS^{(0)}}^\inv[m,m']\right|  &= \dfrac1{\sigma^2}\left|\delta_{m,m'}-\dfrac{2}{M}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\right| \\
+&\leq \dfrac1{\sigma^2}\left( 1+\dfrac{2}{M}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}} \right) \leq \dfrac1{\sigma^2}\left( 1+\dfrac{2J}{M} \right)\ .
+\end{align*}
+Thus, 
+\[
+\left\|{\bS^{(0)}}^\inv[m,m']\right\|_{\max}\leq\dfrac1{\sigma^2}\left( 1+\dfrac{2J}{M} \right)\ .
+\]
+Furthermore, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv}, we have
+\begin{align*}
 \bA_0[m,m']  &= \sum_{q=0}^{M-1} {\bS^{(1)}}[m,q]{\bS^{(0)}}^\inv[q,m'] \\
 &= \delta_{m+1,m'} + \dfrac2M\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
-\label{eq:A0.sine}
-\end{align}
-
-
-\subsubsection{Study of $\bg$}
-In the following, for all $r\in\{0,\ldots,M(M+1)-1\}$ we note $\bg[r] = \sigma\bg_1[r] + \sigma^2\bg_2[r]$, where 
-\begin{align*}
-\bg_1[r] &= \bE_1^{(a_r)}[m_r,m'_r] \\
-\bg_2[r] &= \bE_2^{(a_r)}[m_r,m'_r] \ ,
 \end{align*}
-and $m_r,m'_r, a_r$ are the corresponding coordinates of the matrices associated with $r$ through the vectorization operation~\eqref{eq:vec}. That is why, order-two moments of this random vector is split as follows:
+Directly, we have:
+\begin{align*}
+\left|\bA_0[m,m']\right| &\leq \left\{
+\begin{array}{ll}
+1 & \mbox{if}\quad m<M-1\,, \\
+\dfrac{2}{M}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}} & \mbox{if}\quad m=M-1\ . \\
+\end{array}
+\right.
+\end{align*}
+Thus, 
+\[
+\left\|\bA_0\right\|_{\max}\leq \max\left(1,\frac{2J}{M}\right)\ .
+\]
+\end{proof}
+
+\begin{lemma}[Moments of $\bg$]
+Let $\bg\in\RR^{M(M+1)}$ be the random vector defined in~\eqref{eq:vec}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the second-order moments of $\bg$ are bounded as follows:
+\begin{equation}
+\left|\bE\{\bg[r]\bg[r']\}\right| \leq \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)\,,\quad\forall (r,r')\in\{0,\ldots,M(M+1)-1\}^2\ ,
+\label{eq:gg.bound}
+\end{equation}
+where $C_\bz \defeq 2\left(\sum_{j=1}^J \Omega_j\right)$. Besides, higher-order moments of $\bg$ behave as $o\left( \dfrac1K \right)$.
+\end{lemma}
+
+\begin{proof}
+In the following, for all $r\in\{0,\ldots,M(M+1)-1\}$, we denote $\bg[r] = \sigma\bg_1[r] + \sigma^2\bg_2[r]$, where 
+\begin{align*}
+\bg_1[r] &= \bE_1^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bz_k[m_r+a_r]\bw_k[m'_r] + \bw_k[m_r+a_r]\bz_k[m'_r] \\
+\bg_2[r] &= \bE_2^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bw_k[m_r+a_r]\bw_k[m'_r] - \delta_{m_r+a_r,\,m'_r} \ ,
+\end{align*}
+and $m_r,m'_r, a_r$ are the corresponding coordinates of the matrices associated with $r$ through the vectorization operation~\eqref{eq:vec}. Thus, order-two moments of this random vector is split as follows:
 \begin{equation}
 \bE\{\bg[r]\bg[r']\} = \sigma^2\bE\{\bg_1[r]\bg_1[r']\} + \sigma^3\bE\{\bg_1[r]\bg_2[r']\} + \sigma^3\bE\{\bg_2[r]\bg_1[r']\} + \sigma^4\bE\{\bg_1[r]\bg_1[r']\}\ .
 \label{eq:gg}
 \end{equation}
-Then,
+By definition of the signal $\bz$ (see equation~\eqref{I-eq:sum.sine}), we have $|\bz[n]|\leq\sum_{j=1}^J\Omega_j$, for all $n\in\NN$. Thus, by a direct bound, we have
 \begin{align}
 \nonumber
 \left|\bE\{\bg_1[r]\bg_1[r']\}\right| & = \bigg|\dfrac1{K^2}\EE\bigg\{\sum_{k,k'=0}^{K-1} \bz_k[m_r+a_r]\bz_{k'}[m_{r'}+a_{r'}]\bw_k[m'_r]\bw_{k'}[m'_{r'}] + \bz_k[m'_r]\bz_{k'}[m_{r'}+a_{r'}]\bw_k[m_r+a_r]\bw_{k'}[m'_{r'}] \\
 \nonumber
 &+ \bz_k[m_r+a_r]\bz_{k'}[m'_{r'}]\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}] + \bz_k[m'_r]\bz_{k'}[m'_{r'}]\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\bigg\} \bigg| \\
 \nonumber
-& \leq \dfrac1{K^2}\left(\sum_{j=1}^J \Omega_j\right)^2 \sum_{k,k'=0}^{K-1} \EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\} + \EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m'_{r'}]\right\} + \EE\left\{\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}]\right\}  \\
+& \leq \dfrac1{K^2}\left(\sum_{j=1}^J \Omega_j\right)^2 \sum_{k,k'=0}^{K-1} \left|\EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\}\right| + \left|\EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m'_{r'}]\right\}\right|  \\
+&\hspace{110pt}  + \left|\EE\left\{\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}]\right\}\right| + \left|\EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\right\}\right|
+\label{eq:sum.g1g1}
+\end{align}
+Besides, since $\bw$ is a white noise,
+\begin{align*}
+\dfrac1{K^2}\sum_{k,k'=0}^{K-1} \left|\EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\}\right| & = \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \delta_{k+m'_r,\,k'+m'_{r'}}  \\
+&= \dfrac1{K^2}\left(K-\left|m'_r-m'_{r'}\right|\right) \ .
+\end{align*}
+Moreover, $0\leq\left|m'_r-m'_{r'}\right|\leq M-1$. Thus,
+\begin{align*}
+\dfrac1{K} - \dfrac{M-1}{K^2}\leq \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \left|\EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\}\right| \leq \dfrac1{K}\ .
+\end{align*}
+Therefore,
+\begin{align*}
+\dfrac1{K^2}\sum_{k,k'=0}^{K-1} \left|\EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\}\right| = \dfrac1{K} + o\left(\dfrac1K\right)\ .
+\end{align*}
+Similar calculations lead to the same results for the other three terms making up the sum~\eqref{eq:sum.g1g1}.  Therefore, we have:
+\begin{align}
 \nonumber
-&\hspace{110pt}  + \EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\right\} \\
-\nonumber
-&\leq \dfrac1{K^2}\left(\sum_{j=1}^J \Omega_j\right)^2 \sum_{k=0}^{K-1} 4 \\
-&\leq \dfrac{C_\bz^2}{K}\ ,
+\left|\bE\{\bg_1[r]\bg_1[r']\}\right| &\leq \left(\sum_{j=1}^J \Omega_j\right)^2 \left(\dfrac4{K} + o\left(\dfrac1{K}\right) \right) \\
+&\leq \dfrac{C_\bz^2}{K} + o\left(\dfrac1{K}\right)\ .
 \label{eq:g1g1}
 \end{align}
-where $C_\bz \defeq 2\left(\sum_{j=1}^J \Omega_j\right)$. Besides, since odd-order moments of a zero-mean multivariate Gaussian random vector are zero, we have:
+Besides, since odd-order moments of a zero-mean multivariate Gaussian random vector are zero, we have:
 \begin{align}
 \nonumber
 \bE\{\bg_1[r]\bg_2[r']\} & = \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \bz_k[m_r+a_r]\EE\left\{\bw_k[m'_r]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} + \bz_k[m'_r]\EE\left\{\bw_k[m_r+a_r]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\}\\
@@ -174,34 +266,105 @@ Similarly,
 \bE\{\bg_2[r]\bg_1[r']\} = 0\ .
 \label{eq:g2g1}
 \end{equation}
-Besides, using the results of the Isserlis' theorem~\cite{Isserlis16formula} to express fourth-order moments of a Gaussian random vector as a function of its second-order moments, we bound $\left|\bE\{\bg_2[r]\bg_2[r']\}\right|$ as follows:
+Besides, by a direct calculation, we have:
 \begin{align}
 \nonumber
-\left|\bE\{\bg_2[r]\bg_2[r']\}\right| &= \dfrac1{K^2}\bigg|\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\bE\{\bg_2[r']\} - \delta_{m_{r'}+a_{r'},m'_{r'}}\bE\{\bg_2[r]\}\\
+\bE\{\bg_2[r]\bg_2[r']\} &= \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\dfrac1{K}\sum_{k'=0}^{K-1} \EE\left\{\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} \\
 \nonumber
-&\hspace{30pt} + \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \bigg| \\
-\nonumber
-&= \dfrac1{K^2} \bigg| \sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\right\}\EE\left\{\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \\
-\nonumber
-&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1}\EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m'_{r'}]\right\} \\
-\nonumber
-&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m'_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\} \bigg| \\
-\nonumber
-& \leq \dfrac1{K^2} \sum_{k=0}^{K-1} 2 \\
-& \leq \dfrac2{K}\ .
-\label{eq:g2g2}
+&\hspace{60pt} - \delta_{m_{r'}+a_{r'},m'_{r'}}\dfrac1{K}\sum_{k=0}^{K-1} \EE\left\{\bw_k[m'_r]\bw_{k'}[m'_{r'}]\right\} + \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \\
+&= \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}}
+\label{eq:sum.g2g2}
 \end{align}
-Thus, combining results~\eqref{eq:g1g1},~\eqref{eq:g1g2},~\eqref{eq:g2g1} and~\eqref{eq:g2g2} into expression~\eqref{eq:gg} gives the following bound:
+Moreover, using the results of the Isserlis' theorem~\cite{Isserlis16formula} to express fourth-order moments of a Gaussian random vector as a function of its second-order moments, we expand sum~\eqref{eq:sum.g2g2} as follows:
+\begin{align*}
+\bE\{\bg_2[r]\bg_2[r']\} &= \dfrac1{K^2} \sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k}[m'_{r}]\right\}\EE\left\{\bw_{k'}[m_{r'}+a_{r'}]\bw_{k'}[m'_{r'}]\right\} - \delta_{m_{r}+a_{r},m'_{r}}\delta_{m_{r'}+a_{r'},m'_{r'}} \\
+&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1}\EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m'_{r'}]\right\} \\
+&\hspace{30pt}+ \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \EE\left\{\bw_{k}[m_{r}+a_{r}]\bw_{k'}[m'_{r'}]\right\}\EE\left\{\bw_{k}[m'_{r}]\bw_{k'}[m_{r'}+a_{r'}]\right\} \\
+& = \dfrac1{K^2}\sum_{k,k'=0}^{K-1} \delta_{k+m_r+a_r,k'+m_{r'}+a_{r'}}\delta_{k+m'r,k'+m'_{r'}} + \delta_{k+m_r+a_r,k'+m'_{r'}}\delta_{k+m'_r,k'+m_{r'}+a_{r'}} \\
+& = \dfrac1{K^2}\left(\delta_{m'_r-m'_{r'},m_r+a_r-m_{r'}-a_{r'}}(K-|m'_r-m'_{r'}|) +  \delta_{m_r+a_r-m'_{r'},m'_r-m_{r'}-a_{r'}}(K-|m_r+a_r-m'_{r'}|)\right) \\
+& = \dfrac1{K}\left(\delta_{m'_r-m'_{r'},m_r+a_r-m_{r'}-a_{r'}} + \delta_{m'_r+m'_{r'},m_r+a_r+m_{r'}+a_{r'}}\right) + o\left( \dfrac1K\right)\ .
+\end{align*}
+Therefore,
 \begin{equation}
-\left|\bE\{\bg[r]\bg[r']\}\right| \leq \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right)\ .
-\label{eq:gg.bound}
+\left| \bE\{\bg_2[r]\bg_2[r']\} \right| \leq \dfrac2{K} + o\left( \dfrac1K\right)\ .
+\label{eq:g2g2}
 \end{equation}
-In the same way, we show that higher-order moments behave as $o\left( \dfrac1K \right)$.
+Thus, combining results~\eqref{eq:g1g1},~\eqref{eq:g1g2},~\eqref{eq:g2g1} and~\eqref{eq:g2g2} into expression~\eqref{eq:gg} gives the following bound:
+\begin{equation*}
+\left|\bE\{\bg[r]\bg[r']\}\right| \leq \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)\ .
+\end{equation*}
+
+Concerning higher-order moments, let $T\geq 3$ denote the order of the moment defined by $\EE\{\prod_{\theta=1}^T\bg[r_\theta]\}$. Thus,
+\begin{align}
+\nonumber
+\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}& = \EE\left\{\prod_{\theta=1}^T \left(\sigma\bg_1[r_\theta] + \sigma^2\bg_2[r_\theta] \right)\right\}\\
+\nonumber
+&=\dfrac1{K^T}\EE\left\{\prod_{\theta=1}^T \left(\sum_{k=0}^{K-1}\rho_{\theta,k}(\bw[k+m'_{r_\theta}],\bw[k+m_{r_\theta}+a_{r_\theta}]) \right)\right\}\\ 
+&=\dfrac1{K^T}\sum_{k_1=0}^{K-1}\cdots\sum_{k_T=0}^{K-1}\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \,,
+\label{eq:multisum}
+\end{align}
+where
+\[
+\rho_{\theta,k}(u,v)=\sigma \bz_k[m_{r_\theta}+a_{r_\theta}]u + \sigma \bz_k[m'_{r_\theta}]v + \sigma^2uv - \delta_{m_{r_\theta}+a_{r_\theta},\,m'_{r_\theta}}\ .
+\]
+Thus,
+\begin{align*}
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| &\leq \dfrac{\nu_K}{K^T} C\ ,
+\end{align*}
+where
+\[
+C = \max_{(k_1,\ldots,k_T)} \left|\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \right| \,,
+\]
+and $\nu_K$ is the number of non-zero terms in the sum~\eqref{eq:multisum}. Note that $C$ is independent of $K$ (but depends on $\bz$ and $\sigma$). The behavior of the order $T$ moment in function of $K$ is therefore only determined by the ratio $\dfrac{\nu_K}{K^T}$.
+
+Let us bound $\nu_K$. Fix $k_1$. For each of the other sum indexes $k_\theta$ ($\theta\in\{2,\ldots,T\}$), there are four values that make $\rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}])$ not independent of $\rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}])$. Indeed, since $\bw$ is a white noise these quantities are independent except when $k_\theta$ is such that:
+\begin{align*}
+k_\theta &= k_1+m'_{r_1}-m'_{r_\theta} \\
+k_\theta &= k_1+m_{r_1}+a_{r_1} - m'_{r_\theta}\\
+k_\theta &= k_1+m'_{r_1} - m_{r_\theta}- a_{r_\theta} \\
+k_\theta &= k_1+m_{r_1}+a_{r_1} - m_{r_\theta}- a_{r_\theta}\ .
+\end{align*}
+Consequently, there exist at least $(K-4)^{T-1}$ combinations of $(k_2,\ldots,k_T)$ such that the correlation term given by $\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\}$ is zero. Because $T\geq 3$, we develop similar arguments on $k_2$ and $k_3$ to obtain the following maximum bound on the number of non-zero terms in the sum~\eqref{eq:multisum}:
+\[
+\nu_K\leq K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}\ .
+\]
+Thus,
+\begin{align*}
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| &\leq C \dfrac{K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}}{K^T} \\
+&\leq C \left( 1 - 3\left(1-\frac4K\right)^{T-1} + 3\left(1-\frac4K\right)\left(1-\frac8K\right)^{T-2}- \left(1-\frac4K\right)\left(1-\frac8K\right)\left(1-\frac{12}{K}\right)^{T-3} \right) \\
+&\leq C \left( 1 - 3 +\frac{12(T-1)}{K} + 3-\frac{12}K-\frac{24(T-2)}{K} -1 + \frac{4}K + \frac{8}K +\frac{12(T-3)}{K} + o\left(\dfrac1K\right)\right) \\
+&\leq o\left(\dfrac1K\right)\ . \\
+\end{align*}
+Therefore,
+\begin{equation*}
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| = o\left(\dfrac1K\right)\,,\quad\forall T\geq 3\ .
+\end{equation*}
+\end{proof}
 
 
-\subsubsection{Study of $f^{(\ell)}$}
-In this section, we provide bounds on the first and second-order derivatives of $f^{(\ell)}$ at the origin.
+\begin{lemma}[Bounds on the derivatives of $f^{(\ell)}$ at the origin]
+Let $f^{(\ell)} : \RR^{M(M+1)} \to \RR^{M}$ denote the multivariate function defined in~\eqref{eq:f.ell}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the first-order derivatives of $f^{(\ell)}$ at the origin are bounded as follows:  
+\begin{equation}
+\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{1,\bz,M,\ell}}{\sigma^2}\,,\quad\forall m\in\{0,\ldots,M-1\}\,,\ r\in\{0,\ldots,M(M+1)-1\}\ ,
+\label{eq:df.bound}
+\end{equation}
+where
+\[
+d_{1,\bz,M,\ell}\defeq \left(2 + (\ell-2)M\right)M^{\ell-1}\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell-1}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)\ .
+\]
+Besides, the second-order derivatives of $f^{(\ell)}$ at the origin are bounded as follows:  
+\begin{equation}
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\,,\quad\forall m\in\{0,\ldots,M-1\}\,,\ (r,r')\in\{0,\ldots,M(M+1)-1\}^2\ ,
+\label{eq:d2f.bound}
+\end{equation}
+where 
+\begin{align*}
+d_{2,\bz,M,\ell} &\defeq d_{2,M,\ell}C_{\bz,M}^2\max\left(1,\frac{2J}{M}\right)^{\ell-2} + 2d'_{2,M,\ell}\max\left(1,\frac{2J}{M}\right)^{\ell-1}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\,,
+\end{align*}
+and $d_{2,M,\ell}$ and $d'_{2,M,\ell}$ are only depending on $M$ and $\ell$.
+\end{lemma}
 
+\begin{proof}
 Concerning the first-order derivative, from~\eqref{eq:error.vec}, we have:
 \begin{align*}
 \dfrac{\partial f^{(\ell)}}{\partial \bg[r]} &= \be_M^T\dfrac{\partial \tilde\bA^{\ell}}{\partial \bg[r]} \\
@@ -232,31 +395,24 @@ Thus,
 \end{array}
 \right.
 \end{align*}
-Let $\|\cdot\|_\infty$ denote the uniform norm of a vector or a matrix, \ie~$\|\bM\|_\infty = \max_{n,n'} \bM[n,n']$. Then,
+Then,
 \begin{equation*}
-\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_\infty \leq \left(1+\|\bA_0\|_\infty\right)\left\|{\bS^{(0)}}^{-1}\right\|_\infty\ .
+\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_{\max} \leq \left(1+\|\bA_0\|_{\max}\right)\left\|{\bS^{(0)}}^{-1}\right\|_{\max}\ .
 \end{equation*}
-Given equation~\eqref{eq:A0.sine}, we have 
+Given bounds~\eqref{eq:A0.bound} and~\eqref{eq:S0.inv.bound}, we have that:
 \begin{equation}
-\|\bA_0\|_\infty\leq \max\left(1,\frac{2J}{M}\right)\ ;
-\label{eq:A0}
-\end{equation}
-and from~\eqref{eq:S0.inv}, we have that $\left\|{\bS^{(0)}}^{-1}\right\|_\infty\leq \dfrac1{\sigma^2}\left(1+\frac{2J}{M}\right)$. Then,
-\begin{equation}
-\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_\infty \leq \left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)\dfrac{1}{\sigma^2}\ .
+\left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_{\max} \leq \left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)\dfrac{1}{\sigma^2}\ .
 \label{eq:dA}
 \end{equation}
 Besides given expression~\eqref{eq:df}, for all $r\in\{0,\ldots,M(M+1)-1\}$, we have:
 \begin{align*}
-\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| &\leq 2M\|\bA_0^{\ell-1}\|_\infty \left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_\infty + M^2\sum_{\lambda=1}^{\ell-2} \|\bA_0^\lambda\|_\infty \left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_\infty  \|\bA_0^{\ell-1-\lambda}\|_\infty \\
-&\leq \left(2 + (\ell-2)M\right)M^{\ell-1} \|\bA_0\|_\infty^{\ell-1}\left\|\left.\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_\infty\ .
+\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| &\leq 2M\|\bA_0^{\ell-1}\|_{\max} \left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_{\max} + M^2\sum_{\lambda=1}^{\ell-2} \|\bA_0^\lambda\|_{\max} \left\| \left.\dfrac{\partial \tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_{\max}  \|\bA_0^{\ell-1-\lambda}\|_{\max} \\
+&\leq \left(2 + (\ell-2)M\right)M^{\ell-1} \|\bA_0\|_{\max}^{\ell-1}\left\|\left.\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right|_{\bg=\bzero}\right\|_{\max}\ .
 \end{align*}
-Therefore, given bounds~\eqref{eq:A0} and~\eqref{eq:dA}, we have:
-\begin{equation}
-\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{1,\bz,M,\ell}}{\sigma^2}\ ,
-\label{eq:df.bound}
-\end{equation}
-where $d_{1,\bz,M,\ell}\defeq \left(2 + (\ell-2)M\right)M^{\ell-1}\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell-1}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)$. 
+Therefore, given bounds~\eqref{eq:A0.bound} and~\eqref{eq:dA}, we have:
+\begin{equation*}
+\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{1,\bz,M,\ell}}{\sigma^2}\ .
+\end{equation*} 
 
 Concerning the second-order derivative, we have:
 \begin{align*}
@@ -300,10 +456,10 @@ Thus, the second-order derivative of the matrix $\tilde\bA$ at the origin is suc
 Then,
 \begin{align}
 \nonumber
-\left\| \left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=0}\right\|_\infty &\leq \left\{
+\left\| \left.\dfrac{\partial^2 \tilde\bA}{\partial \bg[r]\partial \bg[r']}\right|_{\bg=0}\right\|_{\max} &\leq \left\{
 \begin{array}{ll}
-\left\|{\bS^{(0)}}^{-1}\right\|_\infty^2 &\mbox{if}\quad a_r=1\quad\mbox{or}\quad a_{r'}=1\,, \\
-2\left(1+\|\bA_0\|_\infty\right)\left\|{\bS^{(0)}}^{-1}\right\|_\infty^2 &\mbox{else} \\
+\left\|{\bS^{(0)}}^{-1}\right\|_{\max}^2 &\mbox{if}\quad a_r=1\quad\mbox{or}\quad a_{r'}=1\,, \\
+2\left(1+\|\bA_0\|_{\max}\right)\left\|{\bS^{(0)}}^{-1}\right\|_{\max}^2 &\mbox{else} \\
 \end{array}
 \right.\\
 &\leq 2\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\dfrac1{\sigma^4}\ .
@@ -311,18 +467,14 @@ Then,
 \end{align}
 Returning to equation~\eqref{eq:d2f}, for all $r,r'\in\{0,\ldots,M(M+1)-1\}$ and $m\in\{0,\ldots, M-1\}$, we have:
 \begin{align*}
-\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| &\leq d_{2,M,\ell} \|\bA_0\|_\infty^{\ell-2}\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right\|_\infty\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\|_\infty + d'_{2,M,\ell}\|\bA_0\|_\infty^{\ell-1}\left\|\dfrac{\partial^2\tilde\bA}{\partial \bg[r]\bg[r']}\right\|_\infty \ ,
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| &\leq d_{2,M,\ell} \|\bA_0\|_{\max}^{\ell-2}\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r]}\right\|_{\max}\left\|\dfrac{\partial\tilde\bA}{\partial \bg[r']}\right\|_{\max} + d'_{2,M,\ell}\|\bA_0\|_{\max}^{\ell-1}\left\|\dfrac{\partial^2\tilde\bA}{\partial \bg[r]\bg[r']}\right\|_{\max} \ ,
 \end{align*}
 where $d_{2,M,\ell}$ and $d'_{2,M,\ell}$ are only depending on $M$ and $\ell$.
 Besides, given results~\eqref{eq:A0}, ~\eqref{eq:dA} and~\eqref{eq:d2A}, we have:
-\begin{equation}
-\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\ ,
-\label{eq:d2f.bound}
-\end{equation}
-where 
-\begin{align*}
-d_{2,\bz,M,\ell} &= d_{2,M,\ell}C_{\bz,M}^2\max\left(1,\frac{2J}{M}\right)^{\ell-2} + 2d'_{2,M,\ell}\max\left(1,\frac{2J}{M}\right)^{\ell-1}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\ .
-\end{align*}
+\begin{equation*}
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\ .
+\end{equation*}
+\end{proof}
 
 \subsection{Expression of the Bias $\bmu$.}
 
@@ -414,7 +566,7 @@ Let us now determine an upper bound on $\left|\bepsilon_2[\ell]\right|$. Since $
 Thus, given the bounds~\eqref{eq:gg.bound} on $\left|\EE\{\bg[r]\bg[r']\}\right|$ and~\eqref{eq:d2f.bound} on the second derivative of $f_m^{(\ell)}$, we have:
 \begin{align}
 \nonumber
-\left|\bepsilon_2[\ell]\right| &\leq C_\bz\dfrac{M^3(M+1)^2}{4}\left\|\left.\dfrac{\partial^2 f^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right\|_\infty \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)  \\
+\left|\bepsilon_2[\ell]\right| &\leq C_\bz\dfrac{M^3(M+1)^2}{4}\left\|\left.\dfrac{\partial^2 f^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right\|_{\max} \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)  \\
 &\leq \dfrac1K \left(c^{(2)}_1 + \dfrac{c^{(2)}_2}{\sigma^2} \right) + o\left(\dfrac1K\right)\ ,
 \label{eq:eps2}
 \end{align}
@@ -487,12 +639,12 @@ where
 \end{align*}
 Let us now determine an upper bound on each of these terms. 
 
-First, since $\|\balpha_0^{(\ell)}\|^2\leq M\|\balpha_0^{(\ell)}\|_\infty^2\leq M\|\bA_0^{\ell}\|_\infty^2$, we have:
+First, since $\|\balpha_0^{(\ell)}\|^2\leq M\|\bA_0^{\ell}\|_{\max}^2$, we have:
 \begin{align}
 \nonumber
-\eta_1[n] &\leq \sigma^2M\left\|\bA_0^{\ell}\right\|_\infty^2 \\
+\eta_1[n] &\leq \sigma^2M\left\|\bA_0^{\ell}\right\|_{\max}^2 \\
 \nonumber
-&\leq\sigma^2M^{\ell}\left\|\bA_0\right\|^{2\ell}_\infty \\
+&\leq\sigma^2M^{\ell}\left\|\bA_0\right\|^{2\ell}_{\max} \\
 &\leq \sigma^2 M^{\ell}\max\left(1,\left(\frac{2J}{M}\right)^{2\ell}\right)\ .
 \label{eq:sum1}
 \end{align}
@@ -518,7 +670,7 @@ Third, second-order Taylor expansions of $\bh^{(\ell)}$ give:
 
 Fourth,
 \begin{align*}
-\left|\eta_4[n]\right| & \leq \sigma C_\bz\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1}\left|\EE\{\bh^{(\ell)}[m]\bw_K[m']\} \right|
+\left|\eta_4[n]\right| & \leq \sigma C_\bz\left\|\bA_0^{\ell}\right\|_{\max} \sum_{m,m'=0}^{M-1}\left|\EE\{\bh^{(\ell)}[m]\bw_K[m']\} \right|
 \end{align*}
 But,
 \begin{align}
@@ -543,8 +695,8 @@ Fifth and sixth, second-order Taylor expansions of $\bh^{(\ell)}$ give
 
 Seventh,
 \begin{align*}
-\left|\eta_7[n] \right| &\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1} \left| \EE\{\bh^{(\ell)}[m]\bw_K[m]\bw_K[m']\} \right| \\
-&\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty \sum_{m,m'=0}^{M-1} \sum_{r=0}^{M(M+1)-1}\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \left| \EE\{\bg^{(\ell)}[r]\bw_K[m]\bw_K[m']\} \right| + o\left( \dfrac1K\right)\ .
+\left|\eta_7[n] \right| &\leq 2\sigma^2\left\|\bA_0^{\ell}\right\|_{\max} \sum_{m,m'=0}^{M-1} \left| \EE\{\bh^{(\ell)}[m]\bw_K[m]\bw_K[m']\} \right| \\
+&\leq 2\sigma^2\left\|\bA_0^{\ell}\right\|_{\max} \sum_{m,m'=0}^{M-1} \sum_{r=0}^{M(M+1)-1}\left|\left.\dfrac{\partial f_m^{(\ell)}}{\partial \bg[r]}\right\vert_{\bg=\bzero}\right| \left| \EE\{\bg^{(\ell)}[r]\bw_K[m]\bw_K[m']\} \right| + o\left( \dfrac1K\right)\ .
 \end{align*}
 But,
 \begin{align*}
@@ -559,7 +711,7 @@ As before, since $\EE\{\bg_1^{(\ell)}[r]\bw_K[m]\bw_K[m']\}$ is a third-order mo
 Thus,
 \begin{align}
 \nonumber
-\left| \eta_7[n] \right| &\leq 2\sigma^2\|\balpha_0^{(\ell)}\|_\infty M^3(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} \dfrac{2\sigma^2}K + o\left( \dfrac1K\right)\\
+\left| \eta_7[n] \right| &\leq 2\sigma^2\left\|\bA_0^{\ell}\right\|_{\max} M^3(M+1)\dfrac{d_{1,\bz,M,\ell}}{\sigma^2} \dfrac{2\sigma^2}K + o\left( \dfrac1K\right)\\
 &\leq 4 M^{\ell+2}(M+1)d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\right)\right)^\ell\dfrac{\sigma^2}{K} + o\left( \dfrac1K\right)\ .
 \label{eq:sum7}
 \end{align}
@@ -581,7 +733,6 @@ c_3^{(n)} & =  4 M^{\ell+2}(M+1)d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\r
 When $n\geq N$ and $n'\geq N$, applying the Cauchy-Schwarz inequality, we obtain the following bound on the covariance $\gamma[n,n]$:
 \begin{align*}
 \left|\gamma[n,n']\right| & \leq  \sqrt{\gamma[n,n]\gamma[n',n']} \\
-& \leq  \sqrt{\gamma[n,n]\gamma[n',n']} \\
 & \leq   \sqrt{c_0^{(n)}c_0^{(n')}}\sigma^2\sqrt{1 + \dfrac{1}{K\sigma^2} \left( \dfrac1{c_0^{(n)}}\left( \dfrac{c_1^{(n)}}{\sigma^2} + c_2^{(n)} + c_3^{(n)}\sigma^2\right) + \dfrac1{c_0^{(n')}}\left( \dfrac{c_1^{(n')}}{\sigma^2} + c_2^{(n')} + c_3^{(n')}\sigma^2\right)\right) + o\left(\dfrac1K\right)}\ .
 \end{align*}
 A first-order Taylor expansion of this bound as $K\to\infty$ gives
@@ -619,9 +770,9 @@ Besides, thanks to the bound~\eqref{eq:Ehwm} we have:
 Besides,
 \begin{align}
 \nonumber
-\left|\beta_2[n,n']\right| &\leq \sigma^2\left\|\balpha_0^{(\ell)}\right\|_\infty\sum_{m=0}^{M-1}\left|\EE\{\bw[n']\bw_K[m]\}\right| \\
+\left|\beta_2[n,n']\right| &\leq \sigma^2\left\|\bA_0^{\ell}\right\|_{\max}\sum_{m=0}^{M-1}\left|\EE\{\bw[n']\bw_K[m]\}\right| \\
 \nonumber
-&\leq \sigma^2\left\|\bA_0^{\ell}\right\|_\infty \\
+&\leq \sigma^2\left\|\bA_0^{\ell}\right\|_{\max} \\
 &\leq \sigma^2M^{\ell-1}\left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell}\ .
 \label{eq:beta2}
 \end{align}
