@@ -48,7 +48,7 @@ NC, 27708 USA e-mail: adrien.meynard@duke.edu}}
 \subsection{Preliminaries}
 
 \subsubsection{Notations}
-Considering $\bz\in\RR^N$ the deterministic signal defined in~\eqref{I-eq:sum.sine}, we denote by $\bz_k\in\RR^M$ the subsignal such that
+Consider $\bz\in\RR^N$ the deterministic signal defined in~\eqref{I-eq:sum.sine}, and denote by $\bz_k\in\RR^M$ the subsignal such that
 \[
 \bz_k[m] = \bz[N-K-M+k+m]\,,\quad \forall m\in\{0,\ldots,M-1\}\,,\ k\in\{0,\ldots,K\}\ .
 \]
@@ -61,16 +61,14 @@ Define $\bZ\in\RR^{M \times K}$ and $\bZ'\in\RR^{M \times K}$, the matrices such
 \bz_1 & \cdots & \bz_{K}
 \end{pmatrix}\,.
 \end{align*}
-Let $\bD\in\RR^{M\times M}$ be the matrix defined by $\bD[m,m']=\delta_{m+1,m'}$.
-
-Recall the model~\eqref{I-eq:model.noise}. Based on the definition of matrices $\bX$ and $\bY$, we have:
+Let $\bD\in\RR^{M\times M}$ be the matrix defined by $\bD[m,m']=\delta_{m+1,m'}$. Recall the model~\eqref{I-eq:model.noise}. Based on the definition of matrices $\bX$ and $\bY$, we have:
 \begin{align}
 \label{eq:XX.T}
-\dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq S^{(0)}} + \bE^{(0)} \\
+\dfrac1K\bX\bX^T &= \underbrace{\dfrac1K\bZ\bZ^T+\sigma^2\bI}_{\defeq \bS^{(0)}} + \bE^{(0)} \\
 \label{eq:YX.T}
-\dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq S^{(1)}}+ \bE^{(1)} \ ,
+\dfrac1K\bY\bX^T &= \underbrace{\dfrac1K\bZ'\bZ^T +\sigma^2\bD}_{\defeq \bS^{(1)}}+ \bE^{(1)} \ ,
 \end{align}
-where $\bE^{(a)} := \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$,
+where $\bE^{(a)} \defeq \sigma\bE_1^{(a)} + \sigma^2\bE_2^{(a)}$,
 \[
 \bE_1^{(a)}[m,m'] = \dfrac1K\sum_{k=0}^{K-1} \bz[N_0+m+a+k]\bw[N_0+m'+k] + \bw[N_0+m+a+k]\bz[N_0+m'+k]\ ,
 \]
@@ -84,7 +82,7 @@ We call $\bE^{(0)}$ and $\bE^{(1)}$ {\em error matrices} because:
 \EE\{\bE^{(0)}\} &= \EE\{\bE_1^{(0)}\} = \EE\{\bE_2^{(0)}\} = \bzero \\
 \EE\{\bE^{(1)}\} &= \EE\{\bE_1^{(1)}\} = \EE\{\bE_2^{(1)}\} = \bzero\ .
 \end{align*}
-Thus, the matrix $\tilde\bA$, defined in equation~\eqref{I-eq:lse}, is expressed in the form:
+Thus, the random matrix $\tilde\bA$, defined in equation~\eqref{I-eq:lse}, is expressed in function of the above-defined matrices as:
 \begin{equation*}
 \tilde\bA = (\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\,.
 \end{equation*}
@@ -124,7 +122,7 @@ In the following paragraph, we provide some useful lemmas to prove Theorem 1.
 \subsubsection{Lemmas}
 
 \begin{lemma}[Expressions of $\bA_0$ and ${\bS^{(0)}}^{-1}$]
-Let $\bS^{(0)}$ be the $M\times M$ matrices defined in~\eqref{eq:XX.T}. Let $\bA_0$ the $M\times M$ matrices defined in~\eqref{eq:A0}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the matrix $\bS^{(0)}$ is given by
+Let $\bS^{(0)}$ be the $M\times M$ matrix defined in~\eqref{eq:XX.T}. Let $\bA_0$ the $M\times M$ matrix defined in~\eqref{eq:A0}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the inverse of the matrix $\bS^{(0)}$ is given by
 \begin{equation}
 {\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\dfrac{2}{M\sigma^2}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,,
 \label{eq:S0.inv}
@@ -144,15 +142,15 @@ Let $\|\cdot\|_{\max}$ denote the maximum norm of a matrix, \ie~$\|\bM\|_{\max} 
 \end{lemma}
 
 \begin{proof}
-It follows from the signal model~\eqref{I-eq:sum.sine} that matrices $\bS^{(0)}$ and $\bS^{(1)}$ take the following form:
+It follows from the signal model~\eqref{I-eq:sum.sine} that the matrices $\bS^{(0)}$ and $\bS^{(1)}$ take the following form:
 \begin{align}
 \nonumber
-\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)+\varphi_j\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)+\varphi_{j'}\right) \\
+\bS^{(a)}[m,m'] &= \sigma^2\delta_{(m+a)\,,m'}+\sum_{j,j'=1}^J\dfrac{\Omega_j\Omega_{j'}}{K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(N_0+m+a+k)+\varphi_j\right)\cos\left(2\pi \frac{f_{j'}}{\fs}(N_0+m'+k)+\varphi_{j'}\right) \\
 \nonumber
-&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}{2K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)\\
+&= \sigma^2\delta_{(m+a)\,,m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}{2K}\sum_{k=0}^{K-1} \cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)\\
 \nonumber
-&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\Bigg( \dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \dfrac{\Omega_j^2}{2K}\underbrace{\sum_{k=0}^{K-1}\cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)}_{=0\ \mathrm{because}\ \frac{f_j}\fs=\frac{p'_j}K } \Bigg)\\
-&= \sigma^2\delta_{(m+a)m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
+&= \sigma^2\delta_{(m+a)\,,m'}+\sum_{j=1}^J\Bigg( \dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right) + \dfrac{\Omega_j^2}{2K}\underbrace{\sum_{k=0}^{K-1}\cos\left(2\pi \frac{f_j}{\fs}(2k+m+a+m'+2N_0)\right)}_{=0\ \mathrm{because}\ \frac{f_j}\fs=\frac{p'_j}K } \Bigg)\\
+&= \sigma^2\delta_{(m+a)\,,m'}+\sum_{j=1}^J\dfrac{\Omega_j^2}2\cos\left(2\pi \frac{f_j}{\fs}(m+a-m')\right)\ .
 \label{eq:S1}
 \end{align}
 Thus, $\bS^{(0)}$ is a circulant matrix, and is therefore diagonalizable in the Fourier basis:
@@ -169,9 +167,10 @@ Therefore,
 {\bS^{(0)}}^\inv  &= \bU{\bLambda^{(0)}}^\inv\bU^*\,,
 \end{align*}
 which leads to
-\begin{equation*}
+\begin{equation}
 {\bS^{(0)}}^\inv[m,m']  = \dfrac1{\sigma^2}\delta_{m,m'}-\dfrac{2}{M\sigma^2}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\,.
-\end{equation*}
+\label{eq:S0.inv.2}
+\end{equation}
 Directly, we have:
 \begin{align*}
 \left|{\bS^{(0)}}^\inv[m,m']\right|  &= \dfrac1{\sigma^2}\left|\delta_{m,m'}-\dfrac{2}{M}\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j \dfrac{m-m'}{M}\right)\right| \\
@@ -181,7 +180,7 @@ Thus,
 \[
 \left\|{\bS^{(0)}}^\inv[m,m']\right\|_{\max}\leq\dfrac1{\sigma^2}\left( 1+\dfrac{2J}{M} \right)\ .
 \]
-Furthermore, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv}, we have
+Furthermore, combining equations~\eqref{eq:S1} and~\eqref{eq:S0.inv.2}, we have
 \begin{align*}
 \bA_0[m,m']  &= \sum_{q=0}^{M-1} {\bS^{(1)}}[m,q]{\bS^{(0)}}^\inv[q,m'] \\
 &= \delta_{m+1,m'} + \dfrac2M\sum_{j=1}^J\dfrac{1}{1+\frac{4\sigma^2}{M\Omega_j^2}}\cos\left(2\pi p_j\frac{m'}{M}\right)\delta_{m+1,M}\,.
@@ -202,7 +201,7 @@ Thus,
 \end{proof}
 
 \begin{lemma}[Moments of $\bg$]
-Let $\bg\in\RR^{M(M+1)}$ be the random vector defined in~\eqref{eq:vec}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, the second-order moments of $\bg$ are bounded as follows:
+Let $\bg\in\RR^{M(M+1)}$ be the random vector defined in~\eqref{eq:vec}. Assume the deterministic signal $\bz$ takes the form~\eqref{I-eq:sum.sine}, and the observed noisy signal takes the form~\eqref{I-eq:model.noise}. Then, as $K\to\infty$, the second-order moments of $\bg$ are bounded as follows:
 \begin{equation}
 \left|\bE\{\bg[r]\bg[r']\}\right| \leq \dfrac1K \left( C_\bz^2\sigma^2 + 2 \sigma^4\right) + o\left(\dfrac1K\right)\,,\quad\forall (r,r')\in\{0,\ldots,M(M+1)-1\}^2\ ,
 \label{eq:gg.bound}
@@ -213,8 +212,8 @@ where $C_\bz \defeq 2\left(\sum_{j=1}^J \Omega_j\right)$. Besides, higher-order 
 \begin{proof}
 In the following, for all $r\in\{0,\ldots,M(M+1)-1\}$, we denote $\bg[r] = \sigma\bg_1[r] + \sigma^2\bg_2[r]$, where 
 \begin{align*}
-\bg_1[r] &= \bE_1^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bz_k[m_r+a_r]\bw_k[m'_r] + \bw_k[m_r+a_r]\bz_k[m'_r] \\
-\bg_2[r] &= \bE_2^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bw_k[m_r+a_r]\bw_k[m'_r] - \delta_{m_r+a_r,\,m'_r} \ ,
+\bg_1[r] &= \bE_1^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bz_k[m_r+a_r]\bw_k[m'_r] + \bw_k[m_r+a_r]\bz_k[m'_r]\,, \\
+\bg_2[r] &= \bE_2^{(a_r)}[m_r,m'_r] = \dfrac1K\sum_{k=0}^{K-1} \bw_k[m_r+a_r]\bw_k[m'_r] - \delta_{m_r+a_r,\,m'_r} \,,
 \end{align*}
 and $m_r,m'_r, a_r$ are the corresponding coordinates of the matrices associated with $r$ through the vectorization operation~\eqref{eq:vec}. Thus, order-two moments of this random vector is split as follows:
 \begin{equation}
@@ -299,8 +298,8 @@ Concerning higher-order moments, let $T\geq 3$ denote the order of the moment de
 \nonumber
 \EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}& = \EE\left\{\prod_{\theta=1}^T \left(\sigma\bg_1[r_\theta] + \sigma^2\bg_2[r_\theta] \right)\right\}\\
 \nonumber
-&=\dfrac1{K^T}\EE\left\{\prod_{\theta=1}^T \left(\sum_{k=0}^{K-1}\rho_{\theta,k}(\bw[k+m'_{r_\theta}],\bw[k+m_{r_\theta}+a_{r_\theta}]) \right)\right\}\\ 
-&=\dfrac1{K^T}\sum_{k_1=0}^{K-1}\cdots\sum_{k_T=0}^{K-1}\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \,,
+&=\dfrac1{K^T}\EE\left\{\prod_{\theta=1}^T \left(\sum_{k=0}^{K-1}\rho_{\theta,k}\left(\bw[k+m'_{r_\theta}],\bw[k+m_{r_\theta}+a_{r_\theta}]\right) \right)\right\}\\ 
+&=\dfrac1{K^T}\sum_{k_1=0}^{K-1}\cdots\sum_{k_T=0}^{K-1}\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}\left(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]\right) \right\} \,,
 \label{eq:multisum}
 \end{align}
 where
@@ -308,32 +307,32 @@ where
 \rho_{\theta,k}(u,v)=\sigma \bz_k[m_{r_\theta}+a_{r_\theta}]u + \sigma \bz_k[m'_{r_\theta}]v + \sigma^2uv - \delta_{m_{r_\theta}+a_{r_\theta},\,m'_{r_\theta}}\ .
 \]
 Thus,
-\begin{align*}
-\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| &\leq \dfrac{\nu_K}{K^T} C\ ,
-\end{align*}
+\begin{equation*}
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| \leq \dfrac{\nu_K}{K^T} C_T\ ,
+\end{equation*}
 where
 \[
-C = \max_{(k_1,\ldots,k_T)} \left|\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \right| \,,
+C_T = \max_{(k_1,\ldots,k_T)} \left|\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \right| \,,
 \]
-and $\nu_K$ is the number of non-zero terms in the sum~\eqref{eq:multisum}. Note that $C$ is independent of $K$ (but depends on $\bz$ and $\sigma$). The behavior of the order $T$ moment in function of $K$ is therefore only determined by the ratio $\dfrac{\nu_K}{K^T}$.
+and $\nu_K$ is the number of non-zero terms in the sum~\eqref{eq:multisum}. Note that $C_T$ is independent of $K$ (but depends on $\bz$ and $\sigma$). The behavior of the order $T$ moment in function of $K$ is therefore only determined by the ratio $\dfrac{\nu_K}{K^T}$.
 
-Let us bound $\nu_K$. Fix $k_1$. For each of the other sum indexes $k_\theta$ ($\theta\in\{2,\ldots,T\}$), there are four values that make $\rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}])$ not independent of $\rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}])$. Indeed, since $\bw$ is a white noise these quantities are independent except when $k_\theta$ is such that:
+Let us bound $\nu_K$. Fix $k_1$. For each of the other indexes of summation $k_\theta$ ($\theta\in\{2,\ldots,T\}$), there are four values that make $\rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}])$ not independent of $\rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}])$. Indeed, since $\bw$ is a white noise these quantities are independent except when $k_\theta$ is such that:
 \begin{align*}
 k_\theta &= k_1+m'_{r_1}-m'_{r_\theta} \\
 k_\theta &= k_1+m_{r_1}+a_{r_1} - m'_{r_\theta}\\
 k_\theta &= k_1+m'_{r_1} - m_{r_\theta}- a_{r_\theta} \\
 k_\theta &= k_1+m_{r_1}+a_{r_1} - m_{r_\theta}- a_{r_\theta}\ .
 \end{align*}
-Consequently, there exist at least $(K-4)^{T-1}$ combinations of $(k_2,\ldots,k_T)$ such that the correlation term given by $\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\}$ is zero. Because $T\geq 3$, we develop similar arguments on $k_2$ and $k_3$ to obtain the following maximum bound on the number of non-zero terms in the sum~\eqref{eq:multisum}:
+Consequently, for each value of $k_1$ there exist at least $(K-4)^{T-1}$ combinations of $(k_2,\ldots,k_T)$ such that the correlation term given by $\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\}$ is zero. Because $T\geq 3$, we develop similar arguments on $k_2$ and $k_3$ to obtain the following maximum bound on the number of non-zero terms in the sum~\eqref{eq:multisum}:
 \[
 \nu_K\leq K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}\ .
 \]
 Thus,
 \begin{align*}
-\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| &\leq C \dfrac{K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}}{K^T} \\
-&\leq C \left( 1 - 3\left(1-\frac4K\right)^{T-1} + 3\left(1-\frac4K\right)\left(1-\frac8K\right)^{T-2}- \left(1-\frac4K\right)\left(1-\frac8K\right)\left(1-\frac{12}{K}\right)^{T-3} \right) \\
-&\leq C \left( 1 - 3 +\frac{12(T-1)}{K} + 3-\frac{12}K-\frac{24(T-2)}{K} -1 + \frac{4}K + \frac{8}K +\frac{12(T-3)}{K} + o\left(\dfrac1K\right)\right) \\
-&\leq o\left(\dfrac1K\right)\ . \\
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| &\leq C_T \dfrac{K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}}{K^T} \\
+&\leq C_T \left( 1 - 3\left(1-\frac4K\right)^{T-1} + 3\left(1-\frac4K\right)\left(1-\frac8K\right)^{T-2}- \left(1-\frac4K\right)\left(1-\frac8K\right)\left(1-\frac{12}{K}\right)^{T-3} \right) \\
+&\leq C_T \left( 1 - 3 +\frac{12(T-1)}{K} + 3-\frac{12}K-\frac{24(T-2)}{K} -1 + \frac{4}K + \frac{8}K +\frac{12(T-3)}{K} + o\left(\dfrac1K\right)\right) \\
+&\leq C_T\ o\left(\dfrac1K\right)\ . \\
 \end{align*}
 Therefore,
 \begin{equation*}
@@ -359,7 +358,7 @@ Besides, the second-order derivatives of $f^{(\ell)}$ at the origin are bounded 
 \end{equation}
 where 
 \begin{align*}
-d_{2,\bz,M,\ell} &\defeq d_{2,M,\ell}C_{\bz,M}^2\max\left(1,\frac{2J}{M}\right)^{\ell-2} + 2d'_{2,M,\ell}\max\left(1,\frac{2J}{M}\right)^{\ell-1}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(1+\frac{2J}{M}\right)^2\,,
+d_{2,\bz,M,\ell} &\defeq \left(1+\frac{2J}{M}\right)^2 \left(\max\left(1,\frac{2J}{M}\right)\right)^{\ell-2}\left(1+\max\left(1,\frac{2J}{M}\right)\right)\left(d_{2,M,\ell} + (d_{2,M,\ell}+2d'_{2,M,\ell})\max\left(1,\frac{2J}{M}\right)\right)\,,
 \end{align*}
 and $d_{2,M,\ell}$ and $d'_{2,M,\ell}$ are only depending on $M$ and $\ell$.
 \end{lemma}
