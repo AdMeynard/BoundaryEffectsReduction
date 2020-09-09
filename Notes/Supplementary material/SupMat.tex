@@ -84,7 +84,7 @@ We call $\bE^{(0)}$ and $\bE^{(1)}$ {\em error matrices} because:
 \end{align*}
 Thus, the random matrix $\tilde\bA$, defined in equation~\eqref{I-eq:lse}, is expressed in function of the above-defined matrices as:
 \begin{equation*}
-\tilde\bA = (\bS^{(1)}+\bE^{(1)})(\bS^{(0)}+\bE^{(0)})^\inv\,.
+\tilde\bA = \left(\bS^{(1)}+\bE^{(1)}\right)\left(\bS^{(0)}+\bE^{(0)}\right)^{-1}\,.
 \end{equation*}
 Define $\bA_0$ the deterministic matrix such that
 \begin{equation}
@@ -728,7 +728,7 @@ c_3^{(n)} & =  4 M^{\ell+2}(M+1)d_{1,\bz,M,\ell}\left(\max\left(1,\frac{2J}{M}\r
 \end{align*}
 
 
-\paragraph{If $n'\geq N$.}
+\paragraph{If $n'\geq N$}
 When $n\geq N$ and $n'\geq N$, applying the Cauchy-Schwarz inequality, we obtain the following bound on the covariance $\gamma[n,n]$:
 \begin{align*}
 \left|\gamma[n,n']\right| & \leq  \sqrt{\gamma[n,n]\gamma[n',n']} \\
@@ -745,7 +745,7 @@ c_0^{(n,n')} & =  \sqrt{c_0^{(n)}c_0^{(n')}}\,, \\
 c_p^{(n,n')} & =  \dfrac12\left(c_p^{(n)}\sqrt{\dfrac{c_0^{(n')}}{c_0^{(n)}}} + c_p^{(n')}\sqrt{\dfrac{c_0^{(n)}}{c_0^{(n')}}}\right)\,,\quad\forall p\in\{1,2,3\}\ .\\
 \end{align*}
 
-\paragraph{If $n'\in I$.}
+\paragraph{If $n'\in I$}
 When $n\geq N$ and $n'\in I$, equation~\eqref{I-eq:cov00} shows us that:
 \begin{align*}
 \bgamma[n,n']&=\sigma\EE\{\bw[n']\bh^{(\ell)}\}\bz_K + \sigma^2\EE\{\bw[n']\balpha_0^{(\ell)}\bw_K\} + \sigma^2\EE\{\bw[n']\bh^{(\ell)}\bw_K\} \\
