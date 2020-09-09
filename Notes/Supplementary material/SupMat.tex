@@ -196,7 +196,7 @@ Directly, we have:
 \end{align*}
 Thus, 
 \[
-\left\|\bA_0\right\|_{\max}\leq \max\left(1,\frac{2J}{M}\right)\ .
+\left\|\bA_0\right\|_{\max}\leq \max\left(1,\frac{2J}{M}\right)\ .\qedhere
 \]
 \end{proof}
 
@@ -314,7 +314,7 @@ where
 \[
 C_T = \max_{(k_1,\ldots,k_T)} \left|\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} \right| \,,
 \]
-and $\nu_K$ is the number of non-zero terms in the sum~\eqref{eq:multisum}. Note that $C_T$ is independent of $K$ (but depends on $\bz$ and $\sigma$). The behavior of the order $T$ moment in function of $K$ is therefore only determined by the ratio $\dfrac{\nu_K}{K^T}$.
+and $\nu_K$ is the number of nonzero terms in the sum~\eqref{eq:multisum}. Note that $C_T$ is independent of $K$ (but depends on $\bz$ and $\sigma$). The behavior of the order $T$ moment in function of $K$ is therefore only determined by the ratio $\dfrac{\nu_K}{K^T}$.
 
 Let us bound $\nu_K$. Fix $k_1$. For each of the other indexes of summation $k_\theta$ ($\theta\in\{2,\ldots,T\}$), there are four values that make $\rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}])$ not independent of $\rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}])$. Indeed, since $\bw$ is a white noise these quantities are independent except when $k_\theta$ is such that:
 \begin{align*}
@@ -323,7 +323,13 @@ k_\theta &= k_1+m_{r_1}+a_{r_1} - m'_{r_\theta}\\
 k_\theta &= k_1+m'_{r_1} - m_{r_\theta}- a_{r_\theta} \\
 k_\theta &= k_1+m_{r_1}+a_{r_1} - m_{r_\theta}- a_{r_\theta}\ .
 \end{align*}
-Consequently, for each value of $k_1$ there exist at least $(K-4)^{T-1}$ combinations of $(k_2,\ldots,k_T)$ such that the correlation term given by $\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\}$ is zero. Because $T\geq 3$, we develop similar arguments on $k_2$ and $k_3$ to determine other cases where this correlation term vanishes. We subtract these cases to $K^T$, the total number of combinations of $(k_1,\ldots,k_T)$ to obtain the following maximum bound on the number of non-zero terms in the sum~\eqref{eq:multisum}:
+Consequently, for each value of $k_1$ there exist at least $(K-4)^{T-1}$ combinations of $(k_2,\ldots,k_T)$ where we have
+\begin{align*}
+\EE\left\{\prod_{\theta=1}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\} &= \EE\left\{ \rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}]) \right\} \\
+&\hspace{20pt}\times\EE\left\{\prod_{\theta=2}^T \rho_{\theta,k_\theta}(\bw[k_\theta+m'_{r_\theta}],\bw[k_\theta+m_{r_\theta}+a_{r_\theta}]) \right\}
+& = 0\,,
+\end{align*}
+because $\EE\left\{ \rho_{1,k_1}(\bw[k_1+m'_{r_1}],\bw[k_1+m_{r_1}+a_{r_1}]) \right\}=0$. Therefore, at least $K(K-4)^{T-1}$ of the sum~\eqref{eq:multisum} are zero. Because $T\geq 3$, we develop similar arguments on $k_2$ and $k_3$ to determine other cases where this correlation term vanishes. We subtract these cases to $K^T$, the total number of combinations of $(k_1,\ldots,k_T)$ to obtain the following maximum bound on the number of nonzero terms in the sum~\eqref{eq:multisum}:
 \[
 \nu_K\leq K^T - 3K(K-4)^{T-1} + 3K(K-4)(K-8)^{T-2}- K(K-4)(K-8)(K-12)^{T-3}\ .
 \]
@@ -336,7 +342,7 @@ Thus,
 \end{align*}
 Therefore,
 \begin{equation*}
-\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| = o\left(\dfrac1K\right)\,,\quad\forall T\geq 3\ .
+\left|\EE\left\{\prod_{\theta=1}^T\bg[r_\theta]\right\}\right| = o\left(\dfrac1K\right)\,,\quad\forall T\geq 3\ .\qedhere
 \end{equation*}
 \end{proof}
 
@@ -471,7 +477,7 @@ Returning to equation~\eqref{eq:d2f}, for all $r,r'\in\{0,\ldots,M(M+1)-1\}$ and
 where $d_{2,M,\ell}$ and $d'_{2,M,\ell}$ are only depending on $M$ and $\ell$.
 Besides, given results~\eqref{eq:A0}, ~\eqref{eq:dA} and~\eqref{eq:d2A}, we have:
 \begin{equation*}
-\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\ .
+\left|\left.\dfrac{\partial^2 f_m^{(\ell)}}{\partial \bg[r]\partial \bg[r']}\right\vert_{\bg=\bzero}\right| \leq \dfrac{d_{2,\bz,M,\ell}}{\sigma^4}\ .\qedhere
 \end{equation*}
 \end{proof}
 
