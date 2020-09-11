@@ -13,7 +13,7 @@ The folder `Signals` contains some biomedical and synthetic signals used to impl
 * `TimeFrequencyScaleRep` contains the functions generating Time-Frequency and Time-Scale representations such as STFT, Synchrosqueezing Transform, Reassignment, or ConceFT.
 * `Scripts` contains the scripts to perform the experiments detailed in the paper. Some corresponding results are directly provided in subfolder `Results`.
 
-The folder `Notes` contains the paper and the associated Supplementary Material.
+The folder `Paper` contains the article and the associated Supplementary Materials.
 
 # Authors
 
