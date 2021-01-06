@@ -55,7 +55,7 @@ for indXP = 1:nbXP
     indM = 1 ;
     for extM = extMval
         tic;
-        xxSigExt = forecasting(x,L,HOP,extK,extM,method).' ; % Forecasted signal via SigExt  
+        xxSigExt = forecasting(x,L,HOP,extK,extM,method) ; % Forecasted signal via SigExt  
         CPUtimeXP(indXP,indM) = toc;
         MeanSigExt(indXP,indM) = mean( xxSigExt - xx((N+1):end) ) ;
         VarSigExt(indXP,indM) = mean( ( xxSigExt - xx((N+1):end) ).^2 );

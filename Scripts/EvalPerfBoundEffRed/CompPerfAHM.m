@@ -52,7 +52,7 @@ for ind = 1:nbXP
     % SigExt
     method.name = 'SigExt' ;
     tic;
-    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; % Forecasted signal via SigExt
+    xxLSE = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ; % Forecasted signal via SigExt
     LSEtime(ind) = toc;
     MeanLSE(ind,:) = xxLSE((N+L+1):end) - xx((N+L+1):end) ;
     VarLSE(ind,:) = ( xxLSE((N+L+1):end) - xx((N+L+1):end) ).^2 ;
@@ -71,7 +71,7 @@ for ind = 1:nbXP
     % Symmetrization
     method.name = 'symmetrization' ;
     tic;
-    xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ;
+    xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ;
     SYMtime(ind) = toc;
     MeanSYM(ind,:) = xxSYM((N+L+1):end) - xx0((N+L+1):end) ;
     VarSYM(ind,:) = ( xxSYM((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
@@ -90,7 +90,7 @@ for ind = 1:nbXP
     method.name = 'edmd' ;
     method.param = 100 ;
     tic; 
-    xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
+    xxEDMD = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ; 
     EDMDtime(ind) = toc;
     MeanEDMD(ind,:) = xxEDMD((N+L+1):end) - xx((N+L+1):end) ;
     VarEDMD(ind,:) = ( xxEDMD((N+L+1):end) - xx((N+L+1):end) ).^2 ;
@@ -108,7 +108,7 @@ for ind = 1:nbXP
     % GPR
     method.name = 'gpr' ;
     tic; 
-    xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method).' ; 
+    xxGPR = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ; 
     GPRtime(ind) = toc;
     MeanGPR(ind,:) = xxGPR((N+L+1):end) - xx((N+L+1):end) ;
     VarGPR(ind,:) = ( xxGPR((N+L+1):end) - xx((N+L+1):end) ).^2 ;
