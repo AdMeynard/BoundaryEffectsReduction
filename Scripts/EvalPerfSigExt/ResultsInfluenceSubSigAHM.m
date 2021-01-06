@@ -7,7 +7,7 @@ clear all; close all; clc;
 load('../../Results/PerfSubsigLengthAHM') ;
 
 BiasXP = abs(mean(MeanSigExt)) ;
-MSEXP = mean(VarSigExt) ;
+MSEXP = VarSigExt ;
 CPUtimeXP = mean(CPUtimeXP) ;
 
 % figure;
@@ -24,17 +24,16 @@ CPUtimeXP = mean(CPUtimeXP) ;
 
 
 fprintf('============= Forecasting Performance =============\n')
-fprintf(' _________________________________________________\n')
-fprintf('|    Extension   |  Computing  |        MSE      |\n')
-fprintf('|     Method     | time (sec.) |   Mean  |   SD  |\n')
-fprintf('|----------------|-------------|---------|-------|\n')
-fprintf('|SigExt (M=%i)|     %.3f   |  %.3f  | %.3f |\n', extM, CPUtimeXP(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) )
-
+fprintf(' ________________________________________________\n')
+fprintf('|    Extension    |  Computing  |        MSE      |\n')
+fprintf('|     Method      | time (sec.) |   Mean  |   SD  |\n')
+fprintf('|-----------------|-------------|---------|-------|\n')
 
 indM = 1 ;
-for extM = exMval
-    fprintf('|SigExt (M=%i)|     %.3f   |  %.3f  | %.3f |\n', extM, CPUtimeXP(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) )
+for extM = extMval
+    fprintf('| SigExt (M=%4i) |     %.3f   |  %.3f  | %.3f |\n', extM, CPUtimeXP(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) ) ;
+    indM = indM + 1 ;
 end
 indM = indM +1 ;
 
-fprintf('|________________|_____________|_________|_______|__________________|\n\n')
+fprintf('|_________________|_____________|_________|_______|\n\n')

@@ -65,4 +65,4 @@ for indXP = 1:nbXP
     
 end
 
-save('../../Results/PerfSubsigLengthAHM','MeanSigExt','VarSigExt','extMval');
+save('../../Results/PerfSubsigLengthAHM','MeanSigExt','VarSigExt','CPUtimeXP','extMval');
