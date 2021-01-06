@@ -37,7 +37,6 @@ switch nComp
         xx01 = R.*cos(2*pi*phi01) ;
 end
 xx0 = xx00 + xx01 ; % extended signal
-x0 = xx0( 1:N ) ; % restriction to the measurement interval
 
 sigman = 1e-2 ;
 
@@ -49,7 +48,7 @@ extMval = [100 750 1500 3000]; % dimension of embedding / signals length
 
 for indXP = 1:nbXP
     noise = sigman*randn(N+L,1) ;
-    xx = x0.' + noise ;
+    xx = xx0.' + noise ;
     
     x = xx(1:N) ; % signal to be extended
 
