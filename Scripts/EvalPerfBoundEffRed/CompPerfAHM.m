@@ -100,8 +100,8 @@ for ind = 1:nbXP
     tic;
     xxSYM = SigExtension(x,fs,HOP,extK,extM,extSEC,method) ;
     SYMtime(ind) = toc;
-    MeanSYM(ind,:) = xxSYM((N+L+1):end) - xx0((N+L+1):end) ;
-    VarSYM(ind,:) = ( xxSYM((N+L+1):end) - xx0((N+L+1):end) ).^2 ;
+    MeanSYM(ind,:) = xxSYM((N+L+1):end) - xx((N+L+1):end) ;
+    VarSYM(ind,:) = ( xxSYM((N+L+1):end) - xx((N+L+1):end) ).^2 ;
     
     [~, SSTxx, ~] = sqSTFT_RT(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 0, 0) ;
     [~, ~, conceFTxx, ~] = ConceFT_sqSTFT_RT(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1, 0, 0) ;
