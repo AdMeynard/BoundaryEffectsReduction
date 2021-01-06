@@ -1,4 +1,4 @@
-%% Evaluation of Gaussian white noise on SigExt's performance on a sine wave
+%% Evaluation on a sine wave of the Gaussian white noise influence on SigExt's performance
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

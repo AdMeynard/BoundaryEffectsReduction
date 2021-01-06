@@ -1,4 +1,4 @@
-%% Evaluation the "training dataset" on SigExt's performance on a sine wave
+%% Evaluation on a sine wave of the "training dataset" influence on SigExt's performance
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

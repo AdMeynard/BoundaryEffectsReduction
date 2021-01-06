@@ -2,6 +2,7 @@ For the reproducibility purpose, the MATLAB code and datasets used to produce th
 
 
 \subsection{Extension Methods for Comparison}
+\label{sse:methods}
 To highlight the fact that the linear dynamical model is sufficient to catch most of the dynamical behavior of signals following the AHM, we compare the performance of Algorithm~\ref{alg:boundary} with a simple extension obtained by pointwise symmetrization~\cite{Kharitonenko02wavelet}. We also evaluate the performance of reference forecasting algorithms that could be used for extending such signals. These methods are:
 \begin{itemize}
 \item The EDMD has been developed by Williams \etal~\cite{Williams15data}. The proposed algorithm is a way to obtain an approximation of the so-called Koopman operator of the observed system, which theoretically allows catching dynamic of nonlinear systems~\cite{Korda18linear}.
@@ -71,7 +72,7 @@ with $M=150$, $p_1=10$, $p_2=33$ and $A=1.4$. Besides, the additive noise is cho
 \centering
 %\includegraphics[width=.24\textwidth]{biasNoiseSine.eps}
 \includegraphics[width=.48\textwidth]{VarianceNoiseSine.eps}
-\caption{Evolution of the experimental forecasting variance in function of the noise variance for three different values the forecasting sample index $\ell$.}
+\caption{Evolution of the experimental forecasting variance as a function of the noise variance for three different values the forecasting sample index $\ell$.}
 \label{fig:res.noise.sine}
 \end{figure}
 
@@ -103,22 +104,35 @@ R[n] = 1.4 + 0.2\cos\left(4\pi\frac{n}{N}\right)\ ,
 \]
 and the instantaneous phases are such that:
 \begin{align*}
-\phi_1[n] &= \frac{p_1}{M}\left( n + \frac{0.01}{2\pi}\cos\left(2\pi\frac{n}{N}\right) \right) \\[-1mm]
-\phi_2[n] & = p_2\frac{n}{M} + \frac{20}{2N\fs}n^2
+\phi_1[n] &= \frac{p_1}{P}\left( n + \frac{0.01}{2\pi}\cos\left(2\pi\frac{n}{N}\right) \right) \\[-1mm]
+\phi_2[n] & = p_2\frac{n}{P} + \frac{20}{2N\fs}n^2\ .
 \end{align*}
-Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $M=750$, $p_1=10$, $p_2=23$.
+Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $P=750$, $p_1=10$, $p_2=23$.
 
-The forecasting methods are applied to $1000$ realizations of the above-described signal. The mean and the standard deviation (SD) of the resulting MSEs are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
+{\color{red}
+\paragraph{Influence of the subsignals length $M$}
+To evaluate the forecasting quality, {\sf SigExt} is applied to $1000$ realizations of the above-described signal. Here, we forecast signal extensions of $0.1$~s, \ie~$L=700$. Besides, we set $K=2625$. Table~\ref{tab:mse.sine} shows the resulting experimental MSE according to four  different selected values of the subsignals length $M$.
+
+}
+
+\paragraph{Comparison of the extensions methods}
+The same set of experiments is run on the extension methods outlined in section~\ref{sse:methods}. For comparison, the mean and the standard deviation (SD) of the resulting MSEs are given in Table~\ref{tab:mse.sine}. They show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 
 \begin{table}
 \centering
 \caption{AHM Signal: Performance of the Extension Methods}
 \begin{tabular}{|c||c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multirow{2}{70pt}{\centering MSE (mean $\pm$ SD)}  & \multirow{2}{80pt}{\centering Averaged computing time (seconds)} \\
+   \multirow{2}{60pt}{\centering Extension method} & \multirow{2}{50pt}{\centering MSE\\ (mean $\pm$ SD)}  & \multirow{2}{80pt}{\centering Averaged computing time (seconds)} \\
     &  & \\
    \hhline{|=#=|=|}
-   {\sf SigExt} & $1.028 \pm  0.404$ & $1.069$ \\
+   {\sf SigExt ($M=100$)} & $1.028 \pm  0.404$ & $1.069$ \\
+   \hline
+   {\sf SigExt ($M=750$)} & $1.028 \pm  0.404$ & $1.069$ \\
+   \hline
+   {\sf SigExt ($M=1500$)} & $1.028 \pm  0.404$ & $1.069$ \\
+   \hline
+   {\sf SigExt ($M=3000$)} & $1.028 \pm  0.404$ & $1.069$ \\
    \hline
    Symmetric & $4.368 \pm  0.001$ & $0.001$ \\
    \hline
@@ -204,23 +218,23 @@ We divide the signal into 32-second-long segments and apply {\sf BoundEffRed} to
 \begin{table}
 \centering
 \caption{PPG Signal: Performance of the Boundary-Free TF Representations According to the Extension Method}
-\begin{tabular}{|c||c|c|c|c|}
+\begin{tabular}{|c||c||c|c|c|c|}
   \hline
-   \multirow{2}{40pt}{\centering Extension method} & \multicolumn{4}{c|}{Performance index $D$ (mean $\pm$ SD)} \\
-   \cline{2-5}
-      & STFT & SST & ConceFT & RS\\
-   \hhline{|=#=|=|=|=|}
-   \multirow{2}{40pt}{\centering {\sf SigExt}} & $0.280$ & $0.309$ & $0.367$ & $0.534$ \\
-    & $\pm 0.107$ & $\pm 0.112$ & $\pm 0.183$ & $\pm 0.160$ \\
+   \multirow{2}{38pt}{\centering Extension method} & \multirow{2}{29pt}{\centering MSE} &\multicolumn{4}{c|}{Performance index $D$ (mean $\pm$ SD)} \\
+   \cline{3-6}
+      & & STFT & SST & ConceFT & RS\\
+   \hhline{|=#=#=|=|=|=|}
+   \multirow{2}{38pt}{\centering {\sf SigExt}} & $0.018$ & $0.280$ & $0.309$ & $0.367$ & $0.534$ \\
+    & $\pm 0.014$ & $\pm 0.107$ & $\pm 0.112$ & $\pm 0.183$ & $\pm 0.160$ \\
    \hline
-   \multirow{2}{40pt}{\centering Symmetric} & $1.168$ & $1.209$ & $1.310$ & $0.983$ \\
-   & $\pm 0.390$ & $\pm 0.340$ & $\pm 0.140$ & $\pm 0.304$ \\
+   \multirow{2}{38pt}{\centering Symmetric} & $0.037$ & $1.168$ & $1.209$ & $1.310$ & $0.983$ \\
+   & $\pm 0.007$ & $\pm 0.390$ & $\pm 0.340$ & $\pm 0.140$ & $\pm 0.304$ \\
    \hline
-   \multirow{2}{40pt}{\centering EDMD} & $0.289$ & $0.319$ & $0.375$ & $0.503$ \\
-   & $\pm 0.126$ & $\pm 0.134$ & $\pm 0.163$ & $\pm 0.163$ \\
+   \multirow{2}{38pt}{\centering EDMD} & $0.012$ & $0.289$ & $0.319$ & $0.375$ & $0.503$ \\
+   & $\pm 0.005$ & $\pm 0.126$ & $\pm 0.134$ & $\pm 0.163$ & $\pm 0.163$ \\
    \hline
-   \multirow{2}{40pt}{\centering GPR} & $0.276$ & $0.303$ & $0.361$ & $0.544$ \\
-   & $\pm 0.106$ & $\pm 0.110$ & $\pm 0.165$ & $\pm 0.157$ \\
+   \multirow{2}{38pt}{\centering GPR} & $0.018$ & $0.276$ & $0.303$ & $0.361$ & $0.544$ \\
+   & $\pm 0.013$ & $\pm 0.106$ & $\pm 0.110$ & $\pm 0.165$ & $\pm 0.157$ \\
    \hline
 \end{tabular}
 \label{tab:otd.ppg}

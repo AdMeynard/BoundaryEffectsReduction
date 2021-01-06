@@ -82,17 +82,17 @@ From the Takens' embedding perspective~\cite{Takens81detecting}, $\bX$ can be vi
 
 
 \paragraph{Forecasting}
-The forecasting method consists in estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$. We then obtain the forecasting of the signal at time $\frac{N-1+\ell}{\fs}$ by:
+The forecasting method consists in estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$. {\color{red}We then obtain the forecasting of $\bx_{k+\ell}$ by recursively applying the linear relation~\eqref{eq:dyn.model}:
+\begin{equation*}
+\tilde\bx_{K+\ell} = \underbrace{\tilde\bA\tilde\bA\cdots\tilde\bA}_{\scriptstyle\ell\mbox{ \footnotesize {times}}}\bx_{K} = \tilde\bA^\ell\bx_{K}\ .
+\end{equation*}  
+Let $\be_M$ denote the unit vector of length $M$ given by $\be_M = \begin{pmatrix} 0 & \cdots & 0 & 1\end{pmatrix}^T$. Consequently, given definition~\eqref{eq:xk}, the forecasting of the signal at time $\frac{N-1+\ell}{\fs}$ is provided by:
 \begin{equation}
 \label{eq:prediction}
-\tilde \bx [N-1+\ell] = \balpha^{(\ell)}\bx_{K}\ ,
+\tilde \bx [N-1+\ell] = \be_M^T\tilde\bx_{K+\ell} = \balpha^{(\ell)}\bx_{K}\ ,
 \end{equation}  
-where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$; that is to say,
-\begin{equation}
-\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell\ ,
-\label{eq:alpha.l}
-\end{equation}
-where $\be_M$ is the unit vector of length $M$ given by $\be_M = \begin{pmatrix} 0 & \cdots & 0 & 1\end{pmatrix}^T$.
+where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$, \ie~$\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell$.
+}
 
 \paragraph{Model Estimation} To estimate the matrix $\bA$, we consider the simple but numerically efficient least square estimator. That is, we solve the following problem:
 \begin{equation}

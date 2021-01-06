@@ -43,19 +43,23 @@ sigman = 1e-2 ;
 
 %% Forecasting
 method.name = 'SigExt' ;
-nbXP = 100 ;
+nbXP = 1000 ;
 
-extMval = round( logspace(log10(0.05),log10(3),50)*L ) ; % dimension of embedding / signals length
+extMval = [100 750 1500 3000]; % dimension of embedding / signals length
 
 for indXP = 1:nbXP
     noise = sigman*randn(N+L,1) ;
-    x = x0.' + noise(1:N) ; % signal to be extended
+    xx = x0.' + noise ;
+    
+    x = xx(1:N) ; % signal to be extended
 
     indM = 1 ;
     for extM = extMval
-        xxSigExt = forecasting(x,L,HOP,extK,extM,method).' ; % Forecasted signal via SigExt
-        MeanSigExt(indXP,indM) = mean( xxSigExt - xx0((N+1):end) ) ;
-        VarSigExt(indXP,indM) = mean( ( xxSigExt - xx0((N+1):end) ).^2 );
+        tic;
+        xxSigExt = forecasting(x,L,HOP,extK,extM,method).' ; % Forecasted signal via SigExt  
+        CPUtimeXP(indXP,indM) = toc;
+        MeanSigExt(indXP,indM) = mean( xxSigExt - xx((N+1):end) ) ;
+        VarSigExt(indXP,indM) = mean( ( xxSigExt - xx((N+1):end) ).^2 );
         
         indM = indM+1 ;
     end

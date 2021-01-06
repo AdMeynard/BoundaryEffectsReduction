@@ -6,14 +6,14 @@ load('../../Results/PerfAHM') ;
 
 dataTBATS = table2array( readtable('../../Results/PerfAHM_TBATS.csv','Range','B:D','TreatAsEmpty','NA') ) ;
 BiasXP.TBATS = dataTBATS(:,1) ;
-VarianceXP.TBATS = dataTBATS(:,2) ;
+MSE.TBATS = dataTBATS(:,2) ;
 CPUtimeXP.TBATS = dataTBATS(~isnan(dataTBATS(:,3)),3) ;
 
-MSE.LSE = BiasXP.LSE.^2 + VarianceXP.LSE ;
-MSE.SYM = BiasXP.SYM.^2 + VarianceXP.SYM ;
-MSE.EDMD = BiasXP.EDMD.^2 + VarianceXP.EDMD ;
-MSE.GPR = BiasXP.GPR.^2 + VarianceXP.GPR ;
-MSE.TBATS = BiasXP.TBATS.^2 + VarianceXP.TBATS ;
+MSE.LSE =  VarianceXP.LSE ;
+MSE.SYM = VarianceXP.SYM ;
+MSE.EDMD = VarianceXP.EDMD ;
+MSE.GPR = VarianceXP.GPR ;
+MSE.TBATS = VarianceXP.TBATS ;
 
 fprintf('======================= Forecasting Performance ===================\n')
 fprintf(' ___________________________________________________________________\n')
