@@ -15,8 +15,8 @@ t = linspace(0,1,N);
 HOP = 1 ;
 extSEC = 0.1 ; % the extension is of extSEC second
 L = round( extSEC*fs ) ;
-extM = round( 1.5*L ) ; % dimension of embedding / signals length
-extK = round( 2.5*extM );  % number of points to estimate A / size of datasets
+extM = 750 ; % dimension of embedding / signals length
+extK = round( 3.75*L );  % number of points to estimate A / size of datasets
 
 tt = linspace(-L/fs, 1+L/fs, N+2*L) ;
 
@@ -37,7 +37,6 @@ switch nComp
         xx01 = R.*cos(2*pi*phi01) ;
 end
 xx0 = xx00 + xx01 ; % extended signal
-x0 = xx0( (L+1) : (L+N) ) ; % restriction to the measurement interval
 
 sigman = 1e-2 ;
 
@@ -46,7 +45,7 @@ nbXP = 1000 ;
 
 for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
-    xx = x0.' + noise((L+1):(N+L)) ; % ground truth
+    xx = xx0.' + noise ; % ground truth
     
     x = xx((L+1):(N+L)) ; % signal to be extended
 
