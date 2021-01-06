@@ -4,6 +4,8 @@
 
 clear all; 
 close all; clc;
+addpath(genpath('../../TimeFrequencyScaleRep'));
+
 addpath('../../Algorithm/');
 
 %% Parameters
@@ -40,14 +42,39 @@ xx0 = xx00 + xx01 ; % extended signal
 
 sigman = 1e-2 ;
 
-%% Forecasting
+%% Forecasting + TFR
 nbXP = 1000 ;
+
+basicTF.fmin = 0 ;
+basicTF.fmax = 0.05 ;
+basicTF.df = (basicTF.fmax - basicTF.fmin)/1024 ;
+basicTF.hop = 10 ; 
+basicTF.win = 2*L+1 ;
+LL = ceil(L/basicTF.hop); % extension in TF domain
+
+
+t = linspace(0, (N-1)/fs, N) ;
+tt = linspace(-L/fs, (N-1+L)/fs, N+2*L) ;
+tsstEXT = tt(1:basicTF.hop:end);
+
+n0 = find(tsstEXT>=min(t),1);
+nf = find(tsstEXT<=max(t),1);
 
 for ind = 1:nbXP
     noise = sigman*randn(N+2*L,1) ;
     xx = xx0.' + noise ; % ground truth
     
     x = xx((L+1):(N+L)) ; % signal to be extended
+    
+    [~, SSTxx0, ~] = sqSTFT_RT(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 0, 0) ;
+    [~, ~, conceFTxx0, ~] = ConceFT_sqSTFT_RT(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1, 0, 0) ;
+    [STFTxx0, ~] = STFT_RT(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
+    [~, RSxx0, ~, ~] = ConceFT_rsSTFT_RT(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
+    
+    SSTxx0 = SSTxx0(:,n0:nf) ;
+    conceFTxx0 = conceFTxx0(:,n0:nf) ;
+    STFTxx0 = STFTxx0(:,n0:nf) ;
+    RSxx0 = RSxx0(:,n0:nf) ;
 
     % SigExt
     method.name = 'SigExt' ;
@@ -63,10 +90,10 @@ for ind = 1:nbXP
     [STFTxx, ~] = STFT_RT(xxLSE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
     [~, RSxx, ~, ~] = ConceFT_rsSTFT_RT(xxLSE, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
     
-    OTD.SST.LSE(ind) = slicedOT(SSTxx, SSTxx0) ;
-    OTD.conceFT.LSE(ind) = slicedOT(conceFTxx, conceFTxx0) ;
-    OTD.STFT.LSE(ind) = slicedOT(STFTxx, STFTxx0) ;
-    OTD.RS.LSE(ind) = slicedOT(RSxx, RSxx0) ;
+    OTD.SST.LSE(ind) = slicedOT(SSTxx(:,n0:nf), SSTxx0) ;
+    OTD.conceFT.LSE(ind) = slicedOT(conceFTxx(:,n0:nf), conceFTxx0) ;
+    OTD.STFT.LSE(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
+    OTD.RS.LSE(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
     
     % Symmetrization
     method.name = 'symmetrization' ;
@@ -81,10 +108,10 @@ for ind = 1:nbXP
     [STFTxx, ~] = STFT_RT(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
     [~, RSxx, ~, ~] = ConceFT_rsSTFT_RT(xxSYM, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
     
-    OTD.SST.SYM(ind) = slicedOT(SSTxx, SSTxx0) ;
-    OTD.conceFT.SYM(ind) = slicedOT(conceFTxx, conceFTxx0) ;
-    OTD.STFT.SYM(ind) = slicedOT(STFTxx, STFTxx0) ;
-    OTD.RS.SYM(ind) = slicedOT(RSxx, RSxx0) ;
+    OTD.SST.SYM(ind) = slicedOT(SSTxx(:,n0:nf), SSTxx0) ;
+    OTD.conceFT.SYM(ind) = slicedOT(conceFTxx(:,n0:nf), conceFTxx0) ;
+    OTD.STFT.SYM(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
+    OTD.RS.SYM(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
     
     % EDMD
     method.name = 'edmd' ;
@@ -100,10 +127,10 @@ for ind = 1:nbXP
     [STFTxx, ~] = STFT_RT(xxEDMD, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
     [~, RSxx, ~, ~] = ConceFT_rsSTFT_RT(xxEDMD, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
     
-    OTD.SST.EDMD(ind) = slicedOT(SSTxx, SSTxx0) ;
-    OTD.conceFT.EDMD(ind) = slicedOT(conceFTxx, conceFTxx0) ;
-    OTD.STFT.EDMD(ind) = slicedOT(STFTxx, STFTxx0) ;
-    OTD.RS.EDMD(ind) = slicedOT(RSxx, RSxx0) ;
+    OTD.SST.EDMD(ind) = slicedOT(SSTxx(:,n0:nf), SSTxx0) ;
+    OTD.conceFT.EDMD(ind) = slicedOT(conceFTxx(:,n0:nf), conceFTxx0) ;
+    OTD.STFT.EDMD(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
+    OTD.RS.EDMD(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
     
     % GPR
     method.name = 'gpr' ;
@@ -118,10 +145,10 @@ for ind = 1:nbXP
     [STFTxx, ~] = STFT_RT(xxGPR, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10) ;
     [~, RSxx, ~, ~] = ConceFT_rsSTFT_RT(xxGPR, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, LL, 1, 10, 1) ;
     
-    OTD.SST.GPR(ind) = slicedOT(SSTxx, SSTxx0) ;
-    OTD.conceFT.GPR(ind) = slicedOT(conceFTxx, conceFTxx0) ;
-    OTD.STFT.GPR(ind) = slicedOT(STFTxx, STFTxx0) ;
-    OTD.RS.GPR(ind) = slicedOT(RSxx, RSxx0) ;
+    OTD.SST.GPR(ind) = slicedOT(SSTxx(:,n0:nf), SSTxx0) ;
+    OTD.conceFT.GPR(ind) = slicedOT(conceFTxx(:,n0:nf), conceFTxx0) ;
+    OTD.STFT.GPR(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
+    OTD.RS.GPR(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
     
 end
 
