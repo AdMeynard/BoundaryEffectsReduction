@@ -1,5 +1,6 @@
 \subsection{Signal Model}
-We model the deterministic part of the observed signal as a multicomponent harmonic signal; that is, a sum of sine waves:
+\label{sse:model.sine}
+We model the meaningful part of the observed signal as a deterministic multicomponent harmonic signal; that is, a sum of sine waves:
 \begin{equation}
 \bz[n]=\sum_{j=1}^J\Omega_j\cos\left(2\pi f_j \frac{n}{\fs} + \varphi_j\right)\ ,
 \label{eq:sum.sine}
@@ -107,7 +108,8 @@ Assume now that $K$ is sufficiently great and fixed. The noise influences the qu
 
 The dependencies of the forecasting quality on the subsignals lengths $M$ and the forecasting index $\ell=n-N+1$ are hidden in the expression of the parameters $a^{(n)}_0$, $a^{(n)}_1$,\dots, $b^{(n,n')}_0$,\dots, $c^{(n,n')}_3$. The numerical results, discussed in section~\ref{ssse:res.sine}, allow us to better evaluate these dependencies.
 
-\subsection{Adaptive Harmonic Model}\label{RemarkAHM}
+\subsection{Adaptive Harmonic Model}
+\label{RemarkAHM}
 
 One can extend the previous result to the case where the instantaneous frequencies and amplitudes of the components of the deterministic part of the observed signal are {\em slowly varying}. It is an \textit{AM-FM model} that, in its is continuous-time version, takes the following form
 \begin{equation}
@@ -124,6 +126,9 @@ It is thus clear that the forecasting error caused by the {\sf SigExt} algorithm
 For the forecasting purpose, it is thus clear that when $K$ is not too large, the signal can be well approximated by~\eqref{eq:sum.sine}. Hence, Theorem~\ref{th:error} can still be applied to approximate the error. However, how to determine the optimal $K$ based on the signal depends on the application and is out of the scope of this paper. It will be explored in future work for specific application problems.
 %\end{remark}
 
+{\color{red}
+The models of sections~\ref{sse:model.sine} and~\ref{RemarkAHM} consider the meaningful part of the signal to be a deterministic component. These models are purposely adapted to signals showing local line spectra. The physiological signals we are interested in, such as respiratory or cardiac signals, have this characteristic (see section~\ref{sse:physio.sig}). Signals with wider local spectra, such as electroencephalography signals, do not fall into this category, and are more faithfully modeled as random signals. Thus, the theoretical justifications proposed above are no longer applicable to guarantee the forecasting quality of {\sf SigExt}.
+}
 
 \subsection{Performance of the Boundary Effects Reduction}
 \label{sse:perf.BoundEffRed}
