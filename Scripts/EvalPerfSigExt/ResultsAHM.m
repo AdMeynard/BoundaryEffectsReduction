@@ -43,6 +43,6 @@ MSEGPR = MSE.GPR ;
 
 fprintf('|  Symmetrization |     %.3f   |  %.3f  | %.3f |\n', CPUtimeSYM , mean(MSESYM), std(MSESYM) ) ;
 fprintf('|       EDMD      |     %.3f   |  %.3f  | %.3f |\n', CPUtimeEDMD , mean(MSEEDMD), std(MSEEDMD) ) ;
-fprintf('|       GPR       |     %.3f   |  %.3f  | %.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
+fprintf('|       GPR       |   %.3f   |  %.3f  | %.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
 
 fprintf('|_________________|_____________|_________|_______|\n\n')

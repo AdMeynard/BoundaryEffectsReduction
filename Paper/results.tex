@@ -116,12 +116,9 @@ Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we ta
 {\color{red}
 \paragraph{Influence of the subsignals length $M$}
 To evaluate the forecasting quality, {\sf SigExt} is applied to $1000$ realizations of the above-described signal. We forecast signal extensions of $0.1$~s, \ie~$L=700$. Table~\ref{tab:mse.sine} shows the resulting mean and standard deviation (SD) of the experimental MSE, according to four different values of the subsignals length $M$. Note that choosing a too small value for $M$ does not provide enough information to forecast the signal satisfactorily. Furthermore, a value of $M$ that is too large makes the algorithm insensitive to local nonstationarities produced by frequency variations. The user must then make a compromise on the choice of $M$ in order to optimize the performance of the algorithm. A choice of $M$ such that the subsignals contain about a dozen oscillations is generally appropriate.
-}
 
 \paragraph{Comparison of the extensions methods}
-The same set of experiments is run on the extension methods outlined in section~\ref{sse:methods}. The results, displayed in Table~\ref{tab:mse.sine}, show that the naive extension we propose gives satisfying results, in particular in comparison with the point-symmetric extension. Besides, even though the other more sophisticated methods, like GPR, give MSE values that have a slightly smaller standard deviation, these methods are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
-%
-{\color{red}
+The same set of experiments is run on the extension methods outlined in section~\ref{sse:methods}. The results, displayed in Table~\ref{tab:mse.sine}, show that the naive extension we propose gives satisfying results. Indeed, when the subsignal length $M$ is optimally chosen, {\sf SigExt} performance is of the same order as that of ore sophisticated methods, like GPR or TBATS. Besides, even though these methods could be slightly more robust to perturbations, they are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 Besides, the last column of Table~\ref{tab:mse.sine} gives the performance index $D$ of the boundary-free STFT associated with each extension method. This illustrates the ability of our algorithm to reduce boundary effects to a level comparable to what is possible with the GPR or TBATS extensions. The performance of {\sf BoundEffRed} on other TF representations is more thoroughly analyzed on real-life signals in the following.
 }
 
@@ -141,11 +138,11 @@ Besides, the last column of Table~\ref{tab:mse.sine} gives the performance index
    \hline
    {\sf SigExt ($M=3000$)} & $2.881$ & $5.365 \pm  3.919$ & {\color{blue}$x \pm  x$}\\
    \hline
-   Symmetric &  {\color{blue}$<0.001$} & {\color{blue}$x \pm  x$} & {\color{blue}$x \pm  x$}\\
+   Symmetric &  $<0.001$ & $5.452 \pm  0.002$ & {\color{blue}$x \pm  x$}\\
    \hline
-   EDMD & {\color{blue}$x$} & {\color{blue}$x  \pm  x$} & {\color{blue}$x \pm  x$}\\
+   EDMD & $1.587$ & $0.983  \pm  0.004$ & {\color{blue}$x \pm  x$}\\
    \hline
-   GPR & {\color{blue}$x$} & {\color{blue}$x  \pm  x$} & {\color{blue}$x \pm  x$}\\
+   GPR & $515.787$ & $0.479  \pm  0.166$ & {\color{blue}$x \pm  x$}\\
    \hline
    TBATS  & {\color{blue}$x$} & {\color{blue}$x \pm  x$} & {\color{blue}$x \pm  x$}\\
    \hline
