@@ -40,7 +40,6 @@ t = seq(from = 0, to = 1, length.out = N)
 HOP = 1
 extSEC = 0.1 # the extension is of extSEC second
 L = round( extSEC*fs )
-xx0 = xx0[(L+1):(N+2*L)] # remove the left boundary/extension
 tt = seq(from = 0, to = 1+L/fs, by = 1/fs)
 
 x0 = xx0[1:N] # restriction to the measurement interval
@@ -49,7 +48,7 @@ xextR = xx0[(N+1):(N+L)] # Part to be estimated
 sigman = 1e-2
 
 # Forecasting
-nbXP = 50
+nbXP = 100
 ss = 1:250
 
 TBATStime = rep(0,nbXP)
@@ -65,6 +64,9 @@ for (ind in 1:nbXP){
   
   MeanTBATS[ind,] = xxTBATS[(N+1):(N+L)] - xx0[(N+1):(N+L)]
   VarTBATS[ind,] = ( xxTBATS[(N+1):(N+L)] - xx0[(N+1):(N+L)] )^2
+  
+  FileName = paste('../../Results/extTBATS_',ind,'.csv',sep="")
+  write.csv(xxTBATS,FileName)
 }
 end_time = Sys.time()
 
