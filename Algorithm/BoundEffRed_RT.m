@@ -1,4 +1,4 @@
-function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
+function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting,varargin)
 % BOUNDEFFRED_RT Real-time implementation of BoundEffRed
 % Usage:	[TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
 %
@@ -13,6 +13,12 @@ function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod
 %   TFRtot: Whole time-frequency representation
 %   ForecastTime: forecastion iteration time
 %   TFRtime: TF representation update time
+
+if isempty(varargin) && VideoWriting==1
+    error('The video name must be specified')
+elseif ~isempty(varargin) && VideoWriting==1
+    VideoName = ['../../Results/' varargin{1}] ;
+end
 
 
 %% Parameters
@@ -49,12 +55,12 @@ end
 TFRtot = TFRcurrent(:,end-LL) ;
         
 figure;
-imagesc(t,freqs,log1p(abs(TFRcurrent)/5e0)); colormap(1-gray);
+imagesc(t,freqs,log1p(abs(TFRcurrent)/5e0));% colormap(1-gray);
 axis xy; xlabel('Time (s)'); ylabel('Frequency (Hz)');
 drawnow;
 
 if VideoWriting
-    myVideo = VideoWriter('../../Results/myVideoFile');
+    myVideo = VideoWriter(VideoName);
     myVideo.FrameRate = 10 ;
     open(myVideo)
 end

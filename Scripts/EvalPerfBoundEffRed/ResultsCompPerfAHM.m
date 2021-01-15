@@ -13,7 +13,7 @@ MSE.LSE =  VarianceXP.LSE ;
 MSE.SYM = VarianceXP.SYM ;
 MSE.EDMD = VarianceXP.EDMD ;
 MSE.GPR = VarianceXP.GPR ;
-MSE.TBATS = VarianceXP.TBATS ;
+MSE.TBATS = dataTBATS(:,1).^2 + dataTBATS(:,2); %VarianceXP.TBATS ;
 
 fprintf('======================= Forecasting Performance ===================\n')
 fprintf(' ___________________________________________________________________\n')
@@ -26,3 +26,15 @@ fprintf('|      EDMD      |    %.3f   |  %.3f  | %.3f |         %u        |\n', 
 fprintf('|      GPR       |   %.3f   |  %.3f  | %.3f |         %u        |\n', CPUtimeXP.GPR/2 , mean(MSE.GPR), std(MSE.GPR), ttest(MSE.GPR,MSE.LSE))
 fprintf('|      TBATS     |   %.3f   |  %.3f  | %.3f |         %u        |\n', CPUtimeXP.TBATS/2 , mean(MSE.TBATS), std(MSE.TBATS), ttest(MSE.TBATS,MSE.LSE))
 fprintf('|________________|_____________|_________|_______|__________________|\n\n')
+
+fprintf('========= BoundEffRed =============\n')
+fprintf(' __________________________________\n')
+fprintf('|    Extension   |Performance Index|\n')
+fprintf('|     Method     |   Mean  |   SD  |\n')
+fprintf('|----------------|---------|-------|\n')
+fprintf('|      SigExt    |  %.3f  | %.3f |\n', mean(OTD.STFT.LSE), std(OTD.STFT.LSE)) % time divided by 2 because 2 extensions are operated in CompPerfAHM
+fprintf('| Symmetrization |  %.3f  | %.3f |\n', mean(OTD.STFT.SYM), std(OTD.STFT.SYM))
+fprintf('|      EDMD      |  %.3f  | %.3f |\n', mean(OTD.STFT.EDMD), std(OTD.STFT.EDMD))
+fprintf('|      GPR       |  %.3f  | %.3f |\n', mean(OTD.STFT.GPR), std(OTD.STFT.GPR))
+% fprintf('|      TBATS     |  %.3f  | %.3f |\n', mean(OTD.STFT.TBATS), std(OTD.STFT.TBATS))
+fprintf('|________________|_________|_______|\n\n')

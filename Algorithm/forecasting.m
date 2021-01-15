@@ -22,7 +22,7 @@ if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
     x = flipud(x);
 end
 
-if ~strcmpi(method.name,'symmetrization')
+if ~sum(strcmpi(method.name,{'none','symmetrization'}))
     X = zeros(extM,extK) ;
     for kk = 1: extK
         X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
@@ -90,6 +90,9 @@ switch method.name
             Z(:,kk) = A*Z(:,kk-1) ; 
         end
         xext = Z(end,:)' ;
+        
+    case 'none'
+        xext = zeros(L,1) ;
         
     otherwise
         xext = flipud( x((end-L+1):end) ) ; % symmetrization
