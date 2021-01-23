@@ -58,14 +58,14 @@ t = linspace(0, (N-1)/fs, N) ;
 tt = linspace(0, (N-1+L)/fs, N+L) ;
 tsstEXT = tt(1:basicTF.hop:end);
 
-n0 = find(tsstEXT>=basicTF.win/2/fs,1,'first'); % avoid the right-side boundary
+n0 = find(tsstEXT>=basicTF.win/2/fs,1,'first'); % avoid the left-side boundary
 nf = find(tsstEXT<=max(t),1,'last');
 
 for ind = 1:nbXP
     noise = sigman*randn(N+L,1) ;
     xx = xx0.' + noise ; % ground truth
     
-    % TF reprensentations of the Ground trunth extension
+    % TF reprensentations of the ground truth extension
     [~, SSTxx0, ~] = sqSTFT_C(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
     [~, ~, conceFTxx0, ~] = ConceFT_sqSTFT_C(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
     [STFTxx0, ~] = STFT_C(xx, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;

@@ -22,7 +22,7 @@ fprintf('|-----------------|-------------|---------|-------|\n')
 
 indM = 1 ;
 for extM = extMval
-    fprintf('| SigExt (M=%4i) |     %.3f   |  %.3f  | %.3f |\n', extM, CPUtimeSigExt(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) ) ;
+    fprintf('| SigExt (M=%4i) |   %7.3f   |  %5.3f  | %5.3f |\n', extM, CPUtimeSigExt(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) ) ;
     indM = indM + 1 ;
 end
 indM = indM +1 ;
@@ -41,8 +41,8 @@ CPUtimeGPR = mean(CPUtimeXP.GPR) ;
 MSEGPR = MSE.GPR ;
 
 
-fprintf('|  Symmetrization |     %.3f   |  %.3f  | %.3f |\n', CPUtimeSYM , mean(MSESYM), std(MSESYM) ) ;
-fprintf('|       EDMD      |     %.3f   |  %.3f  | %.3f |\n', CPUtimeEDMD , mean(MSEEDMD), std(MSEEDMD) ) ;
-fprintf('|       GPR       |   %.3f   |  %.3f  | %.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
+fprintf('|  Symmetrization |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeSYM , mean(MSESYM), std(MSESYM) ) ;
+fprintf('|       EDMD      |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeEDMD , mean(MSEEDMD), std(MSEEDMD) ) ;
+fprintf('|       GPR       |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
 
 fprintf('|_________________|_____________|_________|_______|\n\n')
