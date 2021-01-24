@@ -25,7 +25,7 @@ x = (x - mu)/s ;
 %% Forecasting
 
 HOP = 1 ;
-extSEC = 48 ; % the extension is of extSEC second
+extSEC = 30 ; % the extension is of extSEC second
 L = round( extSEC*fs ) ;
 extM = round( 1.25*L ) ; % dimension of embedding / signals length
 extK = round( 1.5*extM );  % number of points to estimate A / size of datasets
