@@ -207,6 +207,17 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
 \label{fig:THO.failure}
 \end{figure} 
 
+{\color{red}
+Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also the cardiogenic artifact which reflects the hemodynamic component. Fig.~\ref{fig:resp.2} displays the boundary-free SST of a 180-second-long extract of this signal, sample at $125$~Hz, obtained via {\sf BoundEffRed}. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. The performance index of this representation takes the value $D=0.314$. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $69\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+
+\begin{figure}
+\centering
+\includegraphics[width=.48\textwidth]{Resp2comp.eps}
+\caption{Boundary-free SST of a two-component respiratory signal.}
+\label{fig:resp.2}
+\end{figure} 
+}
+
 \subsubsection{Photoplethysmogram}
 \label{ssse:ppg}
 We perform a study similar to the previous one on a $640$-second-long photoplethysmogram (PPG) signal extracted from the Physionet dataset~\cite{Pimentel17toward, Goldberger00physiobank}, sampled at $\fs=125$~Hz. A portion of this signal is displayed in Fig.~\ref{fig:ppg}. The estimated 5 seconds extensions of this segment obtained by {\sf SigExt}, EDMD, and GPR forecastings  are superimposed to the ground-truth extension in Fig.~\ref{fig:ppg}.

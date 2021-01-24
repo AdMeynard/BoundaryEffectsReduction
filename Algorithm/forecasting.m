@@ -23,7 +23,7 @@ if (~isempty(varargin))&&(isequal(varargin{1},'backward'))
 end
 
 if ~sum(strcmpi(method.name,{'none','symmetrization'}))
-    X = zeros(extM,extK) ;
+    X = zeros(ceil(extM/HOP),extK) ;
     for kk = 1: extK
         X(:,kk) = x(end-extK-extM+kk: HOP: end-extK+kk-1) ;
     end
@@ -61,7 +61,7 @@ switch method.name
 end
 
 %% Extension
-Z = zeros(extM,L) ;
+Z = zeros(ceil(extM/HOP),L) ;
 
 switch method.name
     
@@ -84,7 +84,6 @@ switch method.name
         end
         
     case {'SigExt','lse','lseV'}
-        Z = zeros(extM,L) ;
         Z(:,1) = A*Y(:,end) ;
         for kk = 2:L
             Z(:,kk) = A*Z(:,kk-1) ; 
