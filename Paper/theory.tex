@@ -126,9 +126,7 @@ It is thus clear that the forecasting error caused by the {\sf SigExt} algorithm
 For the forecasting purpose, it is thus clear that when $K$ is not too large, the signal can be well approximated by~\eqref{eq:sum.sine}. Hence, Theorem~\ref{th:error} can still be applied to approximate the error. However, how to determine the optimal $K$ based on the signal depends on the application and is out of the scope of this paper. It will be explored in future work for specific application problems.
 %\end{remark}
 
-{\color{red}
 The models of sections~\ref{sse:model.sine} and~\ref{RemarkAHM} consider the meaningful part of the signal to be a deterministic component. These models are purposely adapted to signals showing local line spectra. The physiological signals we are interested in, such as respiratory or cardiac signals, have this characteristic (see section~\ref{sse:physio.sig}). Signals with wider local spectra, such as electroencephalography signals, do not fall into this category, and are more faithfully modeled as random signals. Thus, the theoretical justifications proposed above are no longer applicable to guarantee the forecasting quality of {\sf SigExt}.
-}
 
 \subsection{Performance of the Boundary Effects Reduction}
 \label{sse:perf.BoundEffRed}
