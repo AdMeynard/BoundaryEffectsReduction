@@ -42,7 +42,7 @@ extSEC = 0.1 # the extension is of extSEC second
 L = round( extSEC*fs )
 tt = seq(from = 0, to = 1+L/fs, by = 1/fs)
 
-x0 = xx0[1:N] # restriction to the measurement interval
+
 xextR = xx0[(N+1):(N+L)] # Part to be estimated
 
 sigman = 1e-2
@@ -58,7 +58,8 @@ VarTBATS = matrix(0,nrow=nbXP,ncol=L)
 start_time = Sys.time()
 for (ind in 1:nbXP){
   noise = sigman*rnorm(N+L)
-  x = x0 + noise[1:N] # signal to be extended
+  xx = xx0 + noise # signal to be extended
+  x = xx[1:N] # restriction to the measurement interval
   
   xxTBATS = TBATSextension(x,ss,L,xextR)
   
@@ -66,12 +67,12 @@ for (ind in 1:nbXP){
   VarTBATS[ind,] = ( xxTBATS[(N+1):(N+L)] - xx0[(N+1):(N+L)] )^2
   
   FileName = paste('../../Results/extTBATS_',ind,'.csv',sep="")
-  write.csv(xxTBATS,FileName)
+  write.csv(c(xxTBATS,xx),FileName)
 }
 end_time = Sys.time()
 
 BiasXP_TBATS = rowMeans(MeanTBATS)
-VarianceXP_TBATS = colMeans(VarTBATS)
+VarianceXP_TBATS = rowMeans(VarTBATS)
 CPUtimeXP_TBATS = (1/nbXP)*(end_time - start_time)
 
 length(CPUtimeXP_TBATS) = length(BiasXP_TBATS)
