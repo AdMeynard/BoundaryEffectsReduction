@@ -22,7 +22,7 @@ fprintf('|-----------------|-------------|---------|-------|\n')
 
 indM = 1 ;
 for extM = extMval
-    fprintf('| SigExt (M=%4i) |   %7.3f   |  %5.3f  | %5.3f |\n', extM, CPUtimeSigExt(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) ) ;
+    fprintf('| SigExt (M=%4i) |  %8.3f   |  %5.3f  | %5.3f |\n', extM, CPUtimeSigExt(indM) , mean(MSEXP(:,indM)), std(MSEXP(:,indM)) ) ;
     indM = indM + 1 ;
 end
 indM = indM +1 ;
@@ -40,9 +40,14 @@ MSEEDMD = MSE.EDMD ;
 CPUtimeGPR = mean(CPUtimeXP.GPR) ;
 MSEGPR = MSE.GPR ;
 
+dataTBATS = table2array( readtable('../../Results/PerfAHM_TBATS.csv','Range','B:D','TreatAsEmpty','NA') ) ;
+MSETBATS = dataTBATS(:,2) ;
+CPUtimeTBATS = dataTBATS(~isnan(dataTBATS(:,3)),3) ;
 
-fprintf('|  Symmetrization |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeSYM , mean(MSESYM), std(MSESYM) ) ;
-fprintf('|       EDMD      |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeEDMD , mean(MSEEDMD), std(MSEEDMD) ) ;
-fprintf('|       GPR       |   %7.3f   |  %5.3f  | %5.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
 
+
+fprintf('|  Symmetrization |  %8.3f   |  %5.3f  | %5.3f |\n', CPUtimeSYM , mean(MSESYM), std(MSESYM) ) ;
+fprintf('|       EDMD      |  %8.3f   |  %5.3f  | %5.3f |\n', CPUtimeEDMD , mean(MSEEDMD), std(MSEEDMD) ) ;
+fprintf('|       GPR       |  %8.3f   |  %5.3f  | %5.3f |\n', CPUtimeGPR , mean(MSEGPR), std(MSEGPR) ) ;
+fprintf('|      TBATS      |  %8.3f   |  %5.3f  | %5.3f |\n', CPUtimeTBATS ,mean(MSETBATS), std(MSETBATS))
 fprintf('|_________________|_____________|_________|_______|\n\n')

@@ -170,6 +170,20 @@ for ind = 1:nbXP
     OTD.STFT.GPR(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
     OTD.RS.GPR(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
     
+    % TBATS
+    filename = strcat('../../Results/sigTBATSAHM/extTBATS_',num2str(ind),'.csv') ;
+    xxTBATS = table2array( readtable(filename,'Range','B:B') ) ;
+    
+    [~, SSTxx, ~] = sqSTFT_C(xxTBATS, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 0, 0) ;
+    [~, ~, conceFTxx, ~] = ConceFT_sqSTFT_C(xxTBATS, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
+    [STFTxx, ~] = STFT_C(xxTBATS, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10) ;
+    [~, RSxx, ~, ~] = ConceFT_rsSTFT(xxTBATS, basicTF.fmin, basicTF.fmax, basicTF.df, basicTF.hop, basicTF.win, 1, 10, 1) ;
+    
+    OTD.SST.TBATS(ind) = slicedOT(SSTxx(:,n0:nf), SSTxx0) ;
+    OTD.conceFT.TBATS(ind) = slicedOT(conceFTxx(:,n0:nf), conceFTxx0) ;
+    OTD.STFT.TBATS(ind) = slicedOT(STFTxx(:,n0:nf), STFTxx0) ;
+    OTD.RS.TBATS(ind) = slicedOT(RSxx(:,n0:nf), RSxx0) ;
+    
 end
 
 BiasXP.LSE = MeanLSE ;
@@ -187,5 +201,11 @@ CPUtimeXP.EDMD = mean(EDMDtime) ;
 BiasXP.GPR = mean(MeanGPR,2) ;
 VarianceXP.GPR = mean(VarGPR,2) ;
 CPUtimeXP.GPR = mean(GPRtime) ;
+
+dataTBATS = table2array( readtable('../../Results/PerfAHM_TBATS.csv','Range','B:D','TreatAsEmpty','NA') ) ;
+BiasXP.TBATS = dataTBATS(:,1) ;
+VarianceXP.TBATS = dataTBATS(:,2) ;
+CPUtimeXP.TBATS = dataTBATS(~isnan(dataTBATS(:,3)),3) ;
+
 
 save('../../Results/PerfAHM','BiasXP','VarianceXP','CPUtimeXP','OTD','extMval');

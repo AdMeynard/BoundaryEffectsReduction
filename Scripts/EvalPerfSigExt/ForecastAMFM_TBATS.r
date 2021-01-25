@@ -70,11 +70,9 @@ for (ind in 1:nbXP){
 }
 end_time = Sys.time()
 
-BiasXP_TBATS = colMeans(MeanTBATS)
+BiasXP_TBATS = rowMeans(MeanTBATS)
 VarianceXP_TBATS = colMeans(VarTBATS)
-CPUtimeXP_TBATS = (2/nbXP)*(end_time - start_time)
-
-MSE_TBATS = BiasXP_TBATS^2 + VarianceXP_TBATS
+CPUtimeXP_TBATS = (1/nbXP)*(end_time - start_time)
 
 length(CPUtimeXP_TBATS) = length(BiasXP_TBATS)
 ResTBATS=cbind(BiasXP_TBATS,VarianceXP_TBATS,CPUtimeXP_TBATS)
