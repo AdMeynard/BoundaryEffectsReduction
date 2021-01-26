@@ -75,9 +75,9 @@ imagesc(tt(1:basicTF.hop:end),tfrsqticEXT*fs,log1p(abs(SSTxxLSE)/5e1)); xlim([0 
 xlabel('Time (s)'); ylabel('Frequency (Hz)');
 set(gca,'fontsize',24) ;
 
-dim = [.4625 0.12 .027 0.865] ;
+dim = [.4325 0.12 .0575 0.865] ;
 annotation('rectangle',dim,'Color','red','linewidth',3,'linestyle','--') ;
-dim = [.968 0.12 .027 0.865] ;
+dim = [.938 0.12 .0575 0.865] ;
 annotation('rectangle',dim,'Color','red','linewidth',3,'linestyle','--') ;
 
 figure;
