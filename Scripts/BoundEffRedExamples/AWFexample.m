@@ -81,6 +81,22 @@ dim = [.968 0.12 .027 0.865] ;
 annotation('rectangle',dim,'Color','red','linewidth',3,'linestyle','--') ;
 
 figure;
+subplot('Position',[0.062 0.516 0.9 0.37]);
+imagesc(tfrsqtic*fs,t(1:basicTF.hop:end),log1p(abs(SSTx')/5e1)); colormap(1-gray);
+ylim([t(end)-0.6*twin/2 t(end)]); %yticks([200 220 240]);
+ylabel('Time (s)','rotation',270,'VerticalAlignment','top'); xlabel('Frequency (Hz)');
+set(gca,'fontsize',24) ;
+set(gca,'yticklabelrotation',270) ;
+set(gca,'xaxisLocation','top')
+subplot('Position',[0.062 0.02 0.9 0.37]);
+imagesc(tfrsqticEXT*fs,tt(1:basicTF.hop:end),log1p(abs(SSTxxLSE')/5e1)); colormap(1-gray);
+ylim([t(end)-0.6*twin/2 t(end)]); %yticks([200 220 240]);
+ylabel('Time (s)','rotation',270,'VerticalAlignment','top'); xlabel('Frequency (Hz)');
+set(gca,'fontsize',24) ;
+set(gca,'yticklabelrotation',270) ;
+set(gca,'xaxisLocation','top');
+
+figure;
 subplot('Position',[0.055 0.12 0.435 0.865]);
 imagesc(t(1:basicTF.hop:end),tfrsqtic*fs,log1p(abs(Vx)/5e1)); axis xy ; colormap(1-gray);
 xlabel('Time (s)'); ylabel('Frequency (Hz)');

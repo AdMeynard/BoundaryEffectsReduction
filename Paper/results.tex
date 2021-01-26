@@ -203,12 +203,13 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
 \label{fig:THO.failure}
 \end{figure} 
 
-Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also the cardiogenic artifact which reflects the hemodynamic component. Fig.~\ref{fig:resp.2} displays the ordinary SST and the boundary-free SST of a 180-second-long extract of this signal, sample at $125$~Hz. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. The performance index of this representation takes the value $D=0.314$. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $69\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also the cardiogenic artifact which reflects the hemodynamic component. The top of Fig.~\ref{fig:resp.2} displays the ordinary SST and the boundary-free SST of a 180-second-long extract of this signal, sample at $125$~Hz. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. The middle of Fig.~\ref{fig:resp.2} show a zoom near the right-boundary of the ordinary SST, while the bottom of Fig.~\ref{fig:resp.2} respectively show the respective zoom on the boundary-free SST. In this area, the boundary-free SST makes it possible to disentangle the components contained in the signal. Moreover, the performance index of this representation takes the value $D=0.314$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $69\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{Resp2comp.eps}
-\caption{Ordinary SST (left) and boundary-free SST (right) of a two-component respiratory signal. The red dashed rectangle highlights the area where boundary effects may appear.}
+\includegraphics[width=.48\textwidth]{Resp2compZOOM.eps}
+\caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangle; these images are rotated 90 degrees clockwise.}
 \label{fig:resp.2}
 \end{figure} 
 
