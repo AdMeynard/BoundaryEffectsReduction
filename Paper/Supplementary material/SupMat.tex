@@ -837,18 +837,17 @@ Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundar
 \label{tab:otd.ecg}
 \end{table}
 
-{\color{red}
+
 \section{Application to a Multicomponent Cardiac Signal}
-We consider a cardiac signal, namely an arterial blood pressure recording, sampled at $1000$~Hz. In addition to the blood pressure measurement, this signal contains a slow varying component, which is the respiratory component. Fig.~\ref{fig:abp} displays the ordinary and boundary-free SSTs of a 150-second-long extract of this signal, obtained via {\sf BoundEffRed}. This TF analysis brings out both components---the cardiac component, the most energetic, is located around the fundamental frequency $1$~Hz and its multiples, while the respiratory component, less visible, is located around $0.2$~Hz. The performance index of this representation takes the value $D=0.850$. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $15\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+We consider a cardiac signal, namely an arterial blood pressure recording, sampled at $1000$~Hz. In addition to the blood pressure measurement, this signal contains a slow varying component, which is the respiratory component. Fig.~\ref{fig:abp} displays the ordinary and boundary-free SSTs of a 150-second-long extract of this signal. This TF analysis brings out both components---the cardiac component, the most energetic, is located around the fundamental frequency $1$~Hz and its multiples, while the respiratory component, less visible, is located around $0.2$~Hz. The performance index of this representation takes the value $D=0.850$. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $15\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
 
 \begin{figure}
 \centering
-\includegraphics[width=.48\textwidth]{ABPsst.eps}
-\includegraphics[width=.48\textwidth]{ABPberSST.eps}
-\caption{Ordinary SST (left) and boundary-free SST (right) of an arterial blood pressure recording}
+\includegraphics[width=\textwidth]{ABPsst.eps}
+\caption{Ordinary SST (left) and boundary-free SST (right) of an arterial blood pressure recording. The red dashed rectangle highlights the
+area where boundary effects may appear.}
 \label{fig:abp}
 \end{figure} 
-}
 
 
 \bibliographystyle{IEEEtran}

@@ -62,14 +62,19 @@ figure;
 subplot(3,2,[1 2]);
 plot(t,x,'k','linewidth',2); axis tight ; xlim([t(end)-15 t(end)]) ;
 xlabel('Time (s)'); ylabel('Signal'); 
-set(gca,'fontsize',18); grid on;
+set(gca,'fontsize',22); grid on;
 
 subplot(3,2,[3 5]);
 imagesc(tsst,fsst,log1p(abs(sstS)/1e1)); axis xy; xlim([t(end)-15 t(end)])
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(1-gray)
-set(gca,'fontsize',18);
+set(gca,'fontsize',22);
 
 subplot(3,2,[4 6]);
 imagesc(tsstEXT,fsst,log1p(abs(sstLSE)/1e1)); axis xy; xlim([t(end)-15 t(end)])
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(1-gray)
-set(gca,'fontsize',18);
+set(gca,'fontsize',22);
+
+dim = [.42 0.11 .045 0.515] ;
+annotation('rectangle',dim,'Color','red','linewidth',2,'linestyle','--') ;
+dim = [.86 0.11 .045 0.515] ;
+annotation('rectangle',dim,'Color','red','linewidth',2,'linestyle','--') ;
