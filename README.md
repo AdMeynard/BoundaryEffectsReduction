@@ -1,7 +1,7 @@
 ## Overview
 This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
 
-<table>
+<table style="width:100%">
   <tr>
     <th><img src="Animations/WithoutBoundEffRed.gif" width=300 height=217></th>
     <th><img src="Animations/WithBoundEffRed.gif" width=300 height=217></th>
