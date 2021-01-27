@@ -44,8 +44,7 @@ xxTRUE = ( xtot(n0:(nf+L)) - mu ) / s ;
 
 figure;
 plot(tt,xxLSE,tt,xxTRUE,'--',t,x,'linewidth',2); grid on;
-ylabel('Signals'); axis tight; xlim([t(end)-1.5*extSEC tt(end)]);
-xticks([]);
+ylabel('Signals'); axis tight; xlim([t(end)-18 t(end)+10]); %xlim([t(end)-1.5*extSEC tt(end)]);
 legend({'{\sf SigExt} extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
 set(gca,'fontsize',18);
 

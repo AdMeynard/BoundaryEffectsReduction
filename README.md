@@ -1,7 +1,8 @@
 ## Overview
 This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
 
-![](Animations/RTexample.gif)
+![](Animations/WithBoundEffRed.gif)
+![](Animations/WithoutBoundEffRed.gif)
 
 ***WARNING:*** This algorithm has been designed to work optimally with MATLAB R2020a. We do not guarantee that it will work with earlier versions.
 
