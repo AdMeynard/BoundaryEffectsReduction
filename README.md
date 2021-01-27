@@ -3,12 +3,12 @@ This repository contains all the files necessary to perform the algorithm **Boun
 
 <table style="width:100%">
   <tr>
-    <th><img src="Animations/WithoutBoundEffRed.gif" width=300 height=217></th>
-    <th><img src="Animations/WithBoundEffRed.gif" width=300 height=217></th>
+    <th width="50%"><img src="Animations/WithoutBoundEffRed.gif" width=300 height=217></th>
+    <th width="50%"><img src="Animations/WithBoundEffRed.gif" width=300 height=217></th>
   </tr>
   <tr>
-    <th>Ordinary Syncrosqueezing transform of a cardiac signal</th>
-    <th>Boundary-free Syncrosqueezing transform of the same signal, obtained via BoundEffRed</th>
+    <th width="50%">Ordinary Syncrosqueezing transform of a cardiac signal</th>
+    <th width="50%">Boundary-free Syncrosqueezing transform of the same signal, obtained via BoundEffRed</th>
   </tr>
  </table>
 
