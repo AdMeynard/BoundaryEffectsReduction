@@ -3,8 +3,8 @@ This repository contains all the files necessary to perform the algorithm **Boun
 
 <table style="width:100%">
   <tr>
-    <th width="50%"><img src="Animations/WithoutBoundEffRed.gif" width=400 height=290></th>
-    <th width="50%"><img src="Animations/WithBoundEffRed.gif" width=400 height=290></th>
+    <th width="50%"><img src="Animations/WithoutBoundEffRed.gif" width=450 height=326></th>
+    <th width="50%"><img src="Animations/WithBoundEffRed.gif" width=450 height=326></th>
   </tr>
   <tr>
     <th width="50%">Ordinary syncrosqueezing transform of a cardiac signal</th>
