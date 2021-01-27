@@ -14,10 +14,12 @@ function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod
 %   ForecastTime: forecastion iteration time
 %   TFRtime: TF representation update time
 
-if isempty(varargin) && VideoWriting==1
-    error('The video name must be specified')
-elseif ~isempty(varargin) && VideoWriting==1
-    VideoName = ['../../Results/' varargin{1}] ;
+if VideoWriting==1
+    if isempty(varargin)
+        error('The video name must be specified')
+    else
+        VideoName = ['../../Results/' varargin{1}] ;
+    end
 end
 
 
@@ -97,7 +99,7 @@ while n1<Ntot
     
     %% Display
     
-    imagesc(t,freqs,log1p(abs(TFRcurrent)/5e0)); %colormap(1-gray); 
+    imagesc(t,freqs,log1p(abs(TFRcurrent)/5e0)); colormap(1-gray); 
     axis xy; % xlabel('Time (s)'); ylabel('Frequency (Hz)');
     drawnow;
     
