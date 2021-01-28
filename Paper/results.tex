@@ -89,7 +89,9 @@ First, when the noise is weak, the variance of the forecasting estimator is dram
 
 As anticipated by Theorem~\ref{th:error}, the variance of the estimator decreases linearly with $\frac1K$ as long as the dataset size is large enough. Indeed, in the log-log plot displayed in Fig.~\ref{fig:res.size.sine}, as soon as $K>700$, each of the three curves representing the forecasting variance as a function of $K$ tends towards an asymptote of slope $-1$. 
 %
+{\color{red}
 In practice, the asymptotic behavior of {\sf SigExt}, illustrated here on a synthetic signal, can be generalized to the study of real-life signals, as long as the duration of the recorded signal largely exceeds that of the desired extension, which allows the user to set $K\gg L$.
+}
 
 
 This study overlooks the analysis of the influence of the parameter $M$, whose influence on the value of the experimental variance is numerically not significant as long as $M\ll 2K$ and $\ell<M$. The choice of this parameter is especially crucial when the deterministic component of the signal is no longer stationary. The AHM, discussed below, is an example.
@@ -111,12 +113,17 @@ and the instantaneous phases are such that:
 \end{align*}
 Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $P=750$, $p_1=10$, $p_2=23$.
 
+{\color{red}
 \paragraph{Influence of the subsignals length $M$}
 To evaluate the forecasting quality, {\sf SigExt} is applied to $1000$ realizations of the above-described signal. We forecast signal extensions of $0.1$~s, \ie~$L=700$. Table~\ref{tab:mse.sine} shows the resulting mean and standard deviation (SD) of the experimental MSE, according to three different values of the subsignals length $M$. Note that choosing a too small $M$ does not provide enough information to forecast the signal satisfactorily. Furthermore, a too large $M$ makes the algorithm insensitive to local nonstationarities produced by frequency variations. The user must then make a compromise on the choice of $M$ in order to optimize the performance of the algorithm. A choice of $M$ such that the subsignals contain about a dozen oscillations is generally appropriate.
+}
 
 \paragraph{Comparison of the extensions methods}
 The same set of experiments is run on the extension methods outlined in section~\ref{sse:methods}. The results, displayed in Table~\ref{tab:mse.sine}, show that the naive extension we propose gives satisfying results. Indeed, when the subsignal length $M$ is optimally chosen, {\sf SigExt} performance is of the same order as that of ore sophisticated methods, like GPR or TBATS. Besides, even though these methods could be slightly more robust to perturbations, they are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
+%
+{\color{red}
 Besides, the last column of Table~\ref{tab:mse.sine} gives the performance index $D$ of the boundary-free STFT associated with each extension method. This illustrates the ability of our algorithm to reduce boundary effects to a level comparable to what is possible with the GPR or TBATS extensions. The performance of {\sf BoundEffRed} on other TF representations is more thoroughly analyzed on real-life signals in the following.
+}
 
 \begin{table}
 \centering
@@ -201,17 +208,29 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
 \includegraphics[width=.48\textwidth]{THOfailure.eps}
 \caption{Extensions of a segment of the respiratory signal (left) where {\sf SigExt} is outperformed by the EDMD and Symmetric extensions. Corresponding SST (top-right) and boundary-free SST obtained with {\sf SigExt} (bottom-right).}
 \label{fig:THO.failure}
-\end{figure} 
+\end{figure}
 
-Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also the cardiogenic artifact which reflects the hemodynamic component~\cite{Smith94recognition}. The top of Fig.~\ref{fig:resp.2} displays the ordinary SST and the boundary-free SST of a 180-second-long extract of this signal, sample at $125$~Hz. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. The middle of Fig.~\ref{fig:resp.2} show a zoom near the right-boundary of the ordinary SST, while the bottom of Fig.~\ref{fig:resp.2} respectively show the respective zoom on the boundary-free SST. In this area, the boundary-free SST makes it possible to disentangle the components contained in the signal. Moreover, the performance index of this representation takes the value $D=0.314$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $69\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+{\color{red}
+\subsubsection{Two-Component Respiratory Signal}
+Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also a cardiac component known as the cardiogenic artifact~\cite{Smith94recognition}. The top of Fig.~\ref{fig:resp.2} shows an excerpt of the measured signal, as well as a 10-second-long {\sf SigExt} extension. Below, the simultaneously recorded ECG signal emphasizes the coincidences between the cardiogenic artifact of the respiratory signal and the ECG.
+
+\begin{figure}
+\centering
+\includegraphics[width=.48\textwidth]{Resp2.eps}
+\caption{Two-component respiratory signal (top), and the associated {\sf SigExt} extension (blue); the simultaneously recorded ECG signal is below.}
+\label{fig:resp.2}
+\end{figure}
+
+The top of Fig.~\ref{fig:resp.2.sst} displays the ordinary SST and the boundary-free SST of this signal, sampled at $125$~Hz. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. The middle of Fig.~\ref{fig:resp.2.sst} show a zoom near the right-boundary of the ordinary SST, while the bottom of Fig.~\ref{fig:resp.2.sst} respectively show the respective zoom on the boundary-free SST. In this area, the boundary-free SST makes it possible to disentangle the components contained in the signal. Moreover, the performance index of this representation takes the value $D=0.205$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $80\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{Resp2comp.eps}
 \includegraphics[width=.48\textwidth]{Resp2compZOOM.eps}
-\caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangles; these images are rotated 90 degrees clockwise.}
-\label{fig:resp.2}
-\end{figure} 
+\caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangles; these images are rotated 90 degrees clockwise. The window length for the SSTs is 35~seconds.}
+\label{fig:resp.2.sst}
+\end{figure}
+}
 
 \subsubsection{Photoplethysmogram}
 \label{ssse:ppg}

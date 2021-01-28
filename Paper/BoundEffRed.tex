@@ -70,7 +70,7 @@ A major shortcoming of this technique occurs when analyzing the signal $x$ {\em 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{PPGsig.eps}
-\caption{A segment of PPG signal (top) and the right boundary of a TF representation determined by the SST without extension (bottom left), and the right boundary of a TF representation determined by the SST with the proposed boundary effect reduction algorithm by forecasting (bottom right). The window length for the SST is 12~seconds. A video of these real-time SSTs is available online at \url{https://github.com/AdMeynard/BoundaryEffectsReduction}}
+\caption{A segment of PPG signal (top) and the right boundary of a TF representation determined by the SST without extension (bottom left), and the right boundary of a TF representation determined by the SST with the proposed boundary effect reduction algorithm by forecasting (bottom right). The window length for the SST is 12~seconds. Videos of these real-time SSTs are available online at \url{https://github.com/AdMeynard/BoundaryEffectsReduction}}
 \label{fig:ex.intro}
 \end{figure}
 
@@ -79,8 +79,10 @@ Attempts to minimize the boundary effects generally consists in softening the di
 Another natural idea, the second class, consists of carrying out a preliminary step of extending, or forecasting, the signal beyond its boundaries. Due to its flexibility, various forecasting schemes have been proposed. For example, there exist simple extension schemes that do not take into account the dynamical behavior of the signal, such as zero-padding, periodic extension, symmetric extension~\cite{Kharitonenko02wavelet,Chen95symmetric}, or polynomial extrapolation~\cite{Williams97discrete}. 
 %
 There exist extension schemes based on physically relevant dynamical models, such as the Extended Dynamic Mode Decomposition~\cite{Williams15data} (EDMD) and the Gaussian process regression~\cite{Rasmussen06gaussian,Roberts13Gaussian} (GPR).
-% 
-In speech processing, dynamic mode predictors have also been proposed~\cite{Vargas11speech} to forecast signals falling into the so-called \textit{source--filter} model. This gradient-based technique rely on the shadowing approach proposed in~\cite{Grebogi90shadowing}. 
+%
+{\color{red}
+In speech processing, dynamic mode predictors have also been proposed~\cite{Vargas11speech} to forecast signals falling into the so-called \textit{source--filter} model. This gradient-based technique rely on the shadowing approach proposed in~\cite{Grebogi90shadowing}.
+}
 %
 There also exist extension schemes based on stochastic models, such as the Trigonometric, Box-Cox transformation, ARMA errors, Trend and Seasonal components (TBATS) algorithm~\cite{DeLivera11forecasting}, the dynamic linear models \cite{west2006bayesian}. 
 %
@@ -97,7 +99,7 @@ In this paper, we propose a fast extension algorithm based on a simple dynamical
 \item \emph{Run the local analysis tool on the extended signal.} Assuming that the support of the analysis window is smaller than $2\Delta$, the local analysis near the boundary of $I$ is now possible without lack of information thanks to knowledge brought by the extension. 
 \end{enumerate}
 
-Thus, assuming that the quality of the extension step is sufficient, the analysis results obtained that way will be less sensitive to the boundary effects than the result of the analysis tool applied directly to the nonextended signal. We claim and prove that forecasting oscillatory signals based on the simple dynamical model combined with the simple least square approach is sufficient for reducing the boundary effects for the TF analysis, or other kernel-based analysis. To our knowledge, such theoretical analysis does not exist in the literature. See the bottom right of Fig.~\ref{fig:ex.intro} for a snapshot of the result. The main benefit of this simple approach is a numerically efficient solution with a theoretical guarantee for real-time analysis purposes. 
+Thus, assuming that the quality of the extension step is sufficient, the analysis results obtained that way will be less sensitive to the boundary effects than the result of the analysis tool applied directly to the nonextended signal. We claim and prove that forecasting oscillatory signals based on the simple dynamical model combined with the simple least square approach is sufficient for reducing the boundary effects for the TF analysis, or other kernel-based analysis. To our knowledge, such theoretical analysis does not exist in the literature. See the bottom of Fig.~\ref{fig:ex.intro}---in particular, the regions indicated by the dashed boxes---for a snapshot of the result. The main benefit of this simple approach is a numerically efficient solution with a theoretical guarantee for real-time analysis purposes. 
 
 The paper is organized in the following way. In section~\ref{se:algo}, we provide an extension method based on a linear dynamic model. We derive the corresponding algorithm for boundary effects reduction. In section~\ref{se:theoretical}, we show that the dynamic model we consider is sufficient to extend signals takings the form of sums of sine waves. An evaluation of the theoretical performance of our algorithm on a class of signals, the sums of sine waves, is given in section~\ref{se:theoretical}. In section~\ref{se:results}, we compare our extension method with more sophisticated methods such as EDMD, GPR, or TBATS. We show that our algorithm gives fast results of reasonable quality. Finally, we evaluate the performance of our boundary effects reduction algorithm on biomedical signals, such as respiratory signals, and compare it to the theoretical results. 
 

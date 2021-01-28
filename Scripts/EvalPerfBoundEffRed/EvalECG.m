@@ -1,4 +1,4 @@
-%% Evaluate BoundEffRed on an ECG
+%% Evaluation of BoundEffRed on an ECG signal
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

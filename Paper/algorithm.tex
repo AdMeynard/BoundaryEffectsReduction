@@ -64,7 +64,7 @@ The pseudo-code of the proposed real-time algorithm to reduce boundary effects o
 
 
 \paragraph{Dynamical Model} 
-Establishing a dynamical model consists of determining the relation linking $\bY$ to $\bX$, that is finding a function $f$ so that
+Establishing a dynamical model means determining the relation linking $\bY$ to $\bX$; that is, finding a function $f$ so that
 \begin{equation}
 \bY = f(\bX)\ .
 \label{eq:generic.model}
@@ -83,9 +83,9 @@ where $\bA\in\RR^{M\times M}$. In other words, we adopt a classical strategy in 
 %From the Takens' embedding perspective~\cite{Takens81detecting}, $\bX$ can be viewed as a lag map. Under the manifold assumption of the intrinsic phase space that hosts the dynamics, $f$ describes the dynamics supported on the manifold space, and $\bA$ approximates the dynamics on the manifold.
 %}
 
-
+{\color{red}
 \paragraph{Forecasting}
-The forecasting method consists in estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$. 
+Determining the forecasting amounts to estimating the unknown matrix $\bA$. Indeed, let $\tilde\bA$ denotes the estimate of $\bA$. 
 %
 We then obtain the forecasting of $\bx_{k+\ell}$ by recursively applying the linear relation~\eqref{eq:dyn.model}:
 \begin{equation*}
@@ -97,6 +97,7 @@ Let $\be_M$ denote the unit vector of length $M$ given by $\be_M = \begin{pmatri
 \tilde \bx [N-1+\ell] = \be_M^T\tilde\bx_{K+\ell} = \balpha^{(\ell)}\bx_{K}\ ,
 \end{equation}  
 where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$, \ie~$\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell$.
+}
 
 \paragraph{Model Estimation} To estimate the matrix $\bA$, we consider the simple but numerically efficient least square estimator. That is, we solve the following problem:
 \begin{equation}

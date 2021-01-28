@@ -1,4 +1,4 @@
-%% Evaluate BoundEffRed on an PPG
+%% Evaluate BoundEffRed on a PPG signal
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

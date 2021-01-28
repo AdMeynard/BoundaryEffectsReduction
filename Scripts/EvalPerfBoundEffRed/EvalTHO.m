@@ -1,4 +1,4 @@
-%% Evaluate BoundEffRed on a THO
+%% Evaluate BoundEffRed on a respiratory signal
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

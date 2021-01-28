@@ -1,13 +1,14 @@
 function [TFRtot, ForecastTime, TFRtime] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting,varargin)
 % BOUNDEFFRED_RT Real-time implementation of BoundEffRed
-% Usage:	[TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting)
+% Usage:	[TFRtot, dt] = BoundEffRed_RT(xtot,fs,forecastMethod,basicTF,VideoWriting,VideoName)
 %
 % Input:
 %   xtot: signal to analyze
 %   fs: sampling frequency
 %   forecastMethod: forecasting method
 %   basicTF: time-frequency representation and associated parameters
-%   VideoWriting: When set to 1, the real-time TF represention image is recorded 
+%   VideoWriting: When set to 1, the real-time TF represention image is recorded
+%   VideoName: name of the video to be recorded when VideoWriting=1
 %
 % Output:
 %   TFRtot: Whole time-frequency representation

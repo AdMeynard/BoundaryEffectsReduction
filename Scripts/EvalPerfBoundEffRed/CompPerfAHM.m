@@ -1,4 +1,4 @@
-%% Evaluation of the Performance of SigExt on a AHM oscillatory signal
+%% Evaluation, on a AHM signal, of the performance of SigExt and alternative extension methods for the reduction of boundary effects
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

@@ -1,4 +1,4 @@
-%% Evaluation on a AHM signal of the sunsignals length influence on SigExt's performance
+%% Evaluation, on a AHM signal, of the influence of the subsignals' length on SigExt's performance
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 

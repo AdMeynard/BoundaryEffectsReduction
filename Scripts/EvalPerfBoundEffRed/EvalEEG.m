@@ -1,4 +1,4 @@
-%% Evaluate BoundEffRed on an EEG
+%% Evaluate BoundEffRed on a EEG signal
 % Author: Adrien MEYNARD
 % Email: adrien.meynard@duke.edu
 
