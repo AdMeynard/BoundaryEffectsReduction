@@ -1,8 +1,16 @@
 ## Overview
 This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
 
-![](Animations/WithBoundEffRed.gif)
-![](Animations/WithoutBoundEffRed.gif)
+<table style="width:100%">
+  <tr>
+    <th width="50%"><img src="Animations/WithoutBoundEffRed.gif" width=450 height=326></th>
+    <th width="50%"><img src="Animations/WithBoundEffRed.gif" width=450 height=326></th>
+  </tr>
+  <tr>
+    <th width="50%">Ordinary syncrosqueezing transform of a cardiac signal</th>
+    <th width="50%">Boundary-free syncrosqueezing transform of the same signal, obtained via BoundEffRed</th>
+  </tr>
+ </table>
 
 ***WARNING:*** This algorithm has been designed to work optimally with MATLAB R2020a. We do not guarantee that it will work with earlier versions.
 
