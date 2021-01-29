@@ -1,3 +1,7 @@
+%% Run the extension methods, and the associated BoundEffRed TF representations on a ECG signal
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');

@@ -1,3 +1,7 @@
+%% Run the extension methods, and the associated BoundEffRed TF representations on a blood pressure signal
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');
@@ -22,9 +26,6 @@ mu = mean(x) ;
 s = std(x) ;
 x = (x - mu)/s ;
 
-xf = [xtot((nf+1):end); xtot(1:nf)] ;
-xf = (xf - mu)/s ;
-
 %% Forecasting
 
 HOP = 1 ;
@@ -35,7 +36,7 @@ extK = round( 2.5*extM );  % number of points to estimate A / size of datasets
 
 method.name = 'SigExt' ;
 tic; 
-xxLSE = forecasting(xf,L,HOP,extK,extM,method);
+xxLSE = forecasting(x,L,HOP,extK,extM,method);
 xxLSE = [x; xxLSE] ;
 LSEtime = toc;
 
@@ -43,6 +44,14 @@ xxTRUE = ( xtot(n0:(nf+L)) - mu ) / s ;
 
 t = linspace(0, (N-1)/fs, N) ;
 tt = linspace(0, (N-1+L)/fs, N+L) ;
+
+% display the SigExt extension
+tm = t(end)-12 ;
+figure;
+plot(tt-tm,xxLSE,tt-tm,xxTRUE,'--',t-tm,x,'linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([0 t(end)-tm+3]);
+legend({'SigExt extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',24);
 
 %% SST and STFT
 basicTF.hop = 10 ;
@@ -148,6 +157,6 @@ fprintf('=======TF Representations====\n')
 fprintf(' ____________________________\n')
 fprintf('| Extension Method | Index D | \n')
 fprintf('|------------------|---------|\n')
-fprintf('|       STFT       |  %6.3f |\n', stftOTDLSE/stftOTDshort)
-fprintf('|        SST       |  %6.3f |\n', sstOTDLSE/sstOTDshort)
+fprintf('|       STFT       | %6.3f  |\n', stftOTDLSE/stftOTDshort)
+fprintf('|        SST       | %6.3f  |\n', sstOTDLSE/sstOTDshort)
 fprintf('|__________________|_________|\n')

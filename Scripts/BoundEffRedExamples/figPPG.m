@@ -1,4 +1,7 @@
-%% Fig PPG
+%% Fig. 1 in the paper: comparison between the ordinary and the boundary-free SSTs on a modified PPG signal
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');

@@ -1,3 +1,7 @@
+%% Run the extension methods, and the associated BoundEffRed TF representations on a 2-component respiratory signal
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+
 clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');
@@ -17,7 +21,7 @@ n0 = 1 ;
 N = ceil(4*length(xtot)/5) ;
 nf = n0 + N-1 ;
 
-x = xtot(n0:nf);
+x = xtot(n0:nf) ;
 mu = mean(x) ;
 s = std(x) ;
 x = (x - mu)/s ;
@@ -40,6 +44,14 @@ xxTRUE = ( xtot(n0:(nf+L)) - mu ) / s ;
 
 t = linspace(0, (N-1)/fs, N) ;
 tt = linspace(0, (N-1+L)/fs, N+L) ;
+
+% display the SigExt extension
+tm = t(end)-25 ;
+figure;
+plot(tt-tm,xxLSE,tt-tm,xxTRUE,'--',t-tm,x,'linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([0 t(end)-tm+10]);
+legend({'SigExt extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
+set(gca,'fontsize',24);
 
 %% SST and STFT
 basicTF.hop = 5 ;
