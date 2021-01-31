@@ -6,16 +6,17 @@ clear all; close all; clc;
 addpath(genpath('../../TimeFrequencyScaleRep'));
 addpath('../../Algorithm/');
 
-%% load AWF
+%% load Respiratory signal
 addpath ../../Signals/
-data = load('respII');
+data = load('RespII');
 
-xtot = data.AWF ;
-fs = data.fs.AWF ; % sampling frequency
+xtot = data.RESP ;
+fs = 1/(data.timeRESP(2)-data.timeRESP(1)) ; % sampling frequency
 
-HOP0 = 5 ;
+HOP0 = 1 ;
 xtot = xtot(1:HOP0:end) ;
 fs = fs/HOP0 ;
+tRESP = data.timeRESP(1:HOP0:end) ;
 
 n0 = 1 ;
 N = ceil(4*length(xtot)/5) ;
@@ -29,7 +30,7 @@ x = (x - mu)/s ;
 %% Forecasting
 
 HOP = 1 ;
-extSEC = 17.5 ; % the extension is of extSEC second
+extSEC = 10; % the extension is of extSEC second
 L = round( extSEC*fs ) ;
 extM = round( 1.5*L ) ; % dimension of embedding / signals length
 extK = round( 2.5*extM );  % number of points to estimate A / size of datasets
@@ -42,19 +43,41 @@ LSEtime = toc;
 
 xxTRUE = ( xtot(n0:(nf+L)) - mu ) / s ;
 
-t = linspace(0, (N-1)/fs, N) ;
-tt = linspace(0, (N-1+L)/fs, N+L) ;
+t = tRESP(n0:nf) ; %linspace(0, (N-1)/fs, N) ;
+tt = tRESP(n0:(nf+L)) ;%linspace(0, (N-1+L)/fs, N+L) ;
 
 % display the SigExt extension
-tm = t(end)-25 ;
+tm = t(end)-12.5 ;
+
 figure;
+subplot('Position',[0.045 0.52 0.942 0.465]);
 plot(tt-tm,xxLSE,tt-tm,xxTRUE,'--',t-tm,x,'linewidth',2); grid on;
-xlabel('Time (s)'); ylabel('Signals'); axis tight; xlim([0 t(end)-tm+10]);
+ylabel('Respiratory signal'); axis tight; xlim([0 t(end)-tm+7.5]);
+xticklabels([]);
 legend({'SigExt extension','Ground truth extension','Original signal'},'location','northwest','interpreter','latex');
 set(gca,'fontsize',24);
 
+xECG = data.ECG ;
+xECG = (xECG - mean(xECG))/std(xECG) ;
+tECG = data.timeECG ;
+
+subplot('Position',[0.045 0.255 0.942 0.265]);
+plot(tECG-tm,xECG,'k','linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('ECG signal'); axis tight; xlim([0 t(end)-tm+7.5]);
+set(gca,'fontsize',24);
+
+annotation('line',[0.142 0.142],[0.672 0.505],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.173 0.173],[0.584 0.502],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.205 0.205],[0.582 0.497],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.301 0.301],[0.661 0.506],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.333 0.333],[0.595 0.504],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.456 0.456],[0.595 0.477],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.487 0.487],[0.595 0.513],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.586 0.586],[0.623 0.504],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.619 0.619],[0.603 0.516],'Color','m','LineWidth',3,'LineStyle',':');
+
 %% SST and STFT
-basicTF.hop = 5 ;
+basicTF.hop = 3 ;
 alpha = 0.1*sqrt(2*log(100)) ; % ratio window width/window length
 twin = 2*extSEC/alpha ;
 basicTF.win = 2*floor(twin*fs/2)+1 ;
@@ -70,8 +93,8 @@ df = (fmax-fmin)/nfreq ;
 % On the estimated extended signal 
 [VxxLSE, SSTxxLSE, ~, tfrsqticEXT] = ConceFT_sqSTFT_C(xxLSE, fmin, fmax,df, basicTF.hop, basicTF.win, 1, 10, 1, 0, 0) ;
 
-tc = t-100 ;
-ttc = tt-100 ;
+tc = t-10 ;
+ttc = tt-10 ;
 
 % SST
 figure;
@@ -91,6 +114,33 @@ annotation('rectangle',dim,'Color','red','linewidth',3,'linestyle','--') ;
 dim = [.938 0.12 .0575 0.865] ;
 annotation('rectangle',dim,'Color','red','linewidth',3,'linestyle','--') ;
 
+ax = [0.255 0.255] ;
+ay = [0.325 0.265] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
+ax = [0.322 0.322] ;
+ay = [0.235 0.295] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
+ax = [0.476 0.476] ;
+ay = [0.212 0.272] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
+ax = [0.978 0.978] ;
+ay = [0.212 0.272] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
+
+ax = [0.246 0.246] ;
+ay = [0.830 0.770] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+ax = [0.344 0.344] ;
+ay = [0.708 0.768] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+ax = [0.481 0.481] ;
+ay = [0.709 0.769] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+ax = [0.971 0.971] ;
+ay = [0.709 0.769] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+
+
 figure;
 subplot('Position',[0.062 0.516 0.9 0.37]);
 imagesc(tfrsqtic*fs,tc(1:basicTF.hop:end),log1p(abs(SSTx')/5e1)); colormap(1-gray);
@@ -106,6 +156,20 @@ ylabel('Time (s)','rotation',270,'VerticalAlignment','top'); xlabel('Frequency (
 set(gca,'fontsize',24) ;
 set(gca,'yticklabelrotation',270) ;
 set(gca,'xaxisLocation','top');
+
+ax = [0.796 0.736] ;
+ay = [0.724 0.724] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+ax = [0.276 0.216] ;  
+ay = [0.670 0.670] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
+
+ax = [0.797 0.737] ;
+ay = [0.103 0.103] ;
+annotation('arrow',ax,ay,'Color','blue','linewidth',3)
+ax = [0.281 0.221] ;  
+ay = [0.069 0.069] ;
+annotation('arrow',ax,ay,'Color','green','linewidth',3)
 
 %STFT
 figure;

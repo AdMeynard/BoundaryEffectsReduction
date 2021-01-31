@@ -212,22 +212,22 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
 
 {\color{red}
 \subsubsection{Two-Component Respiratory Signal}
-Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also a cardiac component known as the cardiogenic artifact~\cite{Smith94recognition}. The top of Fig.~\ref{fig:resp.2} shows an excerpt of the measured signal, along with a 10-second-long {\sf SigExt} extension. Below, the simultaneously recorded ECG signal emphasizes the coincidences between the cardiogenic artifact of the respiratory signal and the QRS complex of the ECG signal.
+Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also a cardiac component known as the cardiogenic artifact~\cite{Smith94recognition}. The top of Fig.~\ref{fig:resp.2} shows an excerpt of the measured thoracic impedance-based respiratory signal, recorded during a bronchoscopic sedation procedure, along with the {\sf SigExt} extension. Below, the simultaneously recorded ECG signal is depicted. The magenta dotted lines emphasize the coincidences between the cardiogenic artifact of the respiratory signal and the QRS complexes of the ECG signal. Such cardiac information can be harvested and utilized when other first-line heart rate information resource is not available or broken~\cite{Lu19recycling}.
 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{Resp2.eps}
-\caption{Two-component respiratory signal (top), and the associated {\sf SigExt} extension (blue); the simultaneously recorded ECG signal is below.}
+\caption{Two-component respiratory signal (top, yellow), and the associated {\sf SigExt} extension (blue); the simultaneously recorded ECG signal is below.}
 \label{fig:resp.2}
 \end{figure}
 
-The top of Fig.~\ref{fig:resp.2.sst} displays the ordinary SST and the boundary-free SST of this signal, sampled at $125$~Hz. This TF analysis brings out both components---the respiratory component, the most energetic, is located around the fundamental frequency $0.25$~Hz and its multiples, while the cardiac component, less visible, is located around $1.7$~Hz. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain. The middle of Fig.~\ref{fig:resp.2.sst} show a zoom near the right-boundary of the ordinary SST, while the bottom of Fig.~\ref{fig:resp.2.sst} respectively show the respective zoom on the boundary-free SST. In this area, the boundary-free SST makes it possible to disentangle the components contained in the signal. Moreover, the performance index of this representation takes the value $D=0.205$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $80\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+The top of Fig.~\ref{fig:resp.2.sst} displays the ordinary SST and the boundary-free SST of this respiratory signal, sampled at $64$~Hz. This TF analysis brings out both components---the respiratory component, indicated by the green arrows, is located around the fundamental frequency $0.3$~Hz and its multiples, while the cardiac component, indicated by the blue arrows, is located around $1.5$~Hz. Note that, here, boundary effects are only reduced on the right-side boundary of the TF domain, delimited by the red dashed boxes. The middle of Fig.~\ref{fig:resp.2.sst} show a zoom near the right-boundary of the ordinary SST, while the bottom of Fig.~\ref{fig:resp.2.sst} respectively show the respective zoom on the boundary-free SST. In this area, the boundary-free SST makes it possible to disentangle the components contained in the signal. Moreover, the performance index of this representation takes the value $D=0.705$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $30\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
 
 \begin{figure}
 \centering
 \includegraphics[width=.48\textwidth]{Resp2comp.eps}
 \includegraphics[width=.48\textwidth]{Resp2compZOOM.eps}
-\caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangles; these images are rotated 90 degrees clockwise. The window length for the SSTs is 35~seconds.}
+\caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangles; these images are rotated 90 degrees clockwise. The window length for the SSTs is 20~seconds. The instantaneous frequency of the respiration is indicated by the green arrows, while the instantaneous frequency of the cardiogenic artifact is indicated by the blue arrows.}
 \label{fig:resp.2.sst}
 \end{figure}
 }

@@ -806,7 +806,7 @@ b_2^{(n,n')} & = 4M^3(M+1)d_{1,\bz,M,\ell}  \ .
 \end{align*}
 
 \section{Application to an Electrocardiogram}
-We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (first panel), or EDMD (second panel), GPR (third panel), or TBATS (fourth panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. 
+We provide here an additional implementation of {\sf BoundEffRed}, applied to an electrocardiogram (ECG) dataset. The dataset is constructed from a $500$-second-long ECG, sampled at $\fs=200$~Hz, cut into $10$ segments of $50$ seconds each. Fig.~\ref{fig:ecg} depicts the right boundary of one of these subsignals, together with the $6$-second extensions estimated by {\sf SigExt} (first panel), or EDMD (second panel), GPR (third panel), or TBATS (fourth panel). These extensions are superimposed to the ground-truth extension, plotted in red. The sharp and spiky ECG patterns make the AHM model too simplistic to describe this type of signal. Consequently, the forecast produced by {\sf SigExt} is moderately satisfactory. Note that TBATS is the only one that seems to accurately capture the locations of QRS complexes after 37 seconds. We will explore this long-term prediction capability in the future work.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{ECGforecast.eps}
@@ -840,17 +840,23 @@ Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundar
 
 {\color{red}
 \section{Application to a Multicomponent Cardiac Signal}
-We consider a cardiac signal, namely an arterial blood pressure (ABP) recording, sampled at $1000$~Hz. In addition to the blood pressure measurement, this signal contains a slow varying component, which is the respiratory component. The top Fig.~\ref{fig:abp} displays an excerpt of the signal along with a 7-second-long extension obtained by the {\sf SigExt} forecasting. The forecasting breaks the waveform of the oscillations because of its inability to forecast the high-frequency harmonics contained in the signal. Nevertheless, as long as the low-frequency harmonics of the components contained in the signal are preserved, the forecasting is sufficient to reduce boundary effects in the low-frequency TF domain.
+We consider a cardiac signal, namely a photoplethysmogram (PPG) recording, sampled at $300$~Hz. In addition to the cardiac cycle measurement, this signal contains a slow varying component, which is the respiratory component, known as respiration induced intensity variation (RIIV)~\cite{Nilsson13respiration}. The top of Fig.~\ref{fig:ppg2} displays an excerpt of the signal along with a 3-second-long extension obtained by the {\sf SigExt} forecasting. The lower part of Fig.~\ref{fig:ppg2} shows the respiratory signal recording the concentration of $\mathrm{CO}_2$. This signal was recorded simultaneously with the PPG signal, and visually highlights the low-frequency respiratory component contained in the PPG signal. Indeed, the intervals where the concentration of $\mathrm{CO}_2$ drops---highlighted by the bluish areas---coincide with the decreases in the PPG signal. Note also that the forecasting breaks the waveform of the oscillations because of its inability to forecast the high-frequency harmonics contained in the signal. Nevertheless, as long as the low-frequency harmonics of the components contained in the signal are preserved, the forecasting is sufficient to reduce boundary effects in the low-frequency TF domain.
 
-The ordinary and boundary-free SSTs of this signal are displayed in the bottom of Fig.~\ref{fig:abp}. These TF analyses brings out both components---the cardiac component, the most energetic, indicated by the blue arrows, is located around the fundamental frequency $1$~Hz and its multiples, while the respiratory component, less visible, indicated by the green arrows, is located around $0.2$~Hz. Clearly, near the boundaries, {\sf BoundEffRed} helps improve the quality of the TF representation. Besides, the performance index of this representation takes the value $D=0.679$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $32\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
+The ordinary and boundary-free SSTs of this signal are displayed in Fig.~\ref{fig:ppg2.sst}. These TF analyses brings out both components---the fundamental frequency of the cardiac component, the most energetic one, indicated by the blue arrows, is located around $1.3$~Hz, while the respiratory component, less visible, indicated by the green arrows, is located around $0.2$~Hz  and its multiples. Clearly, near the boundaries, {\sf BoundEffRed} helps improve the quality of the TF representation. Besides, the performance index of this representation takes the value $D=0.491$. This means that {\sf BoundEffRed} has reduced the right-side boundary effects by about $51\%$ with respect to the ordinary SST. This shows the ability of our algorithm to work on signals containing several nonstationary components.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{ABP.eps}
-\includegraphics[width=\textwidth]{ABPsst.eps}
-\caption{Atrial blood pressure signal (top), and the associated
-{\sf SigExt} extension (blue). Ordinary SST (bottom left) and boundary-free SST (bottom right) of the arterial blood pressure signal. The window length for the SSTs is 18~seconds. The green arrows indicate the instantaneous frequency of the respiratory component. The blue arrows, on the other hand, indicate the instantaneous frequency of the blood pressure component. The red dashed boxes highlight the areas where boundary effects may appear.}
-\label{fig:abp}
+\includegraphics[width=\textwidth]{PPG2.eps}
+\caption{PPG signal (top, yellow), and the associated
+{\sf SigExt} extension (blue). The simultaneously recorded concentration of $\mathrm{CO}_2$ is below. The bluish areas show the synchrony between the drops in $\mathrm{CO}_2$ concentration and the decreases in the PPG signal.}
+\label{fig:ppg2}
+\end{figure} 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{PPG2sst.eps}
+\caption{Ordinary SST (left) and boundary-free SST (right) of the PPG signal. The window length for the SSTs is 18~seconds. The green arrows indicate the instantaneous frequency of the respiratory component. The blue arrows, on the other hand, indicate the instantaneous frequency of the blood pressure component. The red dashed boxes highlight the areas where boundary effects may appear.}
+\label{fig:ppg2.sst}
 \end{figure} 
 }
 
