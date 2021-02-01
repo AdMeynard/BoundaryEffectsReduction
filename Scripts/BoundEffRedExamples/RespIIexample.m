@@ -59,22 +59,29 @@ set(gca,'fontsize',24);
 
 xECG = data.ECG ;
 xECG = (xECG - mean(xECG))/std(xECG) ;
+
+wo = 60/(512/2) ;
+bw = wo/5;
+[num,den] = iirnotch(wo,bw) ;
+yECG = filter(num,den,xECG) ;
+
 tECG = data.timeECG ;
 
-subplot('Position',[0.045 0.255 0.942 0.265]);
-plot(tECG-tm,xECG,'k','linewidth',2); grid on;
-xlabel('Time (s)'); ylabel('ECG signal'); axis tight; xlim([0 t(end)-tm+7.5]);
+subplot('Position',[0.045 0.255 0.942 0.225]);
+plot(tECG-tm,yECG,'k','linewidth',2); grid on;
+xlabel('Time (s)'); ylabel('ECG signal');
+xlim([0 t(end)-tm+7.5]); ylim([-1.5 6]);
 set(gca,'fontsize',24);
 
-annotation('line',[0.142 0.142],[0.672 0.505],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.173 0.173],[0.584 0.502],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.205 0.205],[0.582 0.497],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.301 0.301],[0.661 0.506],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.333 0.333],[0.595 0.504],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.456 0.456],[0.595 0.477],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.487 0.487],[0.595 0.513],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.586 0.586],[0.623 0.504],'Color','m','LineWidth',3,'LineStyle',':');
-annotation('line',[0.619 0.619],[0.603 0.516],'Color','m','LineWidth',3,'LineStyle',':');
+annotation('line',[0.142 0.142],[0.672 0.435],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.174 0.174],[0.584 0.436],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.205 0.205],[0.582 0.446],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.301 0.301],[0.661 0.438],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.333 0.333],[0.595 0.445],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.456 0.456],[0.595 0.444],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.488 0.488],[0.595 0.439],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.586 0.586],[0.623 0.435],'Color','m','LineWidth',4,'LineStyle',':');
+annotation('line',[0.619 0.619],[0.603 0.442],'Color','m','LineWidth',4,'LineStyle',':');
 
 %% SST and STFT
 basicTF.hop = 3 ;
