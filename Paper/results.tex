@@ -89,9 +89,7 @@ First, when the noise is weak, the variance of the forecasting estimator is dram
 
 As anticipated by Theorem~\ref{th:error}, the variance of the estimator decreases linearly with $\frac1K$ as long as the dataset size is large enough. Indeed, in the log-log plot displayed in Fig.~\ref{fig:res.size.sine}, as soon as $K>700$, each of the three curves representing the forecasting variance as a function of $K$ tends towards an asymptote of slope $-1$. 
 %
-{\color{red}
 In practice, the asymptotic behavior of {\sf SigExt}, illustrated here on a synthetic signal, can be generalized to the study of real-life signals, as long as the duration of the recorded signal largely exceeds that of the desired extension, which allows the user to set $K\gg L$.
-}
 
 
 This study overlooks the analysis of the influence of the parameter $M$, whose influence on the value of the experimental variance is numerically not significant as long as $M\ll 2K$ and $\ell<M$. The choice of this parameter is especially crucial when the deterministic component of the signal is no longer stationary. The AHM, discussed below, is an example.
@@ -113,17 +111,13 @@ and the instantaneous phases are such that:
 \end{align*}
 Besides, the noise is chosen to be Gaussian, $\bw\sim\cN(\bzero,\bI)$, and we take $N=10^4$, $P=750$, $p_1=10$, $p_2=23$.
 
-{\color{red}
 \paragraph{Influence of the subsignals length $M$}
 To evaluate the forecasting quality, {\sf SigExt} is applied to $1000$ realizations of the above-described signal. We forecast signal extensions of $0.1$~s, \ie~$L=700$. Table~\ref{tab:mse.sine} shows the resulting mean and standard deviation (SD) of the experimental MSE, according to three different values of the subsignals length $M$. Note that choosing a too small $M$ does not provide enough information to forecast the signal satisfactorily. Furthermore, a too large $M$ makes the algorithm insensitive to local nonstationarities produced by frequency variations. The user must then make a compromise on the choice of $M$ in order to optimize the performance of the algorithm. A choice of $M$ such that the subsignals contain about a dozen oscillations is generally appropriate.
-}
 
 \paragraph{Comparison of the extensions methods}
 The same set of experiments is run on the extension methods outlined in section~\ref{sse:methods}. The results, displayed in Table~\ref{tab:mse.sine}, show that the naive extension we propose gives satisfying results. Indeed, when the subsignal length $M$ is optimally chosen, {\sf SigExt} performance is of the same order as that of ore sophisticated methods, like GPR or TBATS. Besides, even though these methods could be slightly more robust to perturbations, they are substantially limited by the computing time they require, which prevents them from being used to exploit real-time data. Thus, {\sf SigExt} is the extension method that optimizes the trade-off between forecasting quality and computing time.
 %
-{\color{red}
 Besides, the last column of Table~\ref{tab:mse.sine} gives the performance index $D$ of the boundary-free STFT associated with each extension method. This illustrates the ability of our algorithm to reduce boundary effects to a level comparable to what is possible with the GPR or TBATS extensions. The performance of {\sf BoundEffRed} on other TF representations is more thoroughly analyzed on real-life signals in the following.
-}
 
 \begin{table}
 \centering
@@ -210,7 +204,7 @@ In Table~\ref{tab:THO}, we give the averaged performance index~\eqref{eq:index.p
 \label{fig:THO.failure}
 \end{figure}
 
-{\color{red}
+
 \subsubsection{Two-Component Respiratory Signal}
 Then, we consider a second respiratory signal that contains not only the respiratory cycle, but also a cardiac component known as the cardiogenic artifact~\cite{Smith94recognition}. The top of Fig.~\ref{fig:resp.2} shows an excerpt of the measured thoracic impedance-based respiratory signal, recorded during a bronchoscopic sedation procedure, along with the {\sf SigExt} extension. Below, the simultaneously recorded ECG signal is depicted. The magenta dotted lines emphasize the coincidences between the cardiogenic artifact of the respiratory signal and the QRS complexes of the ECG signal. Such cardiac information can be harvested and utilized when other first-line heart rate information resource is not available or broken~\cite{Lu19recycling}.
 
@@ -230,7 +224,6 @@ The top of Fig.~\ref{fig:resp.2.sst} displays the ordinary SST and the boundary-
 \caption{Ordinary SST (top-left) and boundary-free SST (top-right) of a two-component respiratory signal. Middle and bottom: zoom on the areas delimited by the red dashed rectangles; these images are rotated 90 degrees clockwise. The window length for the SSTs is 20~seconds. The instantaneous frequency of the respiration is indicated by the green arrows, while the instantaneous frequency of the cardiogenic artifact is indicated by the blue arrows.}
 \label{fig:resp.2.sst}
 \end{figure}
-}
 
 \subsubsection{Photoplethysmogram}
 \label{ssse:ppg}

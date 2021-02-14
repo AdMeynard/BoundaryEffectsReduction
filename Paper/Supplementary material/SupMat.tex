@@ -838,7 +838,6 @@ Table~\ref{tab:otd.ecg} contains the median performance index $D$ of the boundar
 \end{table}
 
 
-{\color{red}
 \section{Application to a Multicomponent Cardiac Signal}
 We consider a cardiac signal, namely a photoplethysmogram (PPG) recording, sampled at $300$~Hz. In addition to the cardiac cycle measurement, this signal contains a slow varying component, which is the respiratory component, known as respiration induced intensity variation (RIIV)~\cite{Nilsson13respiration}. The top of Fig.~\ref{fig:ppg2} displays an excerpt of the signal along with a 3-second-long extension obtained by the {\sf SigExt} forecasting. The lower part of Fig.~\ref{fig:ppg2} shows the respiratory signal recording the concentration of $\mathrm{CO}_2$. This signal was recorded simultaneously with the PPG signal, and visually highlights the low-frequency respiratory component contained in the PPG signal. Indeed, the intervals where the concentration of $\mathrm{CO}_2$ drops---highlighted by the bluish areas---coincide with the decreases in the PPG signal. Note also that the forecasting breaks the waveform of the oscillations because of its inability to forecast the high-frequency harmonics contained in the signal. Nevertheless, as long as the low-frequency harmonics of the components contained in the signal are preserved, the forecasting is sufficient to reduce boundary effects in the low-frequency TF domain.
 
@@ -858,7 +857,6 @@ The ordinary and boundary-free SSTs of this signal are displayed in Fig.~\ref{fi
 \caption{Ordinary SST (left) and boundary-free SST (right) of the PPG signal. The window length for the SSTs is 18~seconds. The green arrows indicate the instantaneous frequency of the respiratory component. The blue arrows, on the other hand, indicate the instantaneous frequency of the blood pressure component. The red dashed boxes highlight the areas where boundary effects may appear.}
 \label{fig:ppg2.sst}
 \end{figure} 
-}
 
 \bibliographystyle{IEEEtran}
 \bibliography{../AM041320}
