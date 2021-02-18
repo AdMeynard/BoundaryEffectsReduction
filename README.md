@@ -12,7 +12,7 @@ This repository contains all the files necessary to perform the algorithm **Boun
   </tr>
  </table>
 
-***WARNING:*** This algorithm has been designed to work optimally with MATLAB R2020a. We do not guarantee its compatibility with earlier versions.
+***WARNING:*** This algorithm has been designed to work optimally with MATLAB R2020a. We do not guarantee its compatibility with previous releases.
 
 ## Contents
 
@@ -22,7 +22,7 @@ The folder `Signals` contains some biomedical and synthetic signals used to impl
 * `TimeFrequencyScaleRep` contains the functions generating Time-Frequency and Time-Scale representations such as STFT, Synchrosqueezing Transform, Reassignment, or ConceFT.
 * `Scripts` contains the scripts to perform the experiments detailed in the paper. Some corresponding results are directly provided in subfolder `Results`.
 
-The folder `Paper` contains the article and the associated Supplementary Materials.
+The folder `Paper` contains the article and the associated Supplementary Materials, while the folder `Animations` contains some videos featuring the real-time boundary-free synchrosqueezing transforms of a few biomedical signals, provided by BoundEffRed.
 
 # Authors
 
