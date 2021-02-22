@@ -32,6 +32,9 @@ NC, 27708 USA.
 H.-T. Wu is with the Department of Mathematics and Department of Statistical Science, Duke University, Durham, NC, 27708 USA; Mathematics Division, National Center for Theoretical Sciences, Taipei, Taiwan.
  
 A. Meynard is the corresponding author (e-mail: adrien.meynard@duke.edu).
+
+This paper has supplementary downloadable material available at http://ieeexplore.ieee.org., provided by the author. The material includes a technical report that contains proofs of mathematical statements
+and additional illustrations. This material is 1.2~MB in size.
 }}
 
 \newtheorem{remark}{Remark}
@@ -60,12 +63,12 @@ Windowing is a common method for performing local analysis. Among many others, S
 \[
 T_\tau f = f(t-\tau)\ ,\quad \forall\ f:\RR\to\RR\ .
 \]
-Then, the local analysis of $x$ around the instant $\tau\in I$ rely on the evaluation of the following inner product:
+Then, the local analysis of $x$ around the instant $\tau\in I$ relies on the evaluation of the following inner product:
 \begin{equation}
 V_x(s,\tau) = \langle x, T_\tau g_s \rangle_I \ .
 \label{eq:windowing}
 \end{equation}
-A major shortcoming of this technique occurs when analyzing the signal $x$ {\em near the boundaries} of the interval $I$. Clearly, at these points, half of the information is missing. Consequently, the results of the inner product~\eqref{eq:windowing} are distorted. This phenomenon is usually understood as the \emph{boundary effect}. The result of the SST of a PPG is shown in the lower-left corner of Fig.~\ref{fig:ex.intro} (see section~\ref{ssse:ppg} for a comprehensive description). The distortion resulting from boundary effects is clearly visible on the right side of this representation---this area is highlighted by the red dashed rectangle. Indeed, while in the major left part of the image, clear lines stand out, they become blurred as they approach the right boundary of the image. Therefore, estimations of signal characteristics, like instantaneous frequencies~\cite{Delprat92asymptotic} or amplitudes, from this TF representation appear to be imprecisely determinable (or even likely to fail) in the vicinity of the boundaries. Moreover, this boundary effect would unavoidably limit applying these window-based TF analysis tools for real-time analysis purposes. It is thus desirable to have a solution to eliminating the boundary effects.
+A major shortcoming of this technique occurs when analyzing the signal $x$ {\em near the boundaries} of the interval $I$. Clearly, at these points, half of the information is missing. Consequently, the results of the inner product~\eqref{eq:windowing} are distorted. This phenomenon is usually understood as the \emph{boundary effect}. The result of the SST of a PPG is shown in the lower-left corner of Fig.~\ref{fig:ex.intro} (see Section~\ref{ssse:ppg} for a comprehensive description). The distortion resulting from boundary effects is clearly visible on the right side of this representation---this area is highlighted by the red dashed rectangle. Indeed, while in the major left part of the image, clear lines stand out, they become blurred as they approach the right boundary of the image. Therefore, estimations of signal characteristics, like instantaneous frequencies~\cite{Delprat92asymptotic} or amplitudes, from this TF representation appear to be imprecisely determinable (or even likely to fail) in the vicinity of the boundaries. Moreover, this boundary effect would unavoidably limit applying these window-based TF analysis tools for real-time analysis purposes. It is thus desirable to have a solution to eliminating the boundary effects.
 
 \begin{figure}
 \centering
@@ -80,7 +83,7 @@ Another natural idea, the second class, consists of carrying out a preliminary s
 %
 There exist extension schemes based on physically relevant dynamical models, such as the Extended Dynamic Mode Decomposition~\cite{Williams15data} (EDMD) and the Gaussian process regression~\cite{Rasmussen06gaussian,Roberts13Gaussian} (GPR).
 %
-In speech processing, dynamic mode predictors have also been proposed~\cite{Vargas11speech} to forecast signals falling into the so-called \textit{source--filter} model. This gradient-based technique rely on the shadowing approach proposed in~\cite{Grebogi90shadowing}.
+In speech processing, dynamic mode predictors have also been proposed~\cite{Vargas11speech} to forecast signals falling into the so-called \textit{source--filter} model. This gradient-based technique relies on the shadowing approach proposed in~\cite{Grebogi90shadowing}.
 %
 There also exist extension schemes based on stochastic models, such as the Trigonometric, Box-Cox transformation, ARMA errors, Trend and Seasonal components (TBATS) algorithm~\cite{DeLivera11forecasting}, the dynamic linear models \cite{west2006bayesian}. 
 %
@@ -99,7 +102,7 @@ In this paper, we propose a fast extension algorithm based on a simple dynamical
 
 Thus, assuming that the quality of the extension step is sufficient, the analysis results obtained that way will be less sensitive to the boundary effects than the result of the analysis tool applied directly to the nonextended signal. We claim and prove that forecasting oscillatory signals based on the simple dynamical model combined with the simple least square approach is sufficient for reducing the boundary effects for the TF analysis, or other kernel-based analysis. To our knowledge, such theoretical analysis does not exist in the literature. See the bottom of Fig.~\ref{fig:ex.intro}---in particular, the regions indicated by the dashed boxes---for a snapshot of the result. The main benefit of this simple approach is a numerically efficient solution with a theoretical guarantee for real-time analysis purposes. 
 
-The paper is organized in the following way. In section~\ref{se:algo}, we provide an extension method based on a linear dynamic model. We derive the corresponding algorithm for boundary effects reduction. In section~\ref{se:theoretical}, we show that the dynamic model we consider is sufficient to extend signals taking the form of sums of sine waves. An evaluation of the theoretical performance of our algorithm on this class of signals is given in section~\ref{se:theoretical}. In section~\ref{se:results}, we compare our extension method with more sophisticated methods such as EDMD, GPR, or TBATS. We show that our algorithm gives fast results of reasonable quality. Finally, we evaluate the performance of our boundary effects reduction algorithm on biomedical signals, such as respiratory signals, and compare it to the theoretical results. 
+The paper is organized in the following way. In section~\ref{se:algo}, we provide an extension method based on a linear dynamic model. We derive the corresponding algorithm for boundary effects reduction. In Section~\ref{se:theoretical}, we show that the dynamic model we consider is sufficient to extend signals taking the form of sums of sine waves. An evaluation of the theoretical performance of our algorithm on this class of signals is given in Section~\ref{se:theoretical}. In Section~\ref{se:results}, we compare our extension method with more sophisticated methods such as EDMD, GPR, or TBATS. We show that our algorithm gives fast results of reasonable quality. Finally, we evaluate the performance of our boundary effects reduction algorithm on biomedical signals, such as respiratory signals, and compare it to the theoretical results. 
 
 \section{Algorithm}
 \label{se:algo}

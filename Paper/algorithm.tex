@@ -69,7 +69,7 @@ Establishing a dynamical model means determining the relation linking $\bY$ to $
 \bY = f(\bX)\ .
 \label{eq:generic.model}
 \end{equation}
-In a general framework, forecasting means estimating the function $f$ from the observed values taken by the signal, in order to predict its future values. For instance, the dynamic mode decomposition~\cite{Schmid10dynamic,Williams15data} or other more complicated models \cite{Roberts13Gaussian,DeLivera11forecasting,west2006bayesian,vlachas2018data}, allow this by setting additional constraints on the behavior of $f$. We will see, in section~\ref{se:theoretical}, that considering such a complex dynamic model is not necessary for the study of the oscillatory signals of interest to us. That is why we consider here a naive dynamical model, assuming that we have the following relation:
+In a general framework, forecasting means estimating the function $f$ from the observed values taken by the signal, in order to predict its future values. For instance, the dynamic mode decomposition~\cite{Schmid10dynamic,Williams15data} or other more complicated models \cite{Roberts13Gaussian,DeLivera11forecasting,west2006bayesian,vlachas2018data}, allow this by setting additional constraints on the behavior of $f$. We will see, in Section~\ref{se:theoretical}, that considering such a complex dynamic model is not necessary for the study of the oscillatory signals of interest to us. That is why we consider here a naive dynamical model, assuming that we have the following relation:
 \begin{equation}
 \bY = \bA\bX\ ,
 \label{eq:dyn.model}
@@ -95,7 +95,7 @@ Let $\be_M$ denote the unit vector of length $M$ given by $\be_M = \begin{pmatri
 \label{eq:prediction}
 \tilde \bx [N-1+\ell] = \be_M^T\tilde\bx_{K+\ell} = \balpha^{(\ell)}\bx_{K}\ ,
 \end{equation}  
-where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$, \ie~$\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell$.
+where $\balpha^{(\ell)}$ denotes the last row of $\tilde\bA^\ell$, \ie, $\balpha^{(\ell)}=\be_M^T\tilde\bA^\ell$.
 
 \paragraph{Model Estimation} To estimate the matrix $\bA$, we consider the simple but numerically efficient least square estimator. That is, we solve the following problem:
 \begin{equation}
@@ -106,7 +106,7 @@ where the loss function $\cL$ is given by:
 \[
 \cL(\bA) = \|\bY-\bA\bX\|^2 = \sum_{k=0}^{K-1} \|\bx_{k+1}-\bA\bx_k\|^2.
 \]
-Therefore, solving the problem~\eqref{eq:ls.pb}, \ie~$\nabla \cL(\tilde\bA)=\bzero$, gives the following estimate $\tilde\bA$ of the dynamical model matrix $\bA$:
+Therefore, solving the problem~\eqref{eq:ls.pb}, \ie, $\nabla \cL(\tilde\bA)=\bzero$, gives the following estimate $\tilde\bA$ of the dynamical model matrix $\bA$:
 \begin{align}
 \tilde\bA &= \bY\bX^T(\bX\bX^T)^{-1}\ .
 \label{eq:lse}
