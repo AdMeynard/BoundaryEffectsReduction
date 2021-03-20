@@ -1,5 +1,6 @@
 ## Overview
-This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations.
+This repository contains all the files necessary to perform the algorithm **BoundEffRed** (Boundary Effects Reduction). This is an efficient forecasting approach for the real-time reduction of boundary effects in time-frequency representations. The theoretical background relative to the algorithm can be found in the following paper:  
+**[1] A. Meynard and H.-T. Wu, "An Efficient Forecasting Approach to Reduce Boundary Effects in Real-Time Time-Frequency Analysis", *IEEE Transactions on Signal Processing*, vol. 69, pp. 1653&ndash;1663, 2021, [available online](https://hal.archives-ouvertes.fr/hal-03141062).**
 
 <table style="width:100%">
   <tr>
